@@ -1,3 +1,6 @@
+'use client';
+
+import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { agents } from '@/lib/agents';
 import type { ChatMessage as ChatMessageType } from '@/lib/types';
@@ -6,6 +9,7 @@ import { TransferConfirmCard } from './cards/TransferConfirmCard';
 import { SpendingChartCard } from './cards/SpendingChartCard';
 import { FraudAlertCard } from './cards/FraudAlertCard';
 import { AgentHandoffTransition } from '../agents/AgentHandoffTransition';
+import { userMessageVariants, agentMessageVariants, fadeVariants } from '@/lib/design-system/animations';
 
 interface ChatMessageProps {
   message: ChatMessageType;
@@ -26,7 +30,13 @@ export function ChatMessage({ message }: ChatMessageProps) {
   // User message
   if (message.type === 'user') {
     return (
-      <div className="flex justify-end animate-fade-in">
+      <motion.div
+        className="flex justify-end"
+        variants={userMessageVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+      >
         <div className="max-w-[70%]">
           <div className="bg-indigo-600 text-white rounded-2xl rounded-br-sm px-4 py-3">
             <p className="text-sm">{message.content}</p>
@@ -35,7 +45,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
             {formatRelativeTime(message.timestamp)}
           </p>
         </div>
-      </div>
+      </motion.div>
     );
   }
 
@@ -44,7 +54,13 @@ export function ChatMessage({ message }: ChatMessageProps) {
     const agent = agents[message.agentId];
 
     return (
-      <div className="flex items-start gap-3 animate-fade-in">
+      <motion.div
+        className="flex items-start gap-3"
+        variants={agentMessageVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+      >
         <div
           className={cn(
             'w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0',
@@ -83,16 +99,22 @@ export function ChatMessage({ message }: ChatMessageProps) {
             {formatRelativeTime(message.timestamp)}
           </p>
         </div>
-      </div>
+      </motion.div>
     );
   }
 
   // System message
   return (
-    <div className="flex justify-center animate-fade-in">
+    <motion.div
+      className="flex justify-center"
+      variants={fadeVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+    >
       <div className="bg-gray-100 text-gray-600 rounded-full px-4 py-2 text-xs">
         {message.content}
       </div>
-    </div>
+    </motion.div>
   );
 }

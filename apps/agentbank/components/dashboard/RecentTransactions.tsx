@@ -1,7 +1,11 @@
+'use client';
+
+import { motion } from 'framer-motion';
 import { getRecentTransactions } from '@/lib/mock-data';
 import { formatCurrency, formatDate, getCategoryIcon, getCategoryColor } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import { AlertTriangle, ArrowRight } from 'lucide-react';
+import { listContainerVariants, listItemVariants } from '@/lib/design-system/animations';
 
 export function RecentTransactions() {
   const transactions = getRecentTransactions(8);
@@ -17,14 +21,20 @@ export function RecentTransactions() {
       </div>
 
       {/* Transaction List */}
-      <div className="divide-y">
+      <motion.div
+        className="divide-y"
+        variants={listContainerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         {transactions.map((txn) => (
-          <div
+          <motion.div
             key={txn.id}
             className={cn(
               'px-6 py-4 flex items-center gap-4 hover:bg-gray-50 transition-colors',
               txn.isFlagged && 'bg-red-50'
             )}
+            variants={listItemVariants}
           >
             {/* Category Icon */}
             <div
@@ -72,9 +82,9 @@ export function RecentTransactions() {
                 {txn.category.replace('_', ' ')}
               </p>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }

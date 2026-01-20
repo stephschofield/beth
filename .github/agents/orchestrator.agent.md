@@ -4,11 +4,7 @@ description: Master orchestrator for IDEO design & development team. Routes work
 model: Claude Opus 4.5
 infer: true
 tools:
-  - codebase
-  - textSearch
-  - fileSearch
-  - readFile
-  - runSubagent
+  ['vscode', 'execute', 'read', 'agent', 'edit', 'search', 'web', 'todo']
 handoffs:
   - label: Product Strategy
     agent: product-manager
