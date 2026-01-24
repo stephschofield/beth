@@ -14,6 +14,10 @@ Last updated: 2026-01-24
 | beth-591 | Update README with Beth persona | Beth | ✅ Done | Full rewrite complete |
 | beth-fvz | Create Backlog.md | Beth | ✅ Done | Two-layer tracking established |
 | beth-zo0 | Wire beads tracking into Beth | Beth | ✅ Done | Mandatory tracking enforced |
+| beth-c8r | Add hero image to README | Beth | ✅ Done | bethflames.png added |
+| beth-n5n | Add second image to README | Beth | ✅ Done | beth-questioning.png in Why Beth |
+| beth-y4l | Rewrite Why Beth section | Beth | ✅ Done | Positive tone, humor about competence |
+| beth-pqd | Update README cigarette line | Beth | ✅ Done | Watching crew build code |
 | beth-wkl | Create frontend-engineer agent | — | 🔲 Queued | Dedicated React/TypeScript UI specialist |
 | beth-eua | Create security-reviewer agent | — | 🔲 Queued | Enterprise security, OWASP, threat modeling |
 | beth-b65 | Create security-analysis skill | — | 🔲 Queued | Vulnerability assessment workflow |
