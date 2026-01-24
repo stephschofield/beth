@@ -1,5 +1,9 @@
 # Beth
 
+<p align="center">
+  <img src="assets/bethflames.png" alt="Beth" width="600">
+</p>
+
 > *"You are the trailer park. I am the tornado."*
 
 She might disappear for a bit. She might be sharpening her knives or torching someone else's empire. But when Beth shows up? The job gets done. Period.
