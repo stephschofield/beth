@@ -172,6 +172,10 @@ Beth doesn't ship garbage:
 
 ## A Word of Warning
 
+<p align="center">
+  <img src="assets/beth-questioning.png" alt="Beth" width="500">
+</p>
+
 Beth disappears sometimes. She's handling things you don't need to know about. But when she's on? She's *on*. 
 
 Don't second-guess her. Don't ask her to explain herself. Just tell her what you need and watch her make it happen.
