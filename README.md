@@ -169,15 +169,19 @@ Beth doesn't ship garbage:
 - **Type Safety**: Full TypeScript coverage. No `any` unless you want a lecture.
 - **Test Coverage**: Unit, integration, E2E. If it's not tested, it's not done.
 
-## A Word of Warning
+## Why Beth?
 
 <p align="center">
   <img src="assets/beth-questioning.png" alt="Beth" width="500">
 </p>
 
-Beth disappears sometimes. She's handling things you don't need to know about. But when she's on? She's *on*. 
+Look, you *could* try to coordinate seven specialists yourself. You could context-switch between product strategy, security reviews, and accessibility audits while keeping your sanity intact. 
 
-Don't second-guess her. Don't ask her to explain herself. Just tell her what you need and watch her make it happen.
+Or you could let Beth handle it.
+
+She's got the crew. She's got the workflows. She delegates like a managing director because that's exactly what she is. You bring the problem, she brings the people—and somehow, the code ships on time, secure, and accessible.
+
+Is it magic? No. It's just competence with very good hair.
 
 > *"I made two decisions in my life based on fear, and they almost ruined me. I'll never make another."*
 
