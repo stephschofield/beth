@@ -26,11 +26,18 @@ She commands an army of specialized agents, each with their own expertise, and s
 
 ## Getting Started
 
+**Project scope** (no install required):
 ```bash
 npx beth-copilot init
 ```
 
-That's it. One command. Then open VS Code, switch Copilot Chat to **Agent mode**, and type `@Beth`.
+**Global install** (use anywhere):
+```bash
+npm i -g beth-copilot
+beth init
+```
+
+Then open VS Code, switch Copilot Chat to **Agent mode**, and type `@Beth`.
 
 For detailed setup (prerequisites, task tracking, MCP servers): [docs/INSTALLATION.md](docs/INSTALLATION.md)
 
