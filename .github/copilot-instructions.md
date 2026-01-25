@@ -22,7 +22,7 @@ Agents use `.agent.md` files with YAML frontmatter defining:
 - `handoffs` - Other agents this agent can transfer control to
 - `infer: true` - Enables the agent to be invoked as a subagent
 
-### The Seven Agents
+### The Eight Agents
 | Agent | Purpose | Primary Tools |
 |-------|---------|---------------|
 | `Beth` | Orchestrator - Routes work, spawns subagents | `runSubagent`, search tools |
@@ -31,6 +31,7 @@ Agents use `.agent.md` files with YAML frontmatter defining:
 | `ux-designer` | Interface design, design systems | Framer skill |
 | `frontend-engineer` | Pixel-perfect React/TypeScript UI | shadcn-ui skill, shadcn MCP |
 | `developer` | Full-stack React/TypeScript/Next.js | All editing tools, Framer skill |
+| `security-reviewer` | Security audits, threat modeling, compliance | security-analysis skill |
 | `tester` | QA, accessibility, performance testing | Testing tools |
 
 ### Subagent vs Handoff Pattern
@@ -57,6 +58,7 @@ Skills are domain-knowledge modules in `.github/skills/<name>/SKILL.md`. Agents 
 | Vercel React Best Practices | `skills/vercel-react-best-practices/` | React/Next.js performance work |
 | Web Design Guidelines | `skills/web-design-guidelines/` | "review my UI", "check accessibility" |
 | shadcn/ui Components | `skills/shadcn-ui/` | "shadcn", "ui component", component installation |
+| Security Analysis | `skills/security-analysis/` | "security review", "OWASP", "threat model", "compliance" |
 
 ## Development Conventions
 
@@ -164,12 +166,13 @@ export async function deleteUser(userId: string) {
 ## Workflow Patterns
 
 ### New Feature Flow
-1. `@IDEO-Orchestrator` → analyzes request, proposes workflow
+1. `@Beth` → analyzes request, proposes workflow
 2. `@product-manager` → defines requirements (uses PRD skill)
 3. `@researcher` → validates user needs (optional)
 4. `@ux-designer` → designs interface
 5. `@developer` → implements in React/TypeScript
-6. `@tester` → verifies quality
+6. `@security-reviewer` → audits for vulnerabilities
+7. `@tester` → verifies quality
 
 ### Quick Commands
 ```
