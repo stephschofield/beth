@@ -1,13 +1,47 @@
 # Agent Instructions
 
-This project uses **Backlog.md** for issue tracking. One file. One truth.
+This project uses [Backlog.md](https://github.com/MrLesk/Backlog.md) for issue tracking.
+
+## Quick Setup
+
+```bash
+# Install (choose one)
+bun i -g backlog.md
+npm i -g backlog.md
+brew install backlog-md
+
+# Initialize in your project
+backlog init "Project Name"
+
+# Shell completion (optional)
+backlog completion install
+```
 
 ## Quick Reference
 
-1. Check `Backlog.md` for available work
-2. Move task to **In Progress** section
+```bash
+# Create a task
+backlog task create "Task title" -d "Description"
+
+# List tasks
+backlog task list --plain
+
+# View Kanban board (TUI)
+backlog board
+
+# Web UI
+backlog browser
+
+# Configure settings
+backlog config
+```
+
+## Workflow
+
+1. Check available work: `backlog task list`
+2. Claim work: `backlog task edit <id> --status "In Progress"`
 3. Do the work
-4. Move task to **Completed** section
+4. Complete: `backlog task edit <id> --status "Done"`
 5. Commit and push
 
 ## Landing the Plane (Session Completion)

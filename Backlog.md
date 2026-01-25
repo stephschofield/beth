@@ -21,6 +21,8 @@ Last updated: 2026-01-25
 | Create security-reviewer agent | Enterprise security, OWASP, threat modeling |
 | Create security-analysis skill | Vulnerability assessment workflow |
 | Create MCP setup guide | docs/MCP-SETUP.md with all optional servers |
+| Add new agent handoffs to Beth | frontend-engineer and security-reviewer wired in |
+| Remove beads dependencies | Migrated to backlog.md CLI tool |
 
 ---
 
@@ -39,7 +41,6 @@ Last updated: 2026-01-25
 ### Medium Priority (P2)
 
 - [ ] **Update agents to reference Beth as orchestrator** — Ensure all agents know Beth is the coordinator
-- [ ] **Add new agent handoffs to Beth** — Wire frontend-engineer and security-reviewer into Beth's handoffs
 - [ ] **Review and update copilot-instructions.md** — Ensure consistency with Beth-first architecture
 - [ ] **Upgrade skills for web search MCP** — Enhance researcher agent with web search when configured
 - [ ] **Upgrade skills for Playwright MCP** — Enhance tester/frontend agents with browser automation
