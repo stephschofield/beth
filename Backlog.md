@@ -23,6 +23,7 @@ Last updated: 2026-01-25
 | Create MCP setup guide | docs/MCP-SETUP.md with all optional servers |
 | Add new agent handoffs to Beth | frontend-engineer and security-reviewer wired in |
 | Remove beads dependencies | Migrated to backlog.md CLI tool |
+| Create comprehensive installation guide | docs/INSTALLATION.md with full setup instructions |
 
 ---
 
@@ -79,11 +80,13 @@ The Beth orchestrator system is operational. Core personality, README, and full 
 - Frontend Engineer — Live (Pixel-perfect React/TS with shadcn/ui MCP)
 - Security Reviewer — Live (OWASP, compliance, threat modeling)
 - All skills — PRD, Framer, React Best Practices, Web Design, shadcn-ui, Security Analysis
+- Installation guide — docs/INSTALLATION.md
+- MCP setup guide — docs/MCP-SETUP.md
 
 **What's Coming:**
 
-- MCP Setup Guide (web search, Playwright, Azure, Microsoft Learn)
 - MCP-enhanced skills (optional, graceful degradation)
+- Agent consistency review
 
 **Blockers:** None.
 
