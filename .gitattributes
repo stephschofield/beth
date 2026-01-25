@@ -1,3 +1,5 @@
-
-# Use bd merge for beads JSONL files
-.beads/issues.jsonl merge=beads
+# Text files
+*.md text
+*.json text
+*.yml text
+*.yaml text
