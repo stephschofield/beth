@@ -1,6 +1,14 @@
-# AI Agent Skills Demo Repository
+# Beth - AI Agent System
 
-This repository demonstrates GitHub Copilot's multi-agent system with custom agents, skills, and handoffs for building IDEO-style digital products.
+A ruthless, hyper-competent AI orchestrator for GitHub Copilot multi-agent workflows.
+
+## Installation
+
+```bash
+npx beth-copilot init
+```
+
+That's it. See [docs/INSTALLATION.md](../docs/INSTALLATION.md) for detailed setup.
 
 ## Architecture Overview
 
@@ -176,7 +184,7 @@ export async function deleteUser(userId: string) {
 
 ### Quick Commands
 ```
-@IDEO-Orchestrator Plan a feature for [description]
+@Beth Plan a feature for [description]
 @product-manager Create a PRD for [feature]
 @developer Implement [component/feature]
 @tester Write tests for [component]
