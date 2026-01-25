@@ -1,16 +1,14 @@
 # Agent Instructions
 
-This project uses **bd** (beads) for issue tracking. Run `bd onboard` to get started.
+This project uses **Backlog.md** for issue tracking. One file. One truth.
 
 ## Quick Reference
 
-```bash
-bd ready              # Find available work
-bd show <id>          # View issue details
-bd update <id> --status in_progress  # Claim work
-bd close <id>         # Complete work
-bd sync               # Sync with git
-```
+1. Check `Backlog.md` for available work
+2. Move task to **In Progress** section
+3. Do the work
+4. Move task to **Completed** section
+5. Commit and push
 
 ## Landing the Plane (Session Completion)
 
@@ -18,24 +16,21 @@ bd sync               # Sync with git
 
 **MANDATORY WORKFLOW:**
 
-1. **File issues for remaining work** - Create issues for anything that needs follow-up
+1. **Update Backlog.md** - Move completed tasks, add new items for follow-up work
 2. **Run quality gates** (if code changed) - Tests, linters, builds
-3. **Update issue status** - Close finished work, update in-progress items
-4. **PUSH TO REMOTE** - This is MANDATORY:
+3. **PUSH TO REMOTE** - This is MANDATORY:
    ```bash
+   git add -A
+   git commit -m "description of work"
    git pull --rebase
-   bd sync
    git push
    git status  # MUST show "up to date with origin"
    ```
-5. **Clean up** - Clear stashes, prune remote branches
-6. **Verify** - All changes committed AND pushed
-7. **Hand off** - Provide context for next session
+4. **Verify** - All changes committed AND pushed
+5. **Hand off** - Provide context for next session
 
 **CRITICAL RULES:**
 - Work is NOT complete until `git push` succeeds
 - NEVER stop before pushing - that leaves work stranded locally
 - NEVER say "ready to push when you are" - YOU must push
 - If push fails, resolve and retry until it succeeds
-
-use 'bd' for task tracking

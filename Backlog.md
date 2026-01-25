@@ -6,24 +6,27 @@ Last updated: 2026-01-25
 
 ---
 
-## Active Work
+## Completed
 
-| ID | Task | Owner | Status | Notes |
-|----|------|-------|--------|-------|
-| beth-ihh | Rebrand orchestrator to Beth | Beth | ✅ Done | Agent renamed, personality defined |
-| beth-591 | Update README with Beth persona | Beth | ✅ Done | Full rewrite complete |
-| beth-fvz | Create Backlog.md | Beth | ✅ Done | Two-layer tracking established |
-| beth-zo0 | Wire beads tracking into Beth | Beth | ✅ Done | Mandatory tracking enforced |
-| beth-c8r | Add hero image to README | Beth | ✅ Done | bethflames.png added |
-| beth-n5n | Add second image to README | Beth | ✅ Done | beth-questioning.png in Why Beth |
-| beth-y4l | Rewrite Why Beth section | Beth | ✅ Done | Positive tone, humor about competence |
-| beth-pqd | Update README cigarette line | Beth | ✅ Done | Watching crew build code |
-| beth-mr1 | Strengthen beads enforcement in Beth | Beth | ✅ Done | Response framework now requires issue ID |
-| beth-zre | Update README hero image | Beth | ✅ Done | Updated to yellowstone-beth.png |
-| beth-wkl | Create frontend-engineer agent | Beth | ✅ Done | Pixel-perfect React/TS specialist with shadcn/ui MCP |
-| beth-eua | Create security-reviewer agent | — | 🔲 Queued | Enterprise security, OWASP, threat modeling |
-| beth-b65 | Create security-analysis skill | — | 🔲 Queued | Vulnerability assessment workflow |
-| beth-sd7 | Create MCP setup guide | — | 🔲 Queued | Onboarding for optional MCP servers |
+| Task | Notes |
+|------|-------|
+| Rebrand orchestrator to Beth | Agent renamed, personality defined |
+| Update README with Beth persona | Full rewrite complete |
+| Create Backlog.md | Single-source tracking |
+| Add hero image to README | Updated to yellowstone-beth.png |
+| Add second image to README | beth-questioning.png in Why Beth |
+| Rewrite Why Beth section | Positive tone, humor about competence |
+| Update README cigarette line | Watching crew build code |
+| Create frontend-engineer agent | Pixel-perfect React/TS specialist with shadcn/ui MCP |
+| Create security-reviewer agent | Enterprise security, OWASP, threat modeling |
+| Create security-analysis skill | Vulnerability assessment workflow |
+| Create MCP setup guide | docs/MCP-SETUP.md with all optional servers |
+
+---
+
+## In Progress
+
+*Nothing currently in progress.*
 
 ---
 
@@ -31,18 +34,13 @@ Last updated: 2026-01-25
 
 ### High Priority (P1)
 
-- [x] **frontend-engineer.agent.md** — Pixel-perfect React/TypeScript specialist with shadcn/ui MCP integration.
-- [x] **shadcn-ui skill** — Component patterns, theming, and MCP server usage.
-- [x] **.vscode/mcp.json** — shadcn MCP server configuration.
-- [ ] **security-reviewer.agent.md** — Enterprise security agent. OWASP, compliance, threat modeling.
-- [ ] **security-analysis skill** — Skill module for security workflows.
-- [ ] **MCP setup guide** — Onboarding guide for optional MCP servers (web search, Playwright, Azure, Microsoft Learn). Skills gracefully degrade if not configured.
+*All P1 items completed.*
 
 ### Medium Priority (P2)
 
-- [ ] Update all existing agents to reference Beth as orchestrator
-- [ ] Add handoffs in beth.agent.md for new agents once created
-- [ ] Review and update copilot-instructions.md
+- [ ] **Update agents to reference Beth as orchestrator** — Ensure all agents know Beth is the coordinator
+- [ ] **Add new agent handoffs to Beth** — Wire frontend-engineer and security-reviewer into Beth's handoffs
+- [ ] **Review and update copilot-instructions.md** — Ensure consistency with Beth-first architecture
 - [ ] **Upgrade skills for web search MCP** — Enhance researcher agent with web search when configured
 - [ ] **Upgrade skills for Playwright MCP** — Enhance tester/frontend agents with browser automation
 - [ ] **Upgrade skills for Azure MCP** — Enhance developer/security agents with Azure cloud ops
@@ -50,8 +48,7 @@ Last updated: 2026-01-25
 
 ### Low Priority (P3)
 
-- [ ] Add more Beth-isms to agent responses
-- [ ] Create example workflows in DEMO.md showcasing Beth's personality
+- [ ] **Update DEMO.md for Beth** — Create example workflows showcasing Beth's personality
 - [ ] Consider additional skills (API security, performance profiling)
 
 ---
@@ -63,7 +60,7 @@ Last updated: 2026-01-25
 | Rename orchestrator → Beth | Brand identity, memorable persona, clear leadership | 2026-01-24 |
 | Split frontend-engineer from developer | Separation of concerns: UI specialists vs full-stack | 2026-01-24 |
 | Add security-reviewer agent | Enterprise security is non-negotiable | 2026-01-24 |
-| Two-layer tracking: Backlog.md + bd | Leadership visibility (Backlog) + agent ops (beads) | 2026-01-24 |
+| Single-source tracking: Backlog.md | Simplicity over tooling. One file, one truth. | 2026-01-25 |
 | Optional MCP integrations | Web search, Playwright, Azure, MS Learn MCPs enhance agents but are opt-in. Skills gracefully degrade without them. | 2026-01-24 |
 
 ---
@@ -72,20 +69,18 @@ Last updated: 2026-01-25
 
 **For Leadership:**
 
-The Beth orchestrator system is being built. Core personality and README are complete. Next phase is expanding the agent roster with dedicated frontend and security specialists, plus optional MCP integrations for enhanced capabilities.
+The Beth orchestrator system is operational. Core personality, README, and full agent roster are complete. Next phase is MCP integrations for enhanced capabilities.
 
 **What's Working:**
 
 - Beth agent (orchestrator) — Live
-- Product Manager, Researcher, UX Designer, Developer, Tester — Existing
-- **Frontend Engineer** — NEW: Pixel-perfect React/TS with shadcn/ui MCP
-- PRD, Framer, React Best Practices, Web Design skills — Existing
-- **shadcn-ui skill** — NEW: Component patterns and MCP integration
+- Product Manager, Researcher, UX Designer, Developer, Tester — Live
+- Frontend Engineer — Live (Pixel-perfect React/TS with shadcn/ui MCP)
+- Security Reviewer — Live (OWASP, compliance, threat modeling)
+- All skills — PRD, Framer, React Best Practices, Web Design, shadcn-ui, Security Analysis
 
 **What's Coming:**
 
-- Security Reviewer agent
-- Security Analysis skill
 - MCP Setup Guide (web search, Playwright, Azure, Microsoft Learn)
 - MCP-enhanced skills (optional, graceful degradation)
 
@@ -93,17 +88,16 @@ The Beth orchestrator system is being built. Core personality and README are com
 
 ---
 
-## Architecture
+## How We Track Work
 
-```
-Backlog.md          ← You are here (leadership view)
-    │
-    └── bd (beads)  ← Agent implementation tracking
-           │
-           └── .beads/issues/  ← Detailed work breakdown
-```
+This file is the single source of truth. When you start work:
 
-**Rule:** Big picture goes in Backlog.md. Detailed implementation tracking goes in bd.
+1. Move the task to **In Progress**
+2. Do the work
+3. Move to **Completed** when done
+4. Commit changes
+
+No external tools. No databases. Just this markdown file.
 
 ---
 

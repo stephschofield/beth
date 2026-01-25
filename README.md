@@ -193,6 +193,19 @@ Is it magic? No. It's just competence with very good hair.
 - GitHub Copilot Chat enabled
 - The spine to actually ship something
 
+### Optional: MCP Servers
+
+Beth's agents work fine without them, but these make them smarter:
+
+| Server | What It Does | Setup |
+|--------|--------------|-------|
+| **shadcn/ui** | Component browsing & installation | `npx shadcn@latest mcp init --client vscode` |
+| **Playwright** | Browser automation for testing | See [MCP Setup Guide](docs/MCP-SETUP.md) |
+| **Azure** | Cloud resource management | See [MCP Setup Guide](docs/MCP-SETUP.md) |
+| **Web Search** | Internet research | See [MCP Setup Guide](docs/MCP-SETUP.md) |
+
+Full details: [docs/MCP-SETUP.md](docs/MCP-SETUP.md)
+
 ## License
 
 MIT — Take it. Run it. Build empires.
