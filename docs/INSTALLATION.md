@@ -195,15 +195,34 @@ If you don't see them, ensure:
 - VS Code has reloaded (try `Developer: Reload Window`)
 - You're in Agent mode, not Chat mode
 
-### 4. Configure Settings (Optional)
+### 4. Enable Subagent Delegation (Required for Beth)
 
-Add to your `.vscode/settings.json`:
+Beth orchestrates work by delegating to specialized agents like `@developer`, `@tester`, etc. For this to work, you **must** enable subagent support:
+
+1. Open VS Code Settings (`Ctrl+,` / `Cmd+,`)
+2. Search for `customAgentInSubagent`
+3. Check the box for **"Chat > Custom Agent In Subagent: Enabled"**
+
+Or add to your `.vscode/settings.json`:
 
 ```json
 {
-  "github.copilot.chat.localeOverride": "en",
+  "chat.customAgentInSubagent.enabled": true
+}
+```
+
+Without this setting, Beth can't delegate to her team agents.
+
+### 5. Configure Additional Settings (Optional)
+
+For the full experience, add these to your `.vscode/settings.json`:
+
+```json
+{
+  "chat.customAgentInSubagent.enabled": true,
+  "chat.agent.enabled": true,
   "github.copilot.chat.agent.thinkingTool": true,
-  "chat.agent.enabled": true
+  "github.copilot.chat.localeOverride": "en"
 }
 ```
 
