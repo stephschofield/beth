@@ -51,8 +51,7 @@ Beth doesn't work alone. She's got people—loyal, skilled, and ready to execute
 | **@product-manager** | The Strategist | PRDs, roadmaps, requirements. Knows what users need before they do. |
 | **@researcher** | The Intelligence | Competitive analysis, user insights, market dirt. |
 | **@ux-designer** | The Architect | Interface design, design systems. Makes it beautiful AND functional. |
-| **@frontend-engineer** | The Craftsman | React/TypeScript/Next.js. Pixel-perfect, performance-obsessed. |
-| **@developer** | The Builder | Full-stack implementation. Gets it done. |
+| **@developer** | The Builder | React/TypeScript/Next.js - UI and full-stack. Gets it done. |
 | **@tester** | The Enforcer | Quality assurance, accessibility, performance. Finds every crack. |
 | **@security-reviewer** | The Bodyguard | Enterprise security. Vulnerabilities, compliance, threat modeling. |
 
@@ -89,8 +88,7 @@ Your Request
      ├──▶ @product-manager (strategy)
      ├──▶ @researcher (intelligence)  
      ├──▶ @ux-designer (design)
-     ├──▶ @frontend-engineer (UI implementation)
-     ├──▶ @developer (full-stack)
+     ├──▶ @developer (implementation)
      ├──▶ @tester (quality gate)
      └──▶ @security-reviewer (protection)
 ```
@@ -100,7 +98,7 @@ Your Request
 **New Feature?**
 ```
 Request → Product (requirements) → Research (validation) → Design (interface) 
-       → Frontend (components) → Developer (backend) → Security (review) → Tester (QA)
+       → Developer (build) → Security (review) → Tester (QA)
 ```
 
 **Bug Hunt?**
@@ -126,7 +124,7 @@ Don't waste her time. Be direct.
 ```
 
 ```
-@frontend-engineer Implement a drag-and-drop task board. Make it fast.
+@developer Implement a drag-and-drop task board. Make it fast.
 ```
 
 ```
@@ -146,10 +144,9 @@ Don't waste her time. Be direct.
 │   ├── product-manager.agent.md    
 │   ├── researcher.agent.md         
 │   ├── ux-designer.agent.md        
-│   ├── frontend-engineer.agent.md  # New: dedicated frontend specialist
-│   ├── developer.agent.md          
+│   ├── developer.agent.md          # UI + full-stack
 │   ├── tester.agent.md             
-│   └── security-reviewer.agent.md  # New: enterprise security
+│   └── security-reviewer.agent.md  # Enterprise security
 ├── skills/                          # Domain expertise
 │   ├── prd/                        
 │   ├── framer-components/          

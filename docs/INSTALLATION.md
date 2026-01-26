@@ -141,7 +141,6 @@ your-project/
 │   ├── agents/              # All agent definitions
 │   │   ├── beth.agent.md
 │   │   ├── developer.agent.md
-│   │   ├── frontend-engineer.agent.md
 │   │   ├── product-manager.agent.md
 │   │   ├── researcher.agent.md
 │   │   ├── security-reviewer.agent.md
@@ -186,7 +185,6 @@ In Copilot Chat, type `@` and you should see Beth and her team:
 @product-manager
 @researcher
 @ux-designer
-@frontend-engineer
 @developer
 @security-reviewer
 @tester

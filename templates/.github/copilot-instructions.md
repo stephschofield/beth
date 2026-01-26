@@ -22,15 +22,14 @@ Agents use `.agent.md` files with YAML frontmatter defining:
 - `handoffs` - Other agents this agent can transfer control to
 - `infer: true` - Enables the agent to be invoked as a subagent
 
-### The Eight Agents
+### The Seven Agents
 | Agent | Purpose | Primary Tools |
 |-------|---------|---------------|
 | `Beth` | Orchestrator - Routes work, spawns subagents | `runSubagent`, search tools |
 | `product-manager` | PRDs, requirements, roadmaps | PRD skill |
 | `researcher` | User/market research, competitive analysis | Research synthesis |
 | `ux-designer` | Interface design, design systems | Framer skill |
-| `frontend-engineer` | Pixel-perfect React/TypeScript UI | shadcn-ui skill, shadcn MCP |
-| `developer` | Full-stack React/TypeScript/Next.js | All editing tools, Framer skill |
+| `developer` | React/TypeScript/Next.js - UI and full-stack | shadcn-ui skill, shadcn MCP, all editing tools |
 | `security-reviewer` | Security audits, threat modeling, compliance | security-analysis skill |
 | `tester` | QA, accessibility, performance testing | Testing tools |
 

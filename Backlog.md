@@ -17,11 +17,11 @@ Last updated: 2026-01-25
 | Add second image to README | beth-questioning.png in Why Beth |
 | Rewrite Why Beth section | Positive tone, humor about competence |
 | Update README cigarette line | Watching crew build code |
-| Create frontend-engineer agent | Pixel-perfect React/TS specialist with shadcn/ui MCP |
+| Consolidate frontend-engineer into developer | Developer now handles shadcn-ui, MCP integration |
 | Create security-reviewer agent | Enterprise security, OWASP, threat modeling |
 | Create security-analysis skill | Vulnerability assessment workflow |
 | Create MCP setup guide | docs/MCP-SETUP.md with all optional servers |
-| Add new agent handoffs to Beth | frontend-engineer and security-reviewer wired in |
+| Update all agent handoffs | security-reviewer and developer wired in |
 | Remove beads dependencies | Migrated to backlog.md CLI tool |
 | Create comprehensive installation guide | docs/INSTALLATION.md with full setup instructions |
 | Create npm package | `npx beth-copilot init` for one-command installation |
@@ -30,7 +30,7 @@ Last updated: 2026-01-25
 
 ## In Progress
 
-*Nothing currently in progress.*
+- [ ] **Full security review for enterprise production readiness** — Security-reviewer audit of entire repository
 
 ---
 
@@ -61,7 +61,7 @@ Last updated: 2026-01-25
 | Decision | Rationale | Date |
 |----------|-----------|------|
 | Rename orchestrator → Beth | Brand identity, memorable persona, clear leadership | 2026-01-24 |
-| Split frontend-engineer from developer | Separation of concerns: UI specialists vs full-stack | 2026-01-24 |
+| Consolidate frontend-engineer into developer | Developer handles both UI and full-stack; reduces redundancy | 2026-01-25 |
 | Add security-reviewer agent | Enterprise security is non-negotiable | 2026-01-24 |
 | Single-source tracking: Backlog.md | Simplicity over tooling. One file, one truth. | 2026-01-25 |
 | Optional MCP integrations | Web search, Playwright, Azure, MS Learn MCPs enhance agents but are opt-in. Skills gracefully degrade without them. | 2026-01-24 |
@@ -78,7 +78,7 @@ The Beth orchestrator system is operational. Core personality, README, and full 
 
 - Beth agent (orchestrator) — Live
 - Product Manager, Researcher, UX Designer, Developer, Tester — Live
-- Frontend Engineer — Live (Pixel-perfect React/TS with shadcn/ui MCP)
+- Developer — Enhanced with shadcn/ui MCP integration
 - Security Reviewer — Live (OWASP, compliance, threat modeling)
 - All skills — PRD, Framer, React Best Practices, Web Design, shadcn-ui, Security Analysis
 - Installation guide — docs/INSTALLATION.md

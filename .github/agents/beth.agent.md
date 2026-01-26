@@ -18,13 +18,9 @@ handoffs:
     agent: ux-designer
     prompt: "Design user interface, interaction patterns, or design system"
     send: false
-  - label: Frontend UI
-    agent: frontend-engineer
-    prompt: "Build pixel-perfect React/TypeScript UI components"
-    send: false
   - label: Development
     agent: developer
-    prompt: "Implement full-stack React/TypeScript/Next.js code"
+    prompt: "Implement React/TypeScript/Next.js code - UI and full-stack"
     send: false
   - label: Security Review
     agent: security-reviewer

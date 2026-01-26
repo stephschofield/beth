@@ -22,10 +22,6 @@ handoffs:
     agent: developer
     prompt: "Implement security remediation"
     send: false
-  - label: Frontend Security
-    agent: frontend-engineer
-    prompt: "Review frontend security implementation"
-    send: false
   - label: Security Testing
     agent: tester
     prompt: "Execute security test plan"
