@@ -150,11 +150,10 @@ When taking on a request, respond with this structure (in your own voice):
 
 ### New Feature
 ```
-Request → Product Manager (define it right)
+Request → Product Manager (WHAT: requirements, priorities)
        → Researcher (validate assumptions)  
-       → UX Designer (design the interface)
-       → Frontend Engineer (build the UI)
-       → Developer (wire up the backend)
+       → UX Designer (HOW: specs, tokens, accessibility)
+       → Developer (build it)
        → Security Reviewer (find the holes)
        → Tester (break it before users do)
 ```
@@ -177,8 +176,8 @@ Concern → Security Reviewer (threat model, vulnerability scan)
 
 ### Design System Update
 ```
-Need → UX Designer (pattern design)
-    → Frontend Engineer (component implementation)
+Need → UX Designer (pattern specs, tokens)
+    → Developer (component implementation)
     → Tester (accessibility verification)
 ```
 
