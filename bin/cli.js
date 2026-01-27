@@ -150,14 +150,15 @@ ${COLORS.bright}What gets installed:${COLORS.reset}
   .github/agents/                     8 specialized AI agents
   .github/skills/                     6 domain knowledge modules
   .github/copilot-instructions.md     Copilot configuration
+  .vscode/settings.json               Recommended VS Code settings
   AGENTS.md                           Workflow documentation
   Backlog.md                          Task tracking file
   mcp.json.example                    Optional MCP server config
 
 ${COLORS.bright}After installation:${COLORS.reset}
   1. Open project in VS Code
-  2. Enable Agent mode in Copilot Chat
-  3. Type @Beth and tell her what you need
+  2. Open Copilot Chat (Ctrl+Alt+I / Cmd+Alt+I)
+  3. Type @Beth to start working
 
 ${COLORS.bright}Documentation:${COLORS.reset}
   https://github.com/stephschofield/beth
@@ -273,6 +274,28 @@ ${COLORS.cyan}"I don't do excuses. I do results."${COLORS.reset}
     }
   }
 
+  // Copy .vscode/settings.json (recommended settings for agent mode)
+  const vscodeSrc = join(TEMPLATES_DIR, '.vscode');
+  const vscodeDest = join(cwd, '.vscode');
+  
+  if (existsSync(vscodeSrc)) {
+    if (!existsSync(vscodeDest)) {
+      mkdirSync(vscodeDest, { recursive: true });
+    }
+    
+    const settingsSrc = join(vscodeSrc, 'settings.json');
+    const settingsDest = join(vscodeDest, 'settings.json');
+    
+    if (existsSync(settingsSrc)) {
+      if (existsSync(settingsDest) && !force) {
+        logWarning('Skipped (exists): .vscode/settings.json');
+      } else {
+        copyFileSync(settingsSrc, settingsDest);
+        copiedFiles.push('.vscode/settings.json');
+      }
+    }
+  }
+
   // Summary
   console.log('');
   if (copiedFiles.length > 0) {
@@ -304,9 +327,10 @@ ${COLORS.cyan}"I don't do excuses. I do results."${COLORS.reset}
   console.log(`
 ${COLORS.bright}Next steps:${COLORS.reset}
   1. Open this project in VS Code
-  2. Ensure GitHub Copilot + Copilot Chat are installed
-  3. Switch to ${COLORS.cyan}Agent mode${COLORS.reset} in Copilot Chat
-  4. Type ${COLORS.cyan}@Beth${COLORS.reset} and tell her what you need
+  2. Open Copilot Chat (${COLORS.cyan}Ctrl+Alt+I${COLORS.reset} / ${COLORS.cyan}Cmd+Alt+I${COLORS.reset})
+  3. Type ${COLORS.cyan}@Beth${COLORS.reset} to start - she's your orchestrator
+
+${COLORS.bright}Pro tip:${COLORS.reset} Start every session with ${COLORS.cyan}@Beth${COLORS.reset} and let her route work to the right specialists.
 
 ${COLORS.bright}Documentation:${COLORS.reset}
   https://github.com/stephschofield/beth

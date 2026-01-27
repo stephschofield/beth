@@ -154,6 +154,8 @@ your-project/
 │   │   ├── vercel-react-best-practices/
 │   │   └── web-design-guidelines/
 │   └── copilot-instructions.md
+├── .vscode/
+│   └── settings.json        # Recommended VS Code settings
 ├── AGENTS.md                # Agent workflow documentation
 └── Backlog.md               # Task tracking file
 ```
@@ -195,15 +197,13 @@ If you don't see them, ensure:
 - VS Code has reloaded (try `Developer: Reload Window`)
 - You're in Agent mode, not Chat mode
 
-### 4. Enable Subagent Delegation (Required for Beth)
+### 4. Enable Subagent Delegation (Auto-configured)
 
-Beth orchestrates work by delegating to specialized agents like `@developer`, `@tester`, etc. For this to work, you **must** enable subagent support:
+Beth orchestrates work by delegating to specialized agents like `@developer`, `@tester`, etc. 
 
-1. Open VS Code Settings (`Ctrl+,` / `Cmd+,`)
-2. Search for `customAgentInSubagent`
-3. Check the box for **"Chat > Custom Agent In Subagent: Enabled"**
+**Good news:** When you install via `npx beth-copilot init`, this is already enabled in `.vscode/settings.json`.
 
-Or add to your `.vscode/settings.json`:
+If you installed manually, add to your `.vscode/settings.json`:
 
 ```json
 {
@@ -211,11 +211,9 @@ Or add to your `.vscode/settings.json`:
 }
 ```
 
-Without this setting, Beth can't delegate to her team agents.
+### 5. Recommended Settings (Auto-configured)
 
-### 5. Configure Additional Settings (Optional)
-
-For the full experience, add these to your `.vscode/settings.json`:
+The `npx beth-copilot init` command automatically creates `.vscode/settings.json` with these settings:
 
 ```json
 {
@@ -225,6 +223,8 @@ For the full experience, add these to your `.vscode/settings.json`:
   "github.copilot.chat.localeOverride": "en"
 }
 ```
+
+If you installed manually, create this file yourself.
 
 ---
 
