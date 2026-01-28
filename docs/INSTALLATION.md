@@ -11,7 +11,7 @@ This guide gets you from zero to running Beth in under 10 minutes.
 1. [Prerequisites](#prerequisites)
 2. [Installation](#installation)
 3. [VS Code Setup](#vs-code-setup)
-4. [Task Tracking Setup](#task-tracking-setup)
+4. [Issue Tracking Setup](#issue-tracking-setup)
 5. [Optional: MCP Servers](#optional-mcp-servers)
 6. [Verify Installation](#verify-installation)
 7. [Your First Task](#your-first-task)
@@ -90,7 +90,7 @@ That's it. Beth and her team are now installed in your project.
 
 ```bash
 npx beth-copilot init --force        # Overwrite existing files
-npx beth-copilot init --skip-backlog # Don't create Backlog.md
+npx beth-copilot init --skip-beads   # Don't initialize beads
 npx beth-copilot init --skip-mcp     # Don't create mcp.json.example
 npx beth-copilot help                # Show all options
 ```
@@ -107,6 +107,9 @@ rm -rf .git
 git init
 git add -A
 git commit -m "Initial commit with Beth agent system"
+
+# Initialize beads for issue tracking
+bd init
 ```
 
 ### Option C: Add Beth to an Existing Project (Manual)
@@ -121,10 +124,12 @@ git clone --depth 1 https://github.com/stephschofield/beth.git temp-beth
 # Copy the required files
 cp -r temp-beth/.github .
 cp temp-beth/AGENTS.md .
-cp temp-beth/Backlog.md .
 
 # Clean up
 rm -rf temp-beth
+
+# Initialize beads for issue tracking
+bd init
 
 # Commit the additions
 git add -A
@@ -156,8 +161,8 @@ your-project/
 │   └── copilot-instructions.md
 ├── .vscode/
 │   └── settings.json        # Recommended VS Code settings
-├── AGENTS.md                # Agent workflow documentation
-└── Backlog.md               # Task tracking file
+├── .beads/                  # Issue tracking database (created by bd init)
+└── AGENTS.md                # Agent workflow documentation
 ```
 
 ---
@@ -228,73 +233,60 @@ If you installed manually, create this file yourself.
 
 ---
 
-## Task Tracking Setup
+## Issue Tracking Setup
 
-Beth uses **Backlog.md** for task tracking. You can use it as a simple markdown file, or install the CLI for more features.
+Beth uses [beads](https://github.com/steveyegge/beads) (`bd`) for issue tracking. It provides dependency-aware issue management designed for AI agents.
 
-### Basic Setup (No CLI Required)
+### Install Beads
 
-The `Backlog.md` file works as plain markdown. Edit it directly:
-
-```markdown
-# Project Backlog
-
-## In Progress
-- [ ] Current task
-
-## Todo
-- [ ] Next task
-- [ ] Future task
-
-## Completed
-- [x] Finished task
-```
-
-### Advanced Setup: Backlog.md CLI
-
-For a richer experience with TUI boards, web UI, and shell commands:
-
-**Install:**
 ```bash
-# Using bun (fastest)
-bun i -g backlog.md
-
-# Using npm
-npm i -g backlog.md
-
-# Using Homebrew (macOS/Linux)
-brew install backlog-md
+curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash
 ```
 
-**Initialize in your project:**
+### Initialize in Your Project
+
 ```bash
-backlog init "Your Project Name"
+cd your-project
+bd init
 ```
 
-**Basic commands:**
+### Verify Setup
+
 ```bash
-# Create a task
-backlog task create "Task title" -d "Description"
-
-# List tasks
-backlog task list --plain
-
-# View Kanban board (TUI)
-backlog board
-
-# Web UI
-backlog browser
-
-# Configure settings
-backlog config
+bd doctor
 ```
 
-**Shell completion (optional):**
+### Quick Reference
+
 ```bash
-backlog completion install
+# Create an issue
+bd create "Issue title" --description="What needs to be done"
+
+# List issues
+bd list
+
+# Show ready work (no blockers)
+bd ready
+
+# Show issue details
+bd show <id>
+
+# Mark in progress
+bd update <id> -l in_progress
+
+# Close an issue
+bd close <id>
 ```
 
-See [MrLesk/Backlog.md](https://github.com/MrLesk/Backlog.md) for full documentation.
+### Workflow
+
+1. Check available work: `bd ready` or `bd list`
+2. Claim work: `bd update <id> -l in_progress`
+3. Do the work
+4. Complete: `bd close <id>`
+5. Commit and push
+
+See [steveyegge/beads](https://github.com/steveyegge/beads) for full documentation.
 
 ---
 
@@ -366,9 +358,13 @@ She should list her team.
 
 The developer should reference React best practices.
 
-### ✅ Backlog Works
+### ✅ Beads Works
 
-Check that `Backlog.md` exists in your project root.
+```bash
+bd list
+```
+
+Should run without errors (empty list is fine for a new project).
 
 ### ✅ File Operations Work
 
@@ -472,6 +468,16 @@ Beth will:
 2. Check remote is set: `git remote -v`
 3. Ensure you have push permissions
 4. Check for uncommitted changes conflicts
+
+### Beads Issues
+
+**Symptom:** `bd` commands fail
+
+**Solutions:**
+1. Verify beads is installed: `which bd` or `bd --version`
+2. Initialize beads in project: `bd init`
+3. Run diagnostics: `bd doctor`
+4. Check PATH includes `~/.local/bin`
 
 ### Windows Path Issues
 

@@ -1,47 +1,45 @@
 # Agent Instructions
 
-This project uses [Backlog.md](https://github.com/MrLesk/Backlog.md) for issue tracking.
+This project uses [beads](https://github.com/steveyegge/beads) (`bd`) for issue tracking.
 
 ## Quick Setup
 
 ```bash
-# Install (choose one)
-bun i -g backlog.md
-npm i -g backlog.md
-brew install backlog-md
+# Install beads
+curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash
 
 # Initialize in your project
-backlog init "Project Name"
+bd init
 
-# Shell completion (optional)
-backlog completion install
+# Run doctor to verify setup
+bd doctor
 ```
 
 ## Quick Reference
 
 ```bash
-# Create a task
-backlog task create "Task title" -d "Description"
+# Create an issue
+bd create "Issue title" --description="What needs to be done"
 
-# List tasks
-backlog task list --plain
+# List issues
+bd list
 
-# View Kanban board (TUI)
-backlog board
+# Show ready work (no blockers)
+bd ready
 
-# Web UI
-backlog browser
+# Show issue details
+bd show <id>
 
-# Configure settings
-backlog config
+# Close an issue
+bd close <id>
 ```
 
 ## Workflow
 
-1. Check available work: `backlog task list`
-2. Claim work: `backlog task edit <id> --status "In Progress"`
+1. Check available work: `bd ready` or `bd list`
+2. Claim work: `bd update <id> -l in_progress`
 3. Do the work
-4. Complete: `backlog task edit <id> --status "Done"`
+4. Complete: `bd close <id>`
 5. Commit and push
 
 ## Landing the Plane (Session Completion)
@@ -50,7 +48,7 @@ backlog config
 
 **MANDATORY WORKFLOW:**
 
-1. **Update Backlog.md** - Move completed tasks, add new items for follow-up work
+1. **Update beads** - Close completed issues with `bd close <id>`, create new issues for follow-up work
 2. **Run quality gates** (if code changed) - Tests, linters, builds
 3. **PUSH TO REMOTE** - This is MANDATORY:
    ```bash
