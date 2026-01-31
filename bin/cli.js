@@ -84,6 +84,20 @@ function isBacklogCliInstalled() {
   }
 }
 
+function isBeadsInstalled() {
+  try {
+    execSync('bd --version', { stdio: 'ignore' });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function isBeadsInitialized(cwd) {
+  // Check if .beads directory exists in the project
+  return existsSync(join(cwd, '.beads'));
+}
+
 async function promptYesNo(question) {
   const readline = await import('readline');
   const rl = readline.createInterface({
@@ -129,6 +143,63 @@ async function installBacklogCli() {
   });
 }
 
+async function installBeads() {
+  log('\nInstalling beads CLI...', COLORS.cyan);
+  logInfo('curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash');
+  
+  return new Promise((resolve) => {
+    const child = spawn('bash', ['-c', 'curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash'], {
+      stdio: 'inherit',
+      shell: true
+    });
+    
+    child.on('close', (code) => {
+      if (code === 0) {
+        logSuccess('beads CLI installed successfully!');
+        resolve(true);
+      } else {
+        logError('Failed to install beads CLI.');
+        logInfo('Install manually: curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash');
+        logInfo('Learn more: https://github.com/steveyegge/beads');
+        resolve(false);
+      }
+    });
+    
+    child.on('error', () => {
+      logError('Failed to install beads CLI.');
+      logInfo('Install manually: curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash');
+      resolve(false);
+    });
+  });
+}
+
+async function initializeBeads(cwd) {
+  log('\nInitializing beads in project...', COLORS.cyan);
+  
+  return new Promise((resolve) => {
+    const child = spawn('bd', ['init'], {
+      stdio: 'inherit',
+      shell: true,
+      cwd
+    });
+    
+    child.on('close', (code) => {
+      if (code === 0) {
+        logSuccess('beads initialized successfully!');
+        resolve(true);
+      } else {
+        logWarning('Failed to initialize beads. Run manually: bd init');
+        resolve(false);
+      }
+    });
+    
+    child.on('error', () => {
+      logWarning('Failed to initialize beads. Run manually: bd init');
+      resolve(false);
+    });
+  });
+}
+
 function showHelp() {
   console.log(`
 ${COLORS.bright}Beth${COLORS.reset} - AI Orchestrator for GitHub Copilot
@@ -141,6 +212,7 @@ ${COLORS.bright}Options:${COLORS.reset}
   --force                             Overwrite existing files
   --skip-backlog                      Don't create Backlog.md
   --skip-mcp                          Don't create mcp.json.example
+  --skip-beads                        Skip beads check (not recommended)
 
 ${COLORS.bright}Examples:${COLORS.reset}
   npx beth-copilot init               Set up Beth in current project
@@ -195,7 +267,7 @@ function copyDirRecursive(src, dest, options = {}) {
 }
 
 async function init(options = {}) {
-  const { force = false, skipBacklog = false, skipMcp = false } = options;
+  const { force = false, skipBacklog = false, skipMcp = false, skipBeads = false } = options;
   const cwd = process.cwd();
   
   // Check for updates
@@ -305,10 +377,55 @@ ${COLORS.cyan}"I don't do excuses. I do results."${COLORS.reset}
     logWarning('No files were copied. Use --force to overwrite existing files.');
   }
 
-  // Check for backlog.md CLI
+  // Check for beads CLI (REQUIRED for Beth)
+  if (!skipBeads) {
+    console.log('');
+    log('Checking beads (required for task tracking)...', COLORS.cyan);
+    
+    if (!isBeadsInstalled()) {
+      logWarning('beads CLI is not installed.');
+      logInfo('Beth requires beads for task tracking. Agents use it to coordinate work.');
+      logInfo('Learn more: https://github.com/steveyegge/beads');
+      console.log('');
+      
+      const shouldInstallBeads = await promptYesNo('Install beads CLI now? (required)');
+      if (shouldInstallBeads) {
+        const installed = await installBeads();
+        if (!installed) {
+          logError('beads installation failed. Beth requires beads to function.');
+          logInfo('Install manually and run "beth init" again.');
+          process.exit(1);
+        }
+      } else {
+        logError('beads is required for Beth to function.');
+        logInfo('Install beads and run "beth init" again:');
+        logInfo('  curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash');
+        process.exit(1);
+      }
+    } else {
+      logSuccess('beads CLI is installed');
+    }
+    
+    // Initialize beads in the project if not already done
+    if (!isBeadsInitialized(cwd)) {
+      logInfo('beads not initialized in this project.');
+      const shouldInitBeads = await promptYesNo('Initialize beads now?');
+      if (shouldInitBeads) {
+        await initializeBeads(cwd);
+      } else {
+        logWarning('Remember to run "bd init" before using Beth.');
+      }
+    } else {
+      logSuccess('beads is initialized in this project');
+    }
+  } else {
+    logWarning('Skipped beads check (--skip-beads). Beth may not function correctly.');
+  }
+
+  // Check for backlog.md CLI (optional)
   if (!skipBacklog && !isBacklogCliInstalled()) {
     console.log('');
-    logWarning('backlog.md CLI is not installed.');
+    logWarning('backlog.md CLI is not installed (optional).');
     logInfo('The CLI provides TUI boards, web UI, and task management commands.');
     logInfo('Learn more: https://github.com/MrLesk/Backlog.md');
     console.log('');
@@ -341,7 +458,7 @@ ${COLORS.cyan}"They broke my wings and forgot I had claws."${COLORS.reset}
 
 // Input validation constants
 const ALLOWED_COMMANDS = ['init', 'help', '--help', '-h'];
-const ALLOWED_FLAGS = ['--force', '--skip-backlog', '--skip-mcp'];
+const ALLOWED_FLAGS = ['--force', '--skip-backlog', '--skip-mcp', '--skip-beads'];
 const MAX_ARG_LENGTH = 50;
 
 // Validate and sanitize input
@@ -370,6 +487,7 @@ const options = {
   force: args.includes('--force'),
   skipBacklog: args.includes('--skip-backlog'),
   skipMcp: args.includes('--skip-mcp'),
+  skipBeads: args.includes('--skip-beads'),
 };
 
 // Validate unknown flags
