@@ -28,6 +28,7 @@
   "files": [
     "bin/",
     "templates/",
+    "assets/",
     "sbom.json"
   ],
   "scripts": {

@@ -88,228 +88,144 @@ function sleep(ms) {
 }
 
 async function animateBethBanner() {
-  // Fire colors - from hottest (white/yellow) at TOP to coolest (dark red) at BOTTOM
-  const fireColorsByHeat = [
-    '\x1b[97m',        // 0: bright white (hottest - flame tips)
-    '\x1b[93m',        // 1: bright yellow
-    '\x1b[33m',        // 2: yellow  
-    '\x1b[38;5;214m',  // 3: gold/orange
-    '\x1b[38;5;208m',  // 4: orange
-    '\x1b[38;5;202m',  // 5: orange-red
-    '\x1b[91m',        // 6: bright red
-    '\x1b[31m',        // 7: red
-    '\x1b[38;5;124m',  // 8: dark red
-    '\x1b[38;5;52m',   // 9: very dark red (embers)
+  // Simple, clean fire animation
+  const RESET = '\x1b[0m';
+  const BRIGHT = '\x1b[1m';
+  
+  // Fire color palette
+  const FIRE_COLORS = [
+    '\x1b[97m',         // white (hottest)
+    '\x1b[93m',         // bright yellow
+    '\x1b[33m',         // yellow
+    '\x1b[38;5;214m',   // gold
+    '\x1b[38;5;208m',   // orange
+    '\x1b[91m',         // red
+    '\x1b[31m',         // dark red
+    '\x1b[38;5;52m',    // ember
   ];
   
-  // BETH colors - fire gradient
-  const bethColors = [
+  // BETH gradient (red to yellow)
+  const BETH_COLORS = [
     '\x1b[38;5;196m', '\x1b[38;5;202m', '\x1b[38;5;208m',
     '\x1b[38;5;214m', '\x1b[38;5;220m', '\x1b[38;5;226m',
   ];
   
-  const bethWidth = BETH_ASCII[0].length;
-  const bethHeight = BETH_ASCII.length;
-  const fireRows = 6; // rows of fire
-  const totalHeight = bethHeight + fireRows;
+  // Convert to character arrays
+  const bethLines = BETH_ASCII.map(s => [...s]);
+  const W = bethLines[0].length;
+  const H = bethLines.length;
+  const FIRE_H = 4;
+  const TOTAL_H = H + FIRE_H;
   
-  // Hide cursor
-  process.stdout.write('\x1b[?25l');
+  // Helpers
+  const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
   
-  // Clear space
-  console.log('');
-  for (let i = 0; i < totalHeight; i++) {
-    console.log('');
-  }
+  // Hide cursor and make space
+  process.stdout.write('\x1b[?25l\n');
+  for (let i = 0; i < TOTAL_H; i++) console.log('');
   
-  // PHASE 1: Fire burns alone (frames 0-25)
-  // PHASE 2: BETH emerges row by row from top (frames 25-55) 
-  // PHASE 3: Full BETH with flickering fire (frames 55-75)
-  // PHASE 4: Fire calms to embers (frames 75-85)
-  
-  const totalFrames = 85;
-  
-  for (let frame = 0; frame < totalFrames; frame++) {
-    process.stdout.write(`\x1b[${totalHeight}A`);
+  for (let frame = 0; frame < 70; frame++) {
+    process.stdout.write(`\x1b[${TOTAL_H}A`);
     
-    // Calculate how many rows of BETH are visible (emerges from top down)
-    let bethRowsVisible = 0;
-    if (frame >= 25) {
-      bethRowsVisible = Math.min(bethHeight, Math.floor((frame - 25) / 4) + 1);
-    }
+    // BETH visibility (fades in from frame 15-45)
+    const vis = clamp((frame - 15) / 30, 0, 1);
+    // Fire dies down at end
+    const fireStrength = frame > 55 ? 1 - (frame - 55) / 15 : 1;
     
-    // Fire intensity decreases in phase 4
-    const fireIntensity = frame >= 75 ? 1 - (frame - 75) / 15 : 1;
-    
-    // Render BETH area (may be empty, partial, or full)
-    for (let row = 0; row < bethHeight; row++) {
+    // Render BETH rows
+    for (let r = 0; r < H; r++) {
       let line = '';
-      
-      if (row < bethRowsVisible) {
-        // This row of BETH is visible
-        for (let c = 0; c < bethWidth; c++) {
-          const char = BETH_ASCII[row][c];
-          
-          if (char !== ' ') {
-            // Shimmer effect on BETH
-            const shimmer = Math.sin((c * 0.3) + (frame * 0.2)) * 0.5 + 0.5;
-            const flicker = Math.random() > 0.92 ? 1 : 0; // occasional bright flash
-            const colorIdx = Math.floor(((c / bethWidth) + shimmer * 0.15) * bethColors.length);
-            const color = bethColors[Math.min(colorIdx, bethColors.length - 1)];
-            
-            if (flicker) {
-              line += '\x1b[97m' + COLORS.bright + char; // white flash
-            } else {
-              line += color + COLORS.bright + char;
-            }
-          } else {
-            // Empty space in BETH - might show fire through it
-            const showFire = Math.random() < 0.3 * fireIntensity;
-            if (showFire && frame < 70) {
-              const fireChar = ['^', '*', '.'][Math.floor(Math.random() * 3)];
-              line += fireColorsByHeat[2 + Math.floor(Math.random() * 3)] + fireChar;
-            } else {
-              line += ' ';
-            }
-          }
-        }
-      } else {
-        // BETH not yet visible here - show fire rising
-        for (let c = 0; c < bethWidth; c++) {
-          // Fire that will become BETH
-          const wave = Math.sin((c + frame) * 0.2) + Math.sin((c - frame * 0.7) * 0.15);
-          const noise = Math.random();
-          const heat = (0.7 + wave * 0.2 + noise * 0.3) * fireIntensity;
-          
-          if (heat > 0.7) {
-            const fireChar = ['#', '%', '@', '&'][Math.floor(Math.random() * 4)];
-            const colorIdx = Math.min(Math.floor((1 - heat) * 4), 3);
-            line += fireColorsByHeat[colorIdx] + fireChar;
-          } else if (heat > 0.5) {
-            const fireChar = ['(', ')', '{', '}', '^'][Math.floor(Math.random() * 5)];
-            line += fireColorsByHeat[3 + Math.floor(Math.random() * 2)] + fireChar;
-          } else if (heat > 0.3) {
-            const fireChar = ['^', '*', '~'][Math.floor(Math.random() * 3)];
-            line += fireColorsByHeat[5 + Math.floor(Math.random() * 2)] + fireChar;
+      for (let c = 0; c < W; c++) {
+        const ch = bethLines[r][c];
+        if (ch === ' ') {
+          // Gap - show fire through it sometimes
+          if (Math.random() < 0.15 * fireStrength) {
+            const h = 0.3 + Math.random() * 0.3;
+            const ci = clamp(Math.floor((1 - h) * 5), 0, FIRE_COLORS.length - 1);
+            line += FIRE_COLORS[ci] + pick(['^', '*', '.']);
           } else {
             line += ' ';
           }
-        }
-      }
-      console.log(line + COLORS.reset);
-    }
-    
-    // Render fire rows below BETH
-    for (let fireRow = 0; fireRow < fireRows; fireRow++) {
-      let line = '';
-      
-      // Fire is hottest at top (closest to BETH), cooler at bottom
-      const rowHeat = 1 - (fireRow / fireRows); // 1 at top, 0 at bottom
-      
-      for (let c = 0; c < bethWidth; c++) {
-        // Procedural fire animation
-        const wave1 = Math.sin((c + frame * 0.8) * 0.12);
-        const wave2 = Math.cos((c - frame * 0.5) * 0.18);
-        const wave3 = Math.sin((c * 0.5 + frame * 0.3) * 0.25);
-        const noise = (Math.random() - 0.5) * 0.6;
-        
-        let heat = (rowHeat * 0.6 + (wave1 + wave2 + wave3) * 0.15 + 0.3 + noise) * fireIntensity;
-        heat = Math.max(0, Math.min(1, heat));
-        
-        // Character based on heat
-        let fireChar;
-        if (heat > 0.85) {
-          fireChar = ['#', '@', '%'][Math.floor(Math.random() * 3)];
-        } else if (heat > 0.7) {
-          fireChar = ['&', '$', '#'][Math.floor(Math.random() * 3)];
-        } else if (heat > 0.55) {
-          fireChar = ['(', ')', '{', '}'][Math.floor(Math.random() * 4)];
-        } else if (heat > 0.4) {
-          fireChar = ['^', 'Y', 'V', '*'][Math.floor(Math.random() * 4)];
-        } else if (heat > 0.25) {
-          fireChar = ['*', '+', 'x'][Math.floor(Math.random() * 3)];
-        } else if (heat > 0.1) {
-          fireChar = ['.', ':', "'", '`'][Math.floor(Math.random() * 4)];
         } else {
-          fireChar = ' ';
+          // BETH character
+          if (Math.random() < vis) {
+            const ci = Math.floor((c / W) * BETH_COLORS.length);
+            const col = BETH_COLORS[clamp(ci, 0, BETH_COLORS.length - 1)];
+            line += (Math.random() > 0.95 ? '\x1b[97m' : col) + BRIGHT + ch;
+          } else {
+            // Not visible yet - show fire
+            const h = 0.5 + Math.random() * 0.5;
+            const ci = clamp(Math.floor((1 - h) * 4), 0, FIRE_COLORS.length - 1);
+            line += FIRE_COLORS[ci] + pick(['#', '@', '%', '&']);
+          }
         }
-        
-        // Color based on heat (hot=white/yellow at top, cool=red at bottom)
-        // Combine row position and heat value
-        const colorHeat = heat * rowHeat;
-        let colorIdx;
-        if (colorHeat > 0.8) colorIdx = 0;      // white
-        else if (colorHeat > 0.65) colorIdx = 1; // bright yellow
-        else if (colorHeat > 0.5) colorIdx = 2;  // yellow
-        else if (colorHeat > 0.4) colorIdx = 3;  // gold
-        else if (colorHeat > 0.3) colorIdx = 4;  // orange
-        else if (colorHeat > 0.2) colorIdx = 5;  // orange-red
-        else if (colorHeat > 0.1) colorIdx = 6;  // bright red
-        else colorIdx = 7 + Math.floor(Math.random() * 3); // red to dark red
-        
-        colorIdx = Math.min(colorIdx, fireColorsByHeat.length - 1);
-        line += fireColorsByHeat[colorIdx] + fireChar;
       }
-      console.log(line + COLORS.reset);
+      console.log(line + RESET);
     }
     
-    // Animation speed
-    let delay;
-    if (frame < 15) delay = 70;       // slow burn start
-    else if (frame < 25) delay = 60;   // building
-    else if (frame < 55) delay = 50;   // BETH emerging
-    else if (frame < 75) delay = 45;   // full display
-    else delay = 60;                   // calming
-    
-    await sleep(delay);
-  }
-  
-  // FINAL FRAME - clean BETH with gentle embers
-  process.stdout.write(`\x1b[${totalHeight}A`);
-  
-  for (let row = 0; row < bethHeight; row++) {
-    let line = '';
-    for (let c = 0; c < bethWidth; c++) {
-      const char = BETH_ASCII[row][c];
-      const colorIdx = Math.floor((c / bethWidth) * bethColors.length);
-      line += bethColors[Math.min(colorIdx, bethColors.length - 1)] + COLORS.bright + char;
-    }
-    console.log(line + COLORS.reset);
-  }
-  
-  // Gentle embers
-  for (let fireRow = 0; fireRow < fireRows; fireRow++) {
-    let line = '';
-    const emberChance = 0.4 - (fireRow * 0.06);
-    for (let c = 0; c < bethWidth; c++) {
-      if (Math.random() < emberChance) {
-        const char = ['.', '*', '^', ':', "'"][Math.floor(Math.random() * 5)];
-        const color = fireColorsByHeat[3 + fireRow];
-        line += color + char;
-      } else {
-        line += ' ';
+    // Fire rows below
+    for (let fr = 0; fr < FIRE_H; fr++) {
+      let line = '';
+      const baseHeat = (1 - fr / FIRE_H) * fireStrength;
+      for (let c = 0; c < W; c++) {
+        const wave = Math.sin((c + frame * 2) * 0.15) * 0.15;
+        const heat = clamp(baseHeat + wave + (Math.random() - 0.5) * 0.3, 0, 1);
+        
+        let ch;
+        if (heat > 0.6) ch = pick(['#', '@', '%']);
+        else if (heat > 0.35) ch = pick(['^', '*', '(', ')']);
+        else if (heat > 0.15) ch = pick(['.', ':', '*']);
+        else ch = ' ';
+        
+        const ci = clamp(Math.floor((1 - heat) * 6), 0, FIRE_COLORS.length - 1);
+        line += FIRE_COLORS[ci] + ch;
       }
+      console.log(line + RESET);
     }
-    console.log(line + COLORS.reset);
+    
+    await sleep(frame < 15 ? 80 : frame < 45 ? 50 : 60);
   }
   
-  // Show cursor
+  // Final clean frame
+  process.stdout.write(`\x1b[${TOTAL_H}A`);
+  for (let r = 0; r < H; r++) {
+    let line = '';
+    for (let c = 0; c < W; c++) {
+      const ci = Math.floor((c / W) * BETH_COLORS.length);
+      line += BETH_COLORS[clamp(ci, 0, BETH_COLORS.length - 1)] + BRIGHT + bethLines[r][c];
+    }
+    console.log(line + RESET);
+  }
+  // Clear fire area with spaces
+  for (let fr = 0; fr < FIRE_H; fr++) {
+    console.log(' '.repeat(W));
+  }
+  
   process.stdout.write('\x1b[?25h');
   
-  // Tagline
   const tagline = BETH_TAGLINES[Math.floor(Math.random() * BETH_TAGLINES.length)];
   console.log('');
-  
   process.stdout.write(COLORS.cyan + COLORS.bright + '"');
-  for (const char of tagline) {
-    process.stdout.write(char);
+  for (const ch of tagline) {
+    process.stdout.write(ch);
     await sleep(18);
   }
   console.log('"' + COLORS.reset);
   console.log('');
+  
+  // Show version and quick help
+  console.log(`${COLORS.dim}v${CURRENT_VERSION}${COLORS.reset}                          ${COLORS.dim}AI Orchestrator for GitHub Copilot${COLORS.reset}`);
+  console.log('');
+  console.log(`${COLORS.bright}Commands:${COLORS.reset}`);
+  console.log(`  ${COLORS.cyan}npx beth-copilot init${COLORS.reset}      Install Beth in your project`);
+  console.log(`  ${COLORS.cyan}npx beth-copilot help${COLORS.reset}      Show full documentation`);
+  console.log('');
+  console.log(`${COLORS.bright}After install:${COLORS.reset} Open VS Code → Copilot Chat → ${COLORS.cyan}@Beth${COLORS.reset}`);
+  console.log('');
 }
 
-function showBethBannerStatic() {
+function showBethBannerStatic({ showQuickHelp = true } = {}) {
   const bethColors = [
     '\x1b[38;5;196m',
     '\x1b[38;5;202m',
@@ -327,33 +243,136 @@ function showBethBannerStatic() {
   ];
   
   console.log('\n');
-  const bethWidth = BETH_ASCII[0].length;
+  const bethChars = BETH_ASCII.map(line => [...line]);
+  const bethWidth = bethChars[0].length;
   
   // BETH with gradient
   for (let row = 0; row < BETH_ASCII.length; row++) {
     let line = '';
     for (let c = 0; c < bethWidth; c++) {
-      const char = BETH_ASCII[row][c];
+      const char = bethChars[row][c];
       const colorIndex = Math.floor((c / bethWidth) * bethColors.length);
       line += bethColors[Math.min(colorIndex, bethColors.length - 1)] + COLORS.bright + char;
     }
     console.log(line + COLORS.reset);
   }
   
-  // Static fire embers
-  for (let fireRow = 0; fireRow < 2; fireRow++) {
-    let line = '';
-    for (let c = 0; c < bethWidth; c++) {
-      const char = Math.random() > 0.6 ? ['^', '*', '.', ':'][Math.floor(Math.random() * 4)] : ' ';
-      line += fireColors[fireRow] + char;
-    }
-    console.log(line + COLORS.reset);
-  }
+
   
   const tagline = BETH_TAGLINES[Math.floor(Math.random() * BETH_TAGLINES.length)];
   console.log('');
   console.log(COLORS.cyan + COLORS.bright + '"' + tagline + '"' + COLORS.reset);
   console.log('');
+  
+  // Show version and quick help (optional)
+  if (showQuickHelp) {
+    console.log(`${COLORS.dim}v${CURRENT_VERSION}${COLORS.reset}                          ${COLORS.dim}AI Orchestrator for GitHub Copilot${COLORS.reset}`);
+    console.log('');
+    console.log(`${COLORS.bright}Commands:${COLORS.reset}`);
+    console.log(`  ${COLORS.cyan}npx beth-copilot init${COLORS.reset}      Install Beth in your project`);
+    console.log(`  ${COLORS.cyan}npx beth-copilot help${COLORS.reset}      Show full documentation`);
+    console.log('');
+    console.log(`${COLORS.bright}After install:${COLORS.reset} Open VS Code → Copilot Chat → ${COLORS.cyan}@Beth${COLORS.reset}`);
+    console.log('');
+  }
+}
+
+// Compact Beth portrait with colors
+const BETH_PORTRAIT = [
+  '       .╭━━━━━━━╮.',
+  '    ╭──╯ ▒▓▓▓▓▒ ╰──╮',
+  '   ╱  ▓██████████▓  ╲',
+  '  ╱  ████▓▓██▓▓████  ╲',
+  '  │  ███ ◉ ██ ◉ ███  │',
+  '  │   ███▄▄▄▄▄▄███   │',
+  '  │    ▀██▄══▄██▀    │',
+  '  │      ╰────╯      │',
+  '  │   ▓██████████▓   │',
+  '  ╲   ████████████   ╱',
+  '   ╲  ▀██████████▀  ╱',
+  '    ╰───╮      ╭───╯',
+  '        ╰──────╯',
+];
+
+// Portrait animation for init command
+async function animatePortrait() {
+  const AMBER = '\x1b[38;2;218;165;32m';
+  const GOLD = '\x1b[38;2;255;215;0m';
+  const SKIN = '\x1b[38;2;235;210;160m';
+  const DARK = '\x1b[38;2;139;90;43m';
+  const EYE = '\x1b[38;2;70;130;180m';
+  const LIP = '\x1b[38;2;180;80;80m';
+  const WHITE = '\x1b[38;2;255;255;255m';
+  const RESET = '\x1b[0m';
+  const BOLD = '\x1b[1m';
+  const DIM = '\x1b[2m';
+  
+  // Hide cursor
+  process.stdout.write('\x1b[?25l');
+  
+  try {
+    // Clear screen
+    process.stdout.write('\x1b[2J\x1b[H');
+    await sleep(200);
+    
+    // Quick glitch effect
+    const glitchChars = '░▒▓█';
+    for (let frame = 0; frame < 3; frame++) {
+      process.stdout.write('\x1b[H');
+      for (let j = 0; j < 5; j++) {
+        const col = Math.floor(Math.random() * 20) + 5;
+        const row = Math.floor(Math.random() * 10) + 2;
+        const r = Math.floor(Math.random() * 150 + 100);
+        const g = Math.floor(Math.random() * 100 + 50);
+        const b = Math.floor(Math.random() * 50);
+        const char = glitchChars[Math.floor(Math.random() * glitchChars.length)];
+        process.stdout.write(`\x1b[${row};${col}H\x1b[38;2;${r};${g};${b}m${char.repeat(3)}`);
+      }
+      await sleep(50);
+    }
+    
+    // Display portrait with colors
+    process.stdout.write('\x1b[2J\x1b[H');
+    console.log();
+    
+    for (let i = 0; i < BETH_PORTRAIT.length; i++) {
+      let line = BETH_PORTRAIT[i];
+      // Colorize: frame in amber, face content in skin tones
+      line = line
+        .replace(/[╭╮╯╰│╱╲━.─]/g, `${AMBER}$&${RESET}`)
+        .replace(/[▓█▒░▀▄▐▌]/g, `${SKIN}$&${RESET}`)
+        .replace(/◉/g, `${EYE}◉${RESET}`)
+        .replace(/══/g, `${LIP}══${RESET}`);
+      console.log('  ' + line);
+      await sleep(40);
+    }
+    
+    await sleep(300);
+    
+    // Banner below portrait
+    console.log();
+    console.log(`  ${GOLD}${BOLD}━━━━━━━━━━━━━━━━━━━━━━━${RESET}`);
+    console.log(`  ${AMBER}${BOLD}        B E T H${RESET}`);
+    console.log(`  ${DIM}${WHITE}   AI Agent Orchestrator${RESET}`);
+    console.log(`  ${GOLD}${BOLD}━━━━━━━━━━━━━━━━━━━━━━━${RESET}`);
+    
+    await sleep(300);
+    
+    // Typewriter quote
+    const quote = BETH_TAGLINES[Math.floor(Math.random() * BETH_TAGLINES.length)];
+    console.log();
+    process.stdout.write(`  ${AMBER}"`);
+    for (const ch of quote) {
+      process.stdout.write(ch);
+      await sleep(20);
+    }
+    console.log(`"${RESET}`);
+    console.log();
+    
+  } finally {
+    // Show cursor
+    process.stdout.write('\x1b[?25h');
+  }
 }
 
 // Detect if we can do animations (TTY and not piped)
@@ -769,7 +788,7 @@ async function initializeBeads(cwd) {
 }
 
 function showHelp() {
-  showBethBannerStatic();
+  showBethBannerStatic({ showQuickHelp: false });
   console.log(`${COLORS.bright}Beth${COLORS.reset} - AI Orchestrator for GitHub Copilot
 
 ${COLORS.bright}Usage:${COLORS.reset}
@@ -850,11 +869,11 @@ ${COLORS.yellow}╔════════════════════�
 `);
   }
   
-  // Show the dramatic Beth banner
+  // Show Beth's fire animation
   if (canAnimate()) {
     await animateBethBanner();
   } else {
-    showBethBannerStatic();
+    showBethBannerStatic({ showQuickHelp: false });
   }
   
   log(`${COLORS.yellow}Tip: Run with --verbose for detailed diagnostics if you hit issues.${COLORS.reset}`);
