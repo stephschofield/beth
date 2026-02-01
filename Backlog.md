@@ -31,6 +31,10 @@ Last updated: 2026-02-01
 | Add multi-agent coordination system | Epic patterns, dependencies, subagent templates |
 | Create comprehensive installation guide | docs/INSTALLATION.md with full setup instructions |
 | Create npm package | `npx beth-copilot init` for one-command installation |
+| Add path validation for binary paths | 33 tests, traversal/injection detection, allowlist validation |
+| Document shell:true security constraints | JSDoc in cli.js + Shell Execution section in SECURITY.md |
+| Include SBOM in npm package | CycloneDX JSON, auto-generates on publish |
+| Add Dependabot configuration | Weekly npm/GH Actions updates, grouped PRs |
 
 ---
 

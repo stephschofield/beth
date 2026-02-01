@@ -41,75 +41,37 @@ const BETH_ASCII = [
   '╚═════╝ ╚══════╝   ╚═╝   ╚═╝  ╚═╝',
 ];
 
-// Spinning cowboy frames - creates rotation illusion
-const COWBOY_FRAMES = [
-  // Frame 0: Front facing
-  [
-    '    🤠    ',
-    '   /||\\   ',
-    '    ||    ',
-    '   /  \\   ',
-  ],
-  // Frame 1: Slight right turn
-  [
-    '     🤠   ',
-    '    /|\\   ',
-    '     |    ',
-    '    / \\   ',
-  ],
-  // Frame 2: Side view right
-  [
-    '      🤠  ',
-    '      |\\  ',
-    '      |   ',
-    '     /|   ',
-  ],
-  // Frame 3: Back turning right
-  [
-    '       🤠 ',
-    '       |\\ ',
-    '       |  ',
-    '      /|  ',
-  ],
-  // Frame 4: Back view
-  [
-    '        🤠',
-    '       /|\\',
-    '        | ',
-    '       / \\',
-  ],
-  // Frame 5: Back turning left
-  [
-    '       🤠 ',
-    '      /|  ',
-    '       |  ',
-    '       |\\ ',
-  ],
-  // Frame 6: Side view left
-  [
-    '      🤠  ',
-    '     /|   ',
-    '      |   ',
-    '      |\\  ',
-  ],
-  // Frame 7: Slight left turn
-  [
-    '     🤠   ',
-    '    /|    ',
-    '     |    ',
-    '    / \\   ',
-  ],
-];
+// Fire characters for animation (from light to intense)
+const FIRE_CHARS = [' ', '.', ':', '*', 's', 'S', '#', '$', '&', '@'];
+const FIRE_CHARS_SIMPLE = [' ', '.', '*', '^', ')', '(', '%', '#'];
 
-// Big cowboy for static display
-const BIG_COWBOY = [
-  '       .-=========-.',
-  '       \\"-=======-"/',  
-  '       _|   .=.   |_',
-  '      ((|  {{1}}  |))',
-  '       \\|   /|\\   |/',
-  '        \\__ ___ __/',
-];
+// Generate a fire line with flickering effect
+function generateFireLine(width, intensity, frame) {
+  let line = '';
+  for (let i = 0; i < width; i++) {
+    // Create wave pattern for fire
+    const wave = Math.sin((i + frame) * 0.3) * 0.5 + 0.5;
+    const noise = Math.random();
+    const heat = (intensity * wave * 0.7 + noise * 0.3);
+    
+    if (heat > 0.85) {
+      line += FIRE_CHARS_SIMPLE[7]; // #
+    } else if (heat > 0.7) {
+      line += FIRE_CHARS_SIMPLE[6]; // %
+    } else if (heat > 0.55) {
+      line += FIRE_CHARS_SIMPLE[Math.random() > 0.5 ? 4 : 5]; // ) or (
+    } else if (heat > 0.4) {
+      line += FIRE_CHARS_SIMPLE[3]; // ^
+    } else if (heat > 0.25) {
+      line += FIRE_CHARS_SIMPLE[2]; // *
+    } else if (heat > 0.1) {
+      line += FIRE_CHARS_SIMPLE[1]; // .
+    } else {
+      line += ' ';
+    }
+  }
+  return line;
+}
 
 const BETH_TAGLINES = [
   "I don't speak dipshit. I speak in consequences.",
@@ -126,159 +88,266 @@ function sleep(ms) {
 }
 
 async function animateBethBanner() {
-  const gradientColors = [
-    '\x1b[38;5;196m', // bright red
-    '\x1b[38;5;202m', // orange-red
-    '\x1b[38;5;208m', // orange
-    '\x1b[38;5;214m', // gold
-    '\x1b[38;5;220m', // yellow
-    '\x1b[38;5;226m', // bright yellow
+  // Fire colors - from hottest (white/yellow) at TOP to coolest (dark red) at BOTTOM
+  const fireColorsByHeat = [
+    '\x1b[97m',        // 0: bright white (hottest - flame tips)
+    '\x1b[93m',        // 1: bright yellow
+    '\x1b[33m',        // 2: yellow  
+    '\x1b[38;5;214m',  // 3: gold/orange
+    '\x1b[38;5;208m',  // 4: orange
+    '\x1b[38;5;202m',  // 5: orange-red
+    '\x1b[91m',        // 6: bright red
+    '\x1b[31m',        // 7: red
+    '\x1b[38;5;124m',  // 8: dark red
+    '\x1b[38;5;52m',   // 9: very dark red (embers)
+  ];
+  
+  // BETH colors - fire gradient
+  const bethColors = [
+    '\x1b[38;5;196m', '\x1b[38;5;202m', '\x1b[38;5;208m',
+    '\x1b[38;5;214m', '\x1b[38;5;220m', '\x1b[38;5;226m',
   ];
   
   const bethWidth = BETH_ASCII[0].length;
   const bethHeight = BETH_ASCII.length;
-  const cowboyWidth = 10;
-  const totalHeight = bethHeight;
-  const gap = 3;
+  const fireRows = 6; // rows of fire
+  const totalHeight = bethHeight + fireRows;
   
-  // Clear some space
-  console.log('\n');
+  // Hide cursor
+  process.stdout.write('\x1b[?25l');
   
-  // Phase 1: Reveal BETH from left to right with color wave
-  for (let col = 0; col <= bethWidth; col++) {
-    if (col > 0) {
-      process.stdout.write(`\x1b[${totalHeight}A`);
+  // Clear space
+  console.log('');
+  for (let i = 0; i < totalHeight; i++) {
+    console.log('');
+  }
+  
+  // PHASE 1: Fire burns alone (frames 0-25)
+  // PHASE 2: BETH emerges row by row from top (frames 25-55) 
+  // PHASE 3: Full BETH with flickering fire (frames 55-75)
+  // PHASE 4: Fire calms to embers (frames 75-85)
+  
+  const totalFrames = 85;
+  
+  for (let frame = 0; frame < totalFrames; frame++) {
+    process.stdout.write(`\x1b[${totalHeight}A`);
+    
+    // Calculate how many rows of BETH are visible (emerges from top down)
+    let bethRowsVisible = 0;
+    if (frame >= 25) {
+      bethRowsVisible = Math.min(bethHeight, Math.floor((frame - 25) / 4) + 1);
     }
     
-    for (let row = 0; row < totalHeight; row++) {
+    // Fire intensity decreases in phase 4
+    const fireIntensity = frame >= 75 ? 1 - (frame - 75) / 15 : 1;
+    
+    // Render BETH area (may be empty, partial, or full)
+    for (let row = 0; row < bethHeight; row++) {
       let line = '';
-      for (let c = 0; c < bethWidth; c++) {
-        const char = BETH_ASCII[row]?.[c] || ' ';
-        if (c < col) {
-          const colorIndex = Math.floor(((c + row) / (bethWidth + totalHeight)) * gradientColors.length);
-          line += gradientColors[Math.min(colorIndex, gradientColors.length - 1)] + char;
-        } else {
-          line += ' ';
+      
+      if (row < bethRowsVisible) {
+        // This row of BETH is visible
+        for (let c = 0; c < bethWidth; c++) {
+          const char = BETH_ASCII[row][c];
+          
+          if (char !== ' ') {
+            // Shimmer effect on BETH
+            const shimmer = Math.sin((c * 0.3) + (frame * 0.2)) * 0.5 + 0.5;
+            const flicker = Math.random() > 0.92 ? 1 : 0; // occasional bright flash
+            const colorIdx = Math.floor(((c / bethWidth) + shimmer * 0.15) * bethColors.length);
+            const color = bethColors[Math.min(colorIdx, bethColors.length - 1)];
+            
+            if (flicker) {
+              line += '\x1b[97m' + COLORS.bright + char; // white flash
+            } else {
+              line += color + COLORS.bright + char;
+            }
+          } else {
+            // Empty space in BETH - might show fire through it
+            const showFire = Math.random() < 0.3 * fireIntensity;
+            if (showFire && frame < 70) {
+              const fireChar = ['^', '*', '.'][Math.floor(Math.random() * 3)];
+              line += fireColorsByHeat[2 + Math.floor(Math.random() * 3)] + fireChar;
+            } else {
+              line += ' ';
+            }
+          }
+        }
+      } else {
+        // BETH not yet visible here - show fire rising
+        for (let c = 0; c < bethWidth; c++) {
+          // Fire that will become BETH
+          const wave = Math.sin((c + frame) * 0.2) + Math.sin((c - frame * 0.7) * 0.15);
+          const noise = Math.random();
+          const heat = (0.7 + wave * 0.2 + noise * 0.3) * fireIntensity;
+          
+          if (heat > 0.7) {
+            const fireChar = ['#', '%', '@', '&'][Math.floor(Math.random() * 4)];
+            const colorIdx = Math.min(Math.floor((1 - heat) * 4), 3);
+            line += fireColorsByHeat[colorIdx] + fireChar;
+          } else if (heat > 0.5) {
+            const fireChar = ['(', ')', '{', '}', '^'][Math.floor(Math.random() * 5)];
+            line += fireColorsByHeat[3 + Math.floor(Math.random() * 2)] + fireChar;
+          } else if (heat > 0.3) {
+            const fireChar = ['^', '*', '~'][Math.floor(Math.random() * 3)];
+            line += fireColorsByHeat[5 + Math.floor(Math.random() * 2)] + fireChar;
+          } else {
+            line += ' ';
+          }
         }
       }
       console.log(line + COLORS.reset);
     }
     
-    const delay = col < 5 ? 20 : col < 15 ? 10 : 5;
+    // Render fire rows below BETH
+    for (let fireRow = 0; fireRow < fireRows; fireRow++) {
+      let line = '';
+      
+      // Fire is hottest at top (closest to BETH), cooler at bottom
+      const rowHeat = 1 - (fireRow / fireRows); // 1 at top, 0 at bottom
+      
+      for (let c = 0; c < bethWidth; c++) {
+        // Procedural fire animation
+        const wave1 = Math.sin((c + frame * 0.8) * 0.12);
+        const wave2 = Math.cos((c - frame * 0.5) * 0.18);
+        const wave3 = Math.sin((c * 0.5 + frame * 0.3) * 0.25);
+        const noise = (Math.random() - 0.5) * 0.6;
+        
+        let heat = (rowHeat * 0.6 + (wave1 + wave2 + wave3) * 0.15 + 0.3 + noise) * fireIntensity;
+        heat = Math.max(0, Math.min(1, heat));
+        
+        // Character based on heat
+        let fireChar;
+        if (heat > 0.85) {
+          fireChar = ['#', '@', '%'][Math.floor(Math.random() * 3)];
+        } else if (heat > 0.7) {
+          fireChar = ['&', '$', '#'][Math.floor(Math.random() * 3)];
+        } else if (heat > 0.55) {
+          fireChar = ['(', ')', '{', '}'][Math.floor(Math.random() * 4)];
+        } else if (heat > 0.4) {
+          fireChar = ['^', 'Y', 'V', '*'][Math.floor(Math.random() * 4)];
+        } else if (heat > 0.25) {
+          fireChar = ['*', '+', 'x'][Math.floor(Math.random() * 3)];
+        } else if (heat > 0.1) {
+          fireChar = ['.', ':', "'", '`'][Math.floor(Math.random() * 4)];
+        } else {
+          fireChar = ' ';
+        }
+        
+        // Color based on heat (hot=white/yellow at top, cool=red at bottom)
+        // Combine row position and heat value
+        const colorHeat = heat * rowHeat;
+        let colorIdx;
+        if (colorHeat > 0.8) colorIdx = 0;      // white
+        else if (colorHeat > 0.65) colorIdx = 1; // bright yellow
+        else if (colorHeat > 0.5) colorIdx = 2;  // yellow
+        else if (colorHeat > 0.4) colorIdx = 3;  // gold
+        else if (colorHeat > 0.3) colorIdx = 4;  // orange
+        else if (colorHeat > 0.2) colorIdx = 5;  // orange-red
+        else if (colorHeat > 0.1) colorIdx = 6;  // bright red
+        else colorIdx = 7 + Math.floor(Math.random() * 3); // red to dark red
+        
+        colorIdx = Math.min(colorIdx, fireColorsByHeat.length - 1);
+        line += fireColorsByHeat[colorIdx] + fireChar;
+      }
+      console.log(line + COLORS.reset);
+    }
+    
+    // Animation speed
+    let delay;
+    if (frame < 15) delay = 70;       // slow burn start
+    else if (frame < 25) delay = 60;   // building
+    else if (frame < 55) delay = 50;   // BETH emerging
+    else if (frame < 75) delay = 45;   // full display
+    else delay = 60;                   // calming
+    
     await sleep(delay);
   }
   
-  // Phase 2: Flash effect on BETH
-  for (let flash = 0; flash < 3; flash++) {
-    process.stdout.write(`\x1b[${totalHeight}A`);
-    const flashColor = gradientColors[flash % gradientColors.length];
-    for (let row = 0; row < totalHeight; row++) {
-      console.log(flashColor + COLORS.bright + (BETH_ASCII[row] || '') + COLORS.reset);
-    }
-    await sleep(80);
-  }
-  
-  // Phase 3: SPINNING COWBOY TIME - spin next to BETH
-  const spins = 2; // Number of full rotations
-  const framesPerSpin = COWBOY_FRAMES.length;
-  const totalFrames = spins * framesPerSpin;
-  
-  for (let frame = 0; frame < totalFrames; frame++) {
-    process.stdout.write(`\x1b[${totalHeight}A`);
-    const cowboyFrame = COWBOY_FRAMES[frame % framesPerSpin];
-    
-    for (let row = 0; row < totalHeight; row++) {
-      // BETH with gradient
-      let line = '';
-      for (let c = 0; c < bethWidth; c++) {
-        const char = BETH_ASCII[row]?.[c] || ' ';
-        const colorIndex = Math.floor((c / bethWidth) * gradientColors.length);
-        line += gradientColors[Math.min(colorIndex, gradientColors.length - 1)] + COLORS.bright + char;
-      }
-      
-      // Gap
-      line += COLORS.reset + ' '.repeat(gap);
-      
-      // Cowboy (offset to center vertically - cowboy is 4 lines, beth is 6)
-      const cowboyOffset = 1;
-      const cowboyRow = row - cowboyOffset;
-      if (cowboyRow >= 0 && cowboyRow < cowboyFrame.length) {
-        line += COLORS.yellow + cowboyFrame[cowboyRow] + COLORS.reset;
-      }
-      
-      console.log(line);
-    }
-    
-    // Slow down as it settles
-    const baseDelay = frame < totalFrames - framesPerSpin ? 60 : 80 + (frame % framesPerSpin) * 10;
-    await sleep(baseDelay);
-  }
-  
-  // Final pose: front-facing cowboy
+  // FINAL FRAME - clean BETH with gentle embers
   process.stdout.write(`\x1b[${totalHeight}A`);
-  for (let row = 0; row < totalHeight; row++) {
+  
+  for (let row = 0; row < bethHeight; row++) {
     let line = '';
     for (let c = 0; c < bethWidth; c++) {
-      const char = BETH_ASCII[row]?.[c] || ' ';
-      const colorIndex = Math.floor((c / bethWidth) * gradientColors.length);
-      line += gradientColors[Math.min(colorIndex, gradientColors.length - 1)] + COLORS.bright + char;
+      const char = BETH_ASCII[row][c];
+      const colorIdx = Math.floor((c / bethWidth) * bethColors.length);
+      line += bethColors[Math.min(colorIdx, bethColors.length - 1)] + COLORS.bright + char;
     }
-    line += COLORS.reset + ' '.repeat(gap);
-    
-    const cowboyOffset = 1;
-    const cowboyRow = row - cowboyOffset;
-    if (cowboyRow >= 0 && cowboyRow < COWBOY_FRAMES[0].length) {
-      line += COLORS.yellow + COLORS.bright + COWBOY_FRAMES[0][cowboyRow] + COLORS.reset;
-    }
-    
-    console.log(line);
+    console.log(line + COLORS.reset);
   }
   
-  // Random tagline with dramatic reveal
+  // Gentle embers
+  for (let fireRow = 0; fireRow < fireRows; fireRow++) {
+    let line = '';
+    const emberChance = 0.4 - (fireRow * 0.06);
+    for (let c = 0; c < bethWidth; c++) {
+      if (Math.random() < emberChance) {
+        const char = ['.', '*', '^', ':', "'"][Math.floor(Math.random() * 5)];
+        const color = fireColorsByHeat[3 + fireRow];
+        line += color + char;
+      } else {
+        line += ' ';
+      }
+    }
+    console.log(line + COLORS.reset);
+  }
+  
+  // Show cursor
+  process.stdout.write('\x1b[?25h');
+  
+  // Tagline
   const tagline = BETH_TAGLINES[Math.floor(Math.random() * BETH_TAGLINES.length)];
   console.log('');
   
-  // Type out the tagline character by character
   process.stdout.write(COLORS.cyan + COLORS.bright + '"');
   for (const char of tagline) {
     process.stdout.write(char);
-    await sleep(15);
+    await sleep(18);
   }
   console.log('"' + COLORS.reset);
   console.log('');
 }
 
 function showBethBannerStatic() {
-  const gradientColors = [
-    '\x1b[38;5;196m', // bright red
-    '\x1b[38;5;202m', // orange-red  
-    '\x1b[38;5;208m', // orange
-    '\x1b[38;5;214m', // gold
-    '\x1b[38;5;220m', // yellow
-    '\x1b[38;5;226m', // bright yellow
+  const bethColors = [
+    '\x1b[38;5;196m',
+    '\x1b[38;5;202m',
+    '\x1b[38;5;208m',
+    '\x1b[38;5;214m',
+    '\x1b[38;5;220m',
+    '\x1b[38;5;226m',
+  ];
+  
+  const fireColors = [
+    '\x1b[93m',        // bright yellow
+    '\x1b[38;5;208m',  // orange
+    '\x1b[91m',        // red
+    '\x1b[38;5;52m',   // dark red
   ];
   
   console.log('\n');
   const bethWidth = BETH_ASCII[0].length;
-  const gap = 3;
   
+  // BETH with gradient
   for (let row = 0; row < BETH_ASCII.length; row++) {
     let line = '';
     for (let c = 0; c < bethWidth; c++) {
       const char = BETH_ASCII[row][c];
-      const colorIndex = Math.floor((c / bethWidth) * gradientColors.length);
-      line += gradientColors[Math.min(colorIndex, gradientColors.length - 1)] + COLORS.bright + char;
+      const colorIndex = Math.floor((c / bethWidth) * bethColors.length);
+      line += bethColors[Math.min(colorIndex, bethColors.length - 1)] + COLORS.bright + char;
     }
-    line += COLORS.reset + ' '.repeat(gap);
-    
-    // Add cowboy (centered vertically)
-    const cowboyOffset = 1;
-    const cowboyRow = row - cowboyOffset;
-    if (cowboyRow >= 0 && cowboyRow < COWBOY_FRAMES[0].length) {
-      line += COLORS.yellow + COLORS.bright + COWBOY_FRAMES[0][cowboyRow] + COLORS.reset;
+    console.log(line + COLORS.reset);
+  }
+  
+  // Static fire embers
+  for (let fireRow = 0; fireRow < 2; fireRow++) {
+    let line = '';
+    for (let c = 0; c < bethWidth; c++) {
+      const char = Math.random() > 0.6 ? ['^', '*', '.', ':'][Math.floor(Math.random() * 4)] : ' ';
+      line += fireColors[fireRow] + char;
     }
-    
-    console.log(line);
+    console.log(line + COLORS.reset);
   }
   
   const tagline = BETH_TAGLINES[Math.floor(Math.random() * BETH_TAGLINES.length)];
