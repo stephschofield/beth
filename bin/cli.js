@@ -75,13 +75,40 @@ async function checkForUpdates() {
   }
 }
 
-function isBacklogCliInstalled() {
+function getBacklogPath() {
+  // Check if backlog is available in PATH
   try {
     execSync('backlog --version', { stdio: 'ignore' });
-    return true;
+    return 'backlog';
   } catch {
-    return false;
+    // Check common installation paths
+    const homeDir = process.env.HOME || process.env.USERPROFILE || '';
+    const isWindows = process.platform === 'win32';
+    
+    const commonPaths = isWindows ? [
+      join(process.env.APPDATA || '', 'npm', 'backlog.cmd'),
+      join(homeDir, 'AppData', 'Roaming', 'npm', 'backlog.cmd'),
+      join(homeDir, 'AppData', 'Local', 'npm-global', 'backlog.cmd'),
+    ] : [
+      join(homeDir, '.local', 'bin', 'backlog'),
+      join(homeDir, 'bin', 'backlog'),
+      '/usr/local/bin/backlog',
+      join(homeDir, '.npm-global', 'bin', 'backlog'),
+      join(homeDir, '.bun', 'bin', 'backlog'),
+    ];
+    
+    for (const backlogPath of commonPaths) {
+      if (existsSync(backlogPath)) {
+        return backlogPath;
+      }
+    }
+    
+    return null;
   }
+}
+
+function isBacklogCliInstalled() {
+  return getBacklogPath() !== null;
 }
 
 function getBeadsPath() {
@@ -90,13 +117,26 @@ function getBeadsPath() {
     execSync('bd --version', { stdio: 'ignore' });
     return 'bd';
   } catch {
-    // Check common installation paths
+    // Check common installation paths based on platform
     const homeDir = process.env.HOME || process.env.USERPROFILE || '';
-    const commonPaths = [
+    const isWindows = process.platform === 'win32';
+    
+    const commonPaths = isWindows ? [
+      // Windows: npm global, Go bin, local apps
+      join(process.env.APPDATA || '', 'npm', 'bd.cmd'),
+      join(homeDir, 'AppData', 'Roaming', 'npm', 'bd.cmd'),
+      join(homeDir, 'AppData', 'Local', 'Microsoft', 'WindowsApps', 'bd.exe'),
+      join(homeDir, 'go', 'bin', 'bd.exe'),
+      join(process.env.GOPATH || join(homeDir, 'go'), 'bin', 'bd.exe'),
+    ] : [
+      // Unix: homebrew, npm global, go bin, local bin
+      '/opt/homebrew/bin/bd',
+      '/usr/local/bin/bd',
       join(homeDir, '.local', 'bin', 'bd'),
       join(homeDir, 'bin', 'bd'),
-      '/usr/local/bin/bd',
-      join(homeDir, '.beads', 'bin', 'bd'),
+      join(homeDir, '.npm-global', 'bin', 'bd'),
+      join(homeDir, 'go', 'bin', 'bd'),
+      join(process.env.GOPATH || join(homeDir, 'go'), 'bin', 'bd'),
     ];
     
     for (const bdPath of commonPaths) {
@@ -149,7 +189,11 @@ async function promptForInput(question) {
 }
 
 async function installBacklogCli() {
-  log('\nInstalling backlog.md CLI...', COLORS.cyan);
+  const isWindows = process.platform === 'win32';
+  const isMac = process.platform === 'darwin';
+  
+  log('\nInstalling backlog.md CLI via npm...', COLORS.cyan);
+  logInfo('npm install -g backlog.md');
   
   return new Promise((resolve) => {
     const child = spawn('npm', ['install', '-g', 'backlog.md'], {
@@ -162,28 +206,35 @@ async function installBacklogCli() {
         logSuccess('backlog.md CLI installed successfully!');
         resolve(true);
       } else {
-        logWarning('Failed to install backlog.md CLI. You can install it manually:');
-        logInfo('npm i -g backlog.md');
-        logInfo('  or');
-        logInfo('bun i -g backlog.md');
+        logError('npm install failed.');
+        console.log('');
+        logInfo('Alternative installation methods:');
+        if (isMac) {
+          logInfo('  Homebrew: brew install backlog-md');
+        }
+        logInfo('  Bun:      bun install -g backlog.md');
+        logInfo('');
+        logInfo('Learn more: https://github.com/MrLesk/Backlog.md');
         resolve(false);
       }
     });
     
     child.on('error', () => {
-      logWarning('Failed to install backlog.md CLI. You can install it manually:');
-      logInfo('npm i -g backlog.md');
+      logError('Failed to run npm.');
+      logInfo('Make sure npm is installed and in your PATH.');
       resolve(false);
     });
   });
 }
 
 async function installBeads() {
-  log('\nInstalling beads CLI...', COLORS.cyan);
-  logInfo('curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash');
+  const isWindows = process.platform === 'win32';
+  
+  log('\nInstalling beads CLI via npm...', COLORS.cyan);
+  logInfo('npm install -g @beads/bd');
   
   return new Promise((resolve) => {
-    const child = spawn('bash', ['-c', 'curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash'], {
+    const child = spawn('npm', ['install', '-g', '@beads/bd'], {
       stdio: 'inherit',
       shell: true
     });
@@ -193,16 +244,25 @@ async function installBeads() {
         logSuccess('beads CLI installed successfully!');
         resolve(true);
       } else {
-        logError('Failed to install beads CLI.');
-        logInfo('Install manually: curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash');
+        logError('npm install failed.');
+        console.log('');
+        logInfo('Alternative installation methods:');
+        if (isWindows) {
+          logInfo('  PowerShell: irm https://raw.githubusercontent.com/steveyegge/beads/main/install.ps1 | iex');
+        } else {
+          logInfo('  Homebrew:   brew install beads');
+          logInfo('  Script:     curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash');
+        }
+        logInfo('  Go:         go install github.com/steveyegge/beads/cmd/bd@latest');
+        logInfo('');
         logInfo('Learn more: https://github.com/steveyegge/beads');
         resolve(false);
       }
     });
     
     child.on('error', () => {
-      logError('Failed to install beads CLI.');
-      logInfo('Install manually: curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash');
+      logError('Failed to run npm.');
+      logInfo('Make sure npm is installed and in your PATH.');
       resolve(false);
     });
   });
@@ -482,7 +542,7 @@ ${COLORS.cyan}"I don't do excuses. I do results."${COLORS.reset}
         if (!tryAgain) {
           logError('Cannot continue without beads. Exiting.');
           logInfo('Install beads manually and run "npx beth-copilot init" again:');
-          logInfo('  curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash');
+          logInfo('  npm install -g @beads/bd');
           process.exit(1);
         }
       }
@@ -491,7 +551,12 @@ ${COLORS.cyan}"I don't do excuses. I do results."${COLORS.reset}
     // Show path info if not in standard PATH
     if (bdPath && bdPath !== 'bd') {
       logSuccess(`beads CLI found at: ${bdPath}`);
-      logInfo('Tip: Add ~/.local/bin to your PATH to use "bd" directly.');
+      const isWindows = process.platform === 'win32';
+      if (isWindows) {
+        logInfo('Tip: Ensure npm global bin is in your PATH to use "bd" directly.');
+      } else {
+        logInfo('Tip: Add ~/.local/bin or npm global bin to your PATH to use "bd" directly.');
+      }
     } else {
       logSuccess('beads CLI is installed');
     }
@@ -526,8 +591,10 @@ ${COLORS.cyan}"I don't do excuses. I do results."${COLORS.reset}
     console.log('');
     log('Checking backlog.md CLI (required for task management)...', COLORS.cyan);
     
+    let backlogPath = getBacklogPath();
+    
     // Loop until backlog.md is installed
-    while (!isBacklogCliInstalled()) {
+    while (!backlogPath) {
       logWarning('backlog.md CLI is not installed.');
       logInfo('Beth requires backlog.md for human-readable task tracking and boards.');
       logInfo('Learn more: https://github.com/MrLesk/Backlog.md');
@@ -537,17 +604,21 @@ ${COLORS.cyan}"I don't do excuses. I do results."${COLORS.reset}
       if (shouldInstall) {
         const installed = await installBacklogCli();
         if (installed) {
-          // Verify installation
-          if (isBacklogCliInstalled()) {
-            break;
-          } else {
-            logWarning('Installation completed but backlog CLI not found in PATH.');
-            logInfo('Try opening a new terminal or running: source ~/.bashrc');
+          // Re-check for backlog after installation
+          backlogPath = getBacklogPath();
+          if (!backlogPath) {
+            console.log('');
+            logWarning('backlog.md installed but not found in common paths.');
+            logInfo('The installer may have placed it in a custom location.');
+            console.log('');
+            logInfo('Please try one of these options:');
+            logInfo('  1. Open a NEW terminal and run: npx beth-copilot init');
+            logInfo('  2. Run: source ~/.bashrc (or ~/.zshrc) then retry');
             console.log('');
             
             const retryCheck = await promptYesNo('Retry detection?');
-            if (retryCheck && isBacklogCliInstalled()) {
-              break;
+            if (retryCheck) {
+              backlogPath = getBacklogPath();
             }
           }
         } else {
@@ -555,6 +626,9 @@ ${COLORS.cyan}"I don't do excuses. I do results."${COLORS.reset}
           logError('Installation failed.');
           logInfo('You can try installing manually:');
           logInfo('  npm install -g backlog.md');
+          if (process.platform === 'darwin') {
+            logInfo('  brew install backlog-md');
+          }
           logInfo('  bun install -g backlog.md');
           console.log('');
         }
@@ -585,7 +659,7 @@ ${COLORS.cyan}"I don't do excuses. I do results."${COLORS.reset}
   log('Verifying installation...', COLORS.cyan);
   
   const finalBeadsOk = skipBeads || getBeadsPath();
-  const finalBacklogOk = skipBacklog || isBacklogCliInstalled();
+  const finalBacklogOk = skipBacklog || getBacklogPath();
   const finalBeadsInit = skipBeads || isBeadsInitialized(cwd);
   
   if (finalBeadsOk && finalBacklogOk && finalBeadsInit) {
@@ -648,8 +722,8 @@ const options = {
   skipBeads: args.includes('--skip-beads'),
 };
 
-// Validate unknown flags
-const unknownFlags = args.filter(arg => arg.startsWith('--') && !ALLOWED_FLAGS.includes(arg));
+// Validate unknown flags (exclude --help which is handled as a command)
+const unknownFlags = args.filter(arg => arg.startsWith('--') && !ALLOWED_FLAGS.includes(arg) && arg !== '--help');
 if (unknownFlags.length > 0) {
   logError(`Unknown flag: ${unknownFlags[0].slice(0, MAX_ARG_LENGTH)}`);
   console.log('Run "npx beth-copilot help" for usage information.');
