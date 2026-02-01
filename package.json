@@ -29,7 +29,8 @@
     "bin/",
     "templates/",
     "assets/",
-    "sbom.json"
+    "sbom.json",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "test": "node --test bin/lib/*.test.js",
