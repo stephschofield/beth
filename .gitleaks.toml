@@ -27,4 +27,6 @@ paths = [
   '''package-lock\.json''',
   # Documentation examples
   '''docs/.*\.md''',
+  # Security agent documentation contains intentional bad examples
+  '''.*security-reviewer\.agent\.md''',
 ]
