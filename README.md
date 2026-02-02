@@ -80,45 +80,74 @@ Beth's team comes equipped:
 
 She doesn't micromanage. She delegates to specialists and holds them accountable.
 
-```
-Your Request
-     │
-     ▼
-┌─────────────────────────────────────────┐
-│               @Beth                      │
-│   "I don't need permission to be me."   │
-│                                          │
-│   • Analyzes your request               │
-│   • Picks the right people              │
-│   • Runs parallel ops when smart        │
-│   • Delivers results, not excuses       │
-└─────────────────────────────────────────┘
-     │
-     ├──▶ @product-manager (strategy)
-     ├──▶ @researcher (intelligence)  
-     ├──▶ @ux-designer (design)
-     ├──▶ @developer (implementation)
-     ├──▶ @tester (quality gate)
-     └──▶ @security-reviewer (protection)
+### Architecture
+
+```mermaid
+flowchart TB
+    subgraph User["👤 User"]
+        Request[User Request]
+    end
+
+    subgraph Orchestrator["🎯 Beth - The Orchestrator"]
+        Beth["@Beth<br/><i>'I don't speak dipshit'</i>"]
+        Assess[Assess Request]
+        Plan[Plan Workflow]
+        Route[Route to Specialists]
+    end
+
+    subgraph Agents["🧑‍💼 Specialist Agents"]
+        PM["@product-manager<br/>WHAT to build"]
+        Researcher["@researcher<br/>User/Market Intel"]
+        Designer["@ux-designer<br/>HOW it works"]
+        Developer["@developer<br/>Implementation"]
+        Security["@security-reviewer<br/>Protection"]
+        Tester["@tester<br/>Quality Gate"]
+    end
+
+    Request --> Beth
+    Beth --> Assess --> Plan --> Route
+    
+    Route --> PM
+    Route --> Researcher
+    Route --> Designer
+    Route --> Developer
+    Route --> Security
+    Route --> Tester
+
+    style Beth fill:#1e3a5f,color:#fff
+    style Orchestrator fill:#f0f4f8
+    style Agents fill:#f8f4f0
 ```
 
 ### The Workflow
 
-**New Feature?**
-```
-Request → Product (requirements) → Research (validation) → Design (interface) 
-       → Developer (build) → Security (review) → Tester (QA)
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant B as Beth
+    participant PM as Product Manager
+    participant UX as UX Designer
+    participant D as Developer
+    participant S as Security
+    participant T as Tester
+
+    U->>B: "Build me a feature"
+    B->>B: Assess & Plan
+    B->>PM: Define requirements
+    PM-->>B: Requirements ready
+    B->>UX: Design the experience
+    UX-->>B: Design specs ready
+    B->>D: Implement feature
+    D-->>B: Implementation complete
+    B->>S: Security review
+    S-->>B: Security approved
+    B->>T: Test & verify
+    T-->>B: Quality verified
+    B->>U: Feature complete ✅
 ```
 
-**Bug Hunt?**
-```
-Report → Tester (reproduce) → Developer (fix) → Security (verify) → Tester (confirm)
-```
-
-**Security Audit?**
-```
-Concern → Security (threat model) → Developer (remediation) → Tester (penetration)
-```
+**Bug Hunt?** Tester → Developer → Security → Tester  
+**Security Audit?** Security → Developer → Tester → Security
 
 ## Quick Commands
 
@@ -225,6 +254,7 @@ Full details: [docs/MCP-SETUP.md](docs/MCP-SETUP.md)
 
 - [Installation Guide](docs/INSTALLATION.md) — Full setup instructions
 - [MCP Setup](docs/MCP-SETUP.md) — Optional server integrations
+- [System Flow & Diagrams](docs/SYSTEM-FLOW.md) — Architecture and agent orchestration diagrams
 - [Changelog](CHANGELOG.md) — Version history and updates
 - [Security Policy](SECURITY.md) — Vulnerability reporting
 
