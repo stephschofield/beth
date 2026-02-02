@@ -41,6 +41,7 @@ Last updated: 2026-02-01
 | Create azure-operations skill | .github/skills/azure-operations/SKILL.md for Azure MCP |
 | Fix MCP-SETUP.md package names | Corrected Brave/Playwright packages, removed nonexistent MS Learn MCP |
 | Update tester/developer agents for Playwright | MCP integration patterns added |
+| Update DEMO.md for Beth | Rewritten with Beth's personality, voice, and beads integration |
 
 ---
 
@@ -62,7 +63,6 @@ Last updated: 2026-02-01
 
 ### Low Priority (P3)
 
-- [ ] **Update DEMO.md for Beth** — Create example workflows showcasing Beth's personality
 - [ ] Consider additional skills (API security, performance profiling)
 
 ---
