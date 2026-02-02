@@ -1,6 +1,6 @@
 # CLI Implementation Plan: TypeScript Foundation + Commands
 
-> **Status:** APPROVED  
+> **Status:** ✅ COMPLETE  
 > **Created:** February 2026  
 > **Branch:** `feat/cli-typescript-foundation`
 
@@ -139,11 +139,11 @@ Bootstrap TypeScript infrastructure, then add `doctor` and `quickstart` as simpl
 
 ## Verification
 
-- [ ] `npm run build` compiles without errors
-- [ ] `beth doctor` runs and reports status
-- [ ] `beth quickstart` scaffolds a new project and validates it
-- [ ] Existing `beth init --help` still works
-- [ ] `npm test` passes (migrate tests to TypeScript or keep JS with type-checking)
+- [x] `npm run build` compiles without errors
+- [x] `beth doctor` runs and reports status
+- [x] `beth quickstart` scaffolds a new project and validates it
+- [x] Existing `beth init --help` still works
+- [x] `npm test` passes — **118 tests** (33 JS + 85 TS)
 
 ---
 
@@ -156,15 +156,37 @@ Bootstrap TypeScript infrastructure, then add `doctor` and `quickstart` as simpl
 | Keep bin/cli.js as JavaScript shim | Yes | `npx` runs it directly without compilation step |
 | Don't migrate animation.js | Keep JS | It works, adds no value to type it |
 | Agent types before loader | Yes | Types inform loader design, can be tested independently |
+| **Phase 2 LLM Provider** | **Azure OpenAI** | Azure integration for enterprise deployments |
 
 ---
 
-## What This Enables
+## What's Complete
 
-After this plan completes, we have the foundation for:
+**Phase 1 is fully implemented:**
 
-- **Phase 1 completion:** Agent loader, skill loader (just add implementation)
-- **Phase 2:** LLM provider (add `@anthropic-ai/sdk`, implement interface)
-- **Easy addition of more commands**
+| Component | Status | Location |
+|-----------|--------|----------|
+| TypeScript Foundation | ✅ | `src/`, `tsconfig.json` |
+| Agent Types | ✅ | `src/core/agents/types.ts` |
+| Agent Loader | ✅ | `src/core/agents/loader.ts` |
+| Skill Types | ✅ | `src/core/skills/types.ts` |
+| Skill Loader | ✅ | `src/core/skills/loader.ts` |
+| Doctor Command | ✅ | `src/cli/commands/doctor.ts` |
+| Quickstart Command | ✅ | `src/cli/commands/quickstart.ts` |
+| Path Validation | ✅ | `src/lib/pathValidation.ts` |
+
+**Key features:**
+- Parses GitHub Copilot's `chatagent`/`skill` code fence format
+- Extracts trigger phrases from skill descriptions
+- Case-insensitive skill matching
+- 118 tests covering all loaders
+
+## What's Next
+
+**Phase 2: Azure OpenAI Integration**
+- LLM provider interface in `src/providers/interface.ts`
+- Azure OpenAI implementation in `src/providers/azure.ts`
+- Streaming response handling
+- Context window management
 
 See [CLI-ARCHITECTURE.md](CLI-ARCHITECTURE.md) for the full 7-phase plan.

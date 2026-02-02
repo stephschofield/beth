@@ -4,12 +4,14 @@
  * Main exports for the Beth CLI runtime.
  */
 
-// Core exports
-export * from './core/agents/types.js';
+// Core exports - Agents
+export * from './core/agents/index.js';
+
+// Core exports - Skills
+export * from './core/skills/index.js';
 
 // Library utilities
 export * from './lib/index.js';
 
-// CLI commands will be exported here as they're implemented
-// export * from './cli/commands/doctor.js';
-// export * from './cli/commands/quickstart.js';
+// CLI commands
+export * from './cli/commands/index.js';

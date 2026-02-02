@@ -149,6 +149,52 @@ sequenceDiagram
 **Bug Hunt?** Tester → Developer → Security → Tester  
 **Security Audit?** Security → Developer → Tester → Security
 
+### Agent Delegation
+
+```mermaid
+flowchart TB
+    subgraph Beth["Beth (Orchestrator)"]
+        BethCore["Routes all work<br/>Spawns subagents"]
+    end
+
+    subgraph PM["Product Manager"]
+        PMCore["Requirements<br/>Priorities"]
+    end
+
+    subgraph R["Researcher"]
+        RCore["User insights<br/>Market intel"]
+    end
+
+    subgraph UX["UX Designer"]
+        UXCore["Component specs<br/>Design tokens"]
+    end
+
+    subgraph D["Developer"]
+        DCore["React/TS/Next.js<br/>Implementation"]
+    end
+
+    subgraph S["Security"]
+        SCore["Threat modeling<br/>Vulnerabilities"]
+    end
+
+    subgraph T["Tester"]
+        TCore["QA & a11y<br/>Performance"]
+    end
+
+    BethCore -->|"Product Strategy"| PMCore
+    BethCore -->|"User Research"| RCore
+    BethCore -->|"UX Design"| UXCore
+    BethCore -->|"Development"| DCore
+    BethCore -->|"Security Review"| SCore
+    BethCore -->|"Quality Assurance"| TCore
+
+    PMCore -.->|"subagent"| RCore
+    PMCore -.->|"subagent"| UXCore
+    UXCore -.->|"subagent"| DCore
+    DCore -.->|"subagent"| TCore
+    SCore -.->|"subagent"| DCore
+```
+
 ## Quick Commands
 
 Don't waste her time. Be direct.
@@ -203,6 +249,38 @@ Beth operates on a few principles:
 3. **Move fast, break enemies** — Parallel execution, aggressive timelines.
 4. **Loyalty earns trust** — Agents that perform get the good work.
 
+### IDEO Design Thinking
+
+Beth follows human-centered design methodology:
+
+```mermaid
+flowchart LR
+    subgraph Empathize["1. Empathize"]
+        E["@researcher<br/>User interviews<br/>Pain points"]
+    end
+
+    subgraph Define["2. Define"]
+        D["@product-manager<br/>Problem framing<br/>Requirements"]
+    end
+
+    subgraph Ideate["3. Ideate"]
+        I["@ux-designer<br/>Component specs<br/>Patterns"]
+    end
+
+    subgraph Prototype["4. Prototype"]
+        P["@developer<br/>Build to learn<br/>Feature spikes"]
+    end
+
+    subgraph Test["5. Test"]
+        T["@tester<br/>Validate<br/>Accessibility"]
+    end
+
+    E --> D --> I --> P --> T
+    T -.->|iterate| E
+    T -.->|iterate| D
+    T -.->|iterate| I
+```
+
 ## Quality Standards
 
 Beth doesn't ship garbage:
@@ -212,6 +290,39 @@ Beth doesn't ship garbage:
 - **Security**: OWASP compliant. Regular audits. Zero tolerance for vulnerabilities.
 - **Type Safety**: Full TypeScript coverage. No `any` unless you want a lecture.
 - **Test Coverage**: Unit, integration, E2E. If it's not tested, it's not done.
+
+```mermaid
+flowchart TB
+    subgraph Standards["Quality Standards"]
+        A11y["WCAG 2.1 AA<br/>Accessibility"]
+        Perf["Core Web Vitals<br/>LCP < 2.5s"]
+        Sec["OWASP Compliant<br/>Zero vulnerabilities"]
+        Type["Full TypeScript<br/>No any"]
+        Coverage["Test Coverage<br/>Unit + Integration + E2E"]
+    end
+
+    subgraph Gates["Enforcement"]
+        Designer["UX Designer<br/>reviews a11y specs"]
+        Developer["Developer<br/>implements patterns"]
+        Security["Security Reviewer<br/>audits code"]
+        Tester["Tester<br/>verifies all gates"]
+    end
+
+    A11y --> Designer
+    Perf --> Developer
+    Sec --> Security
+    Type --> Developer
+    Coverage --> Tester
+
+    Designer --> Ship{Ship?}
+    Developer --> Ship
+    Security --> Ship
+    Tester --> Ship
+
+    Ship -->|All Pass| Deploy["🚀 Deploy"]
+    Ship -->|Fail| Fix["🔧 Fix & Retry"]
+    Fix --> Gates
+```
 
 ## Why Beth?
 
