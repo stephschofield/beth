@@ -2,7 +2,7 @@
 
 > *"I don't have time to explain things twice. Read this."*
 
-Last updated: 2026-02-02
+Last updated: 2026-02-04
 
 ---
 
@@ -10,6 +10,7 @@ Last updated: 2026-02-02
 
 | Task | Notes |
 |------|-------|
+| Fix CLI ENOTDIR crash + user-friendly errors (v1.0.13-14) | `copyDirRecursive` now detects file-vs-directory conflicts, UserError class for formatted error boxes with Problem/Fix/Command sections |
 | CLI Phase 1 Complete: Agent & Skill Loaders | `src/core/agents/loader.ts`, `src/core/skills/loader.ts` with trigger extraction, 118 tests passing, updated architecture docs for Azure OpenAI |
 | CLI Polish & Documentation Fixes | Fixed security-reviewer.agent.md syntax, removed unnecessary backlog.md CLI dependency, corrected agent/skill counts in help, all 86 tests passing |
 | CLI TypeScript Foundation + Commands | TypeScript build system, doctor/quickstart commands, agent schema types, pathValidation migration |
