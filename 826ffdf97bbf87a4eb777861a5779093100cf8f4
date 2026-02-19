@@ -1,0 +1,56 @@
+package.json
+  1b3d035134012123 40
+src/index.ts
+  1b3d035134012123 13-36
+src/core/router.test.ts
+  2e856b1b3f946a42 1-265
+src/core/handoffs.test.ts
+  2e856b1b3f946a42 1-294
+src/core/orchestrator.test.ts
+  2e856b1b3f946a42 1-703
+src/core/context.test.ts
+  2e856b1b3f946a42 1-332
+src/core/router.ts
+  2e856b1b3f946a42 1-238
+Backlog.md
+  2e856b1b3f946a42 13,74
+src/core/context.ts
+  2e856b1b3f946a42 1-461
+src/core/handoffs.ts
+  2e856b1b3f946a42 1-292,294-330
+src/core/orchestrator.ts
+  2e856b1b3f946a42 1-781
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.4",
+  "base_commit_sha": "826ffdf97bbf87a4eb777861a5779093100cf8f4",
+  "prompts": {
+    "1b3d035134012123": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "f3156555-64d7-4b23-8669-f0e537ab5f2e",
+        "model": "unknown"
+      },
+      "human_author": "Stephanie Schofield <sschofield@microsoft.com>",
+      "messages": [],
+      "total_additions": 25,
+      "total_deletions": 1,
+      "accepted_lines": 25,
+      "overriden_lines": 0
+    },
+    "2e856b1b3f946a42": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "27ec0ba6-008a-40ef-8a78-6805d8037161",
+        "model": "unknown"
+      },
+      "human_author": "Stephanie Schofield <sschofield@microsoft.com>",
+      "messages": [],
+      "total_additions": 3431,
+      "total_deletions": 28,
+      "accepted_lines": 3405,
+      "overriden_lines": 1
+    }
+  }
+}
