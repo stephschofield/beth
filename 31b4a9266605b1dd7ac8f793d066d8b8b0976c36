@@ -1,0 +1,38 @@
+README.md
+  0badf1cd1a83542e 15,17,19,21-135,139,152-156,158,162,164-170,172,174,176,178,180,182-190,192,196-197,200-206,209-224,226,228-239,242,256,258-259,261-262,265-266,268-269,271-273,278,280,282,284,286-292,294,296-299,301-313,315,317-342,345-346,349-351,354-356,359-362,365-372,375-380,382,384,386,388,391-423,426,428,430-440,442,446,475,481-487,492-496,500-503,522-535,537-548,570-573,577,583-592
+Backlog.md
+  0badf1cd1a83542e 5,13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.4",
+  "base_commit_sha": "31b4a9266605b1dd7ac8f793d066d8b8b0976c36",
+  "prompts": {
+    "0badf1cd1a83542e": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "d0542d19-23e4-4fd0-9e2f-1bb9506fb82b",
+        "model": "unknown"
+      },
+      "human_author": "Stephanie Schofield <sschofield@microsoft.com>",
+      "messages": [],
+      "total_additions": 417,
+      "total_deletions": 194,
+      "accepted_lines": 409,
+      "overriden_lines": 0
+    },
+    "145eec2bb944b280": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "550b0730-9d8b-4a00-bae1-5fea98df4a80",
+        "model": "unknown"
+      },
+      "human_author": "Stephanie Schofield <sschofield@microsoft.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 2,
+      "overriden_lines": 0
+    }
+  }
+}
