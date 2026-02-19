@@ -1,0 +1,37 @@
+Backlog.md
+  6de4145485c948d5 13
+  1b3d035134012123 73
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.4",
+  "base_commit_sha": "3f0e0b11ba28f1b26ad78130368bcaf9b5f1f362",
+  "prompts": {
+    "1b3d035134012123": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "f3156555-64d7-4b23-8669-f0e537ab5f2e",
+        "model": "unknown"
+      },
+      "human_author": "Stephanie Schofield <sschofield@microsoft.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "6de4145485c948d5": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "ed0bdf40-4a44-4118-a8ee-4b347ebc57f8",
+        "model": "unknown"
+      },
+      "human_author": "Stephanie Schofield <sschofield@microsoft.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    }
+  }
+}
