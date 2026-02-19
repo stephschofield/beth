@@ -1,0 +1,42 @@
+src/cli/commands/help.e2e.test.ts
+  dfec47e6231ab2be 1-239
+src/cli/commands/pipeline.e2e.test.ts
+  dfec47e6231ab2be 1-290
+Backlog.md
+  dfec47e6231ab2be 13
+src/cli/commands/mcp.e2e.test.ts
+  dfec47e6231ab2be 1-197
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.4",
+  "base_commit_sha": "16420ac31cf373a6a3d99356fbbb4d9144275298",
+  "prompts": {
+    "145eec2bb944b280": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "550b0730-9d8b-4a00-bae1-5fea98df4a80",
+        "model": "unknown"
+      },
+      "human_author": "Stephanie Schofield <sschofield@microsoft.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 2,
+      "overriden_lines": 0
+    },
+    "dfec47e6231ab2be": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "459979d4-b690-4f97-9c31-5ecea6400b12",
+        "model": "unknown"
+      },
+      "human_author": "Stephanie Schofield <sschofield@microsoft.com>",
+      "messages": [],
+      "total_additions": 740,
+      "total_deletions": 13,
+      "accepted_lines": 727,
+      "overriden_lines": 0
+    }
+  }
+}
