@@ -1,0 +1,29 @@
+src/tools/mcp/bridge.test.ts
+  1b3d035134012123 1-359
+src/tools/mcp/client.ts
+  1b3d035134012123 1-396
+src/tools/mcp/bridge.ts
+  1b3d035134012123 1-50,57-178
+src/tools/mcp/client.test.ts
+  1b3d035134012123 1-10,12-501
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.4",
+  "base_commit_sha": "1708068ef6d2a7f95854ae97b896357f91f58039",
+  "prompts": {
+    "1b3d035134012123": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "f3156555-64d7-4b23-8669-f0e537ab5f2e",
+        "model": "unknown"
+      },
+      "human_author": "Stephanie Schofield <sschofield@microsoft.com>",
+      "messages": [],
+      "total_additions": 1432,
+      "total_deletions": 0,
+      "accepted_lines": 1427,
+      "overriden_lines": 5
+    }
+  }
+}
