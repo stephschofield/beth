@@ -1,0 +1,25 @@
+package.json
+  9e86d52e674f897b 3,53-56
+CHANGELOG.md
+  9e86d52e674f897b 9-25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.4",
+  "base_commit_sha": "88b83e81381fda1a39ed3b2bdf062716e535effa",
+  "prompts": {
+    "9e86d52e674f897b": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "a37b6aea-04bb-4bd6-ad6b-82916fb5a9d4",
+        "model": "unknown"
+      },
+      "human_author": "Stephanie Schofield <sschofield@microsoft.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 22,
+      "overriden_lines": 0
+    }
+  }
+}
