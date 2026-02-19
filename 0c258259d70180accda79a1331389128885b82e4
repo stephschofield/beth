@@ -1,0 +1,23 @@
+src/providers/azure.test.ts
+  a7b6674e4c6373e8 136-137
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.4",
+  "base_commit_sha": "0c258259d70180accda79a1331389128885b82e4",
+  "prompts": {
+    "a7b6674e4c6373e8": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "c85f6ad0-68f2-4028-b27a-b937b846d887",
+        "model": "unknown"
+      },
+      "human_author": "Stephanie Schofield <sschofield@microsoft.com>",
+      "messages": [],
+      "total_additions": 2,
+      "total_deletions": 3,
+      "accepted_lines": 2,
+      "overriden_lines": 0
+    }
+  }
+}
