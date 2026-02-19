@@ -1,0 +1,29 @@
+src/tools/cli/readFile.test.ts
+  1b3d035134012123 1-261
+src/tools/cli/editFile.ts
+  1b3d035134012123 1-154
+src/tools/cli/readFile.ts
+  1b3d035134012123 1-143
+src/tools/cli/editFile.test.ts
+  1b3d035134012123 1-279
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.4",
+  "base_commit_sha": "6b7b00fa511708a42db0f69ba622d61d7590a3b2",
+  "prompts": {
+    "1b3d035134012123": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "f3156555-64d7-4b23-8669-f0e537ab5f2e",
+        "model": "unknown"
+      },
+      "human_author": "Stephanie Schofield <sschofield@microsoft.com>",
+      "messages": [],
+      "total_additions": 695,
+      "total_deletions": 1,
+      "accepted_lines": 837,
+      "overriden_lines": 0
+    }
+  }
+}
