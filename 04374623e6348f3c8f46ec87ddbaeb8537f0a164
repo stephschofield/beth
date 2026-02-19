@@ -1,0 +1,29 @@
+src/tools/cli/search.test.ts
+  1b3d035134012123 1-257
+src/tools/cli/search.ts
+  1b3d035134012123 1-302
+src/tools/cli/terminal.ts
+  1b3d035134012123 1-207
+src/tools/cli/terminal.test.ts
+  1b3d035134012123 1-247
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.4",
+  "base_commit_sha": "04374623e6348f3c8f46ec87ddbaeb8537f0a164",
+  "prompts": {
+    "1b3d035134012123": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "f3156555-64d7-4b23-8669-f0e537ab5f2e",
+        "model": "unknown"
+      },
+      "human_author": "Stephanie Schofield <sschofield@microsoft.com>",
+      "messages": [],
+      "total_additions": 1022,
+      "total_deletions": 9,
+      "accepted_lines": 1013,
+      "overriden_lines": 0
+    }
+  }
+}
