@@ -1,0 +1,23 @@
+.github/workflows/ci.yml
+  6de4145485c948d5 1-33
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.4",
+  "base_commit_sha": "889d697cbfc37f5894ae13db1f557a765523c4aa",
+  "prompts": {
+    "6de4145485c948d5": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "ed0bdf40-4a44-4118-a8ee-4b347ebc57f8",
+        "model": "unknown"
+      },
+      "human_author": "Stephanie Schofield <sschofield@microsoft.com>",
+      "messages": [],
+      "total_additions": 33,
+      "total_deletions": 0,
+      "accepted_lines": 33,
+      "overriden_lines": 0
+    }
+  }
+}
