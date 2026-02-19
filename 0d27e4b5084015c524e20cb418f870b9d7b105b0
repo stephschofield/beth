@@ -1,0 +1,29 @@
+src/tools/cli/subagent.ts
+  1b3d035134012123 1-120
+src/tools/cli/subagent.test.ts
+  1b3d035134012123 1-264
+src/tools/cli/beads.test.ts
+  1b3d035134012123 1-325
+src/tools/cli/beads.ts
+  1b3d035134012123 1-210
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.4",
+  "base_commit_sha": "0d27e4b5084015c524e20cb418f870b9d7b105b0",
+  "prompts": {
+    "1b3d035134012123": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "f3156555-64d7-4b23-8669-f0e537ab5f2e",
+        "model": "unknown"
+      },
+      "human_author": "Stephanie Schofield <sschofield@microsoft.com>",
+      "messages": [],
+      "total_additions": 925,
+      "total_deletions": 6,
+      "accepted_lines": 919,
+      "overriden_lines": 0
+    }
+  }
+}
