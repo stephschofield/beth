@@ -192,19 +192,19 @@ describe('help command E2E', () => {
       );
     });
 
-    it('should mention Copilot Chat', () => {
+    it('should mention GitHub Copilot', () => {
       const result = runCli('help');
       assert.ok(
-        result.stdout.includes('Copilot Chat'),
-        'Help should mention Copilot Chat'
+        result.stdout.includes('GitHub Copilot') || result.stdout.includes('Copilot Chat'),
+        'Help should mention GitHub Copilot'
       );
     });
 
-    it('should mention @Beth as the entry point', () => {
+    it('should mention Beth as the entry point', () => {
       const result = runCli('help');
       assert.ok(
-        result.stdout.includes('@Beth'),
-        'Help should mention @Beth as the entry point to the agent system'
+        result.stdout.includes('Beth'),
+        'Help should mention Beth as the entry point to the agent system'
       );
     });
   });

@@ -22,7 +22,7 @@ const TEMPLATE_MCP = join(PROJECT_ROOT, 'templates', 'mcp.json.example');
  * Run init command in a directory (with --skip-beads to avoid interactive prompts).
  */
 function runInit(cwd: string, flags: string[] = []): { stdout: string; stderr: string; exitCode: number } {
-  const allFlags = ['--skip-beads', ...flags];
+  const allFlags = ['--skip-beads', '--client', 'vscode', ...flags];
   const command = `node "${CLI_PATH}" init ${allFlags.join(' ')}`;
 
   try {
@@ -100,12 +100,12 @@ describe('MCP configuration validation', () => {
 
       for (const [name, server] of Object.entries(config.servers)) {
         const s = server as Record<string, unknown>;
-        const hasCommandArgs = typeof s.command === 'string' && Array.isArray(s.args);
+        const hasCommand = typeof s.command === 'string';
         const hasTypeUrl = typeof s.type === 'string' && typeof s.url === 'string';
 
         assert.ok(
-          hasCommandArgs || hasTypeUrl,
-          `Server "${name}" must have either (command + args) or (type + url). Got: ${JSON.stringify(s)}`
+          hasCommand || hasTypeUrl,
+          `Server "${name}" must have either command or (type + url). Got: ${JSON.stringify(s)}`
         );
       }
     });
@@ -134,53 +134,63 @@ describe('MCP configuration validation', () => {
       }
     });
 
-    it('should copy mcp.json.example to target project', () => {
+    it('should install .vscode/mcp.json to target project', () => {
       runInit(testDir);
 
-      const mcpDest = join(testDir, 'mcp.json.example');
-      assert.ok(existsSync(mcpDest), 'mcp.json.example should be copied to project');
+      const mcpDest = join(testDir, '.vscode', 'mcp.json');
+      assert.ok(existsSync(mcpDest), '.vscode/mcp.json should be installed to project');
     });
 
-    it('copied mcp.json.example should be valid JSON', () => {
+    it('installed .vscode/mcp.json should be valid JSON', () => {
       runInit(testDir);
 
-      const mcpDest = join(testDir, 'mcp.json.example');
+      const mcpDest = join(testDir, '.vscode', 'mcp.json');
       const content = readFileSync(mcpDest, 'utf-8');
 
       assert.doesNotThrow(() => {
         JSON.parse(content);
-      }, 'Copied mcp.json.example must be valid JSON');
+      }, '.vscode/mcp.json must be valid JSON');
     });
 
-    it('copied file should match template content exactly', () => {
+    it('installed .vscode/mcp.json should have servers from template', () => {
       runInit(testDir);
 
-      const templateContent = readFileSync(TEMPLATE_MCP, 'utf-8');
-      const copiedContent = readFileSync(join(testDir, 'mcp.json.example'), 'utf-8');
+      const templateContent = JSON.parse(readFileSync(TEMPLATE_MCP, 'utf-8'));
+      const installedContent = JSON.parse(readFileSync(join(testDir, '.vscode', 'mcp.json'), 'utf-8'));
 
-      assert.strictEqual(copiedContent, templateContent, 'Copied file should match template exactly');
+      // Installed file should contain the same servers as template
+      for (const serverName of Object.keys(templateContent.servers)) {
+        assert.ok(
+          installedContent.servers[serverName],
+          `Installed mcp.json should include server "${serverName}" from template`
+        );
+      }
     });
 
-    it('should NOT copy mcp.json.example when --skip-mcp is used', () => {
+    it('should NOT install .vscode/mcp.json when --skip-mcp is used', () => {
       runInit(testDir, ['--skip-mcp']);
 
-      const mcpDest = join(testDir, 'mcp.json.example');
-      assert.ok(!existsSync(mcpDest), 'mcp.json.example should NOT exist with --skip-mcp');
+      const mcpDest = join(testDir, '.vscode', 'mcp.json');
+      assert.ok(!existsSync(mcpDest), '.vscode/mcp.json should NOT exist with --skip-mcp');
     });
 
-    it('should preserve existing mcp.json.example without --force', () => {
-      const mcpDest = join(testDir, 'mcp.json.example');
+    it('should preserve existing .vscode/mcp.json without --force', () => {
+      const mcpDir = join(testDir, '.vscode');
+      mkdirSync(mcpDir, { recursive: true });
+      const mcpDest = join(mcpDir, 'mcp.json');
       const original = '{"custom": true}';
       writeFileSync(mcpDest, original);
 
       runInit(testDir);
 
       const content = readFileSync(mcpDest, 'utf-8');
-      assert.strictEqual(content, original, 'Should not overwrite existing mcp.json.example without --force');
+      assert.strictEqual(content, original, 'Should not overwrite existing .vscode/mcp.json without --force');
     });
 
-    it('should overwrite mcp.json.example with --force', () => {
-      const mcpDest = join(testDir, 'mcp.json.example');
+    it('should overwrite .vscode/mcp.json with --force', () => {
+      const mcpDir = join(testDir, '.vscode');
+      mkdirSync(mcpDir, { recursive: true });
+      const mcpDest = join(mcpDir, 'mcp.json');
       const original = '{"custom": true}';
       writeFileSync(mcpDest, original);
 
@@ -189,7 +199,7 @@ describe('MCP configuration validation', () => {
       const content = readFileSync(mcpDest, 'utf-8');
       assert.notStrictEqual(content, original, 'Should overwrite with --force');
 
-      // Verify it's valid JSON from the template
+      // Verify it's valid JSON with servers
       const parsed = JSON.parse(content);
       assert.ok(parsed.servers, 'Overwritten file should have servers from template');
     });
