@@ -1,0 +1,20 @@
+{
+  "$schema": "https://code.visualstudio.com/docs/copilot/chat/mcp-servers",
+  "servers": {
+    "beads": {
+      "command": "beads-mcp"
+    },
+    "shadcn": {
+      "command": "npx",
+      "args": ["shadcn@3.7.0", "mcp"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    },
+    "deepwiki": {
+      "type": "http",
+      "url": "https://mcp.deepwiki.com/mcp"
+    }
+  }
+}

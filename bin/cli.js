@@ -788,28 +788,42 @@ ${COLORS.bright}Usage:${COLORS.reset}
 ${COLORS.bright}Options:${COLORS.reset}
   --force                             Overwrite existing files
   --skip-backlog                      Don't create Backlog.md
-  --skip-mcp                          Don't create mcp.json.example
+  --skip-mcp                          Don't install MCP server configs
   --skip-beads                        Skip beads check (not recommended)
   --verbose                           Show detailed diagnostics on errors
+  --client <type>                     Skip interactive prompt. Values:
+                                        vscode, copilot-cli, claude-code, all
 
 ${COLORS.bright}Examples:${COLORS.reset}
-  npx beth-copilot init               Set up Beth in current project
+  npx beth-copilot init               Set up Beth (interactive client selection)
+  npx beth-copilot init --client vscode         VS Code + Copilot only
+  npx beth-copilot init --client claude-code    Claude Code only
+  npx beth-copilot init --client all            All clients
   npx beth-copilot init --force       Overwrite existing Beth files
   npx beth-copilot doctor             Verify installation health
 
 ${COLORS.bright}What gets installed:${COLORS.reset}
-  .github/agents/                     7 specialized AI agents
-  .github/skills/                     8 domain knowledge modules
-  .github/copilot-instructions.md     Copilot configuration
-  .vscode/settings.json               Recommended VS Code settings
-  AGENTS.md                           Workflow documentation
-  Backlog.md                          Task tracking file
-  mcp.json.example                    Optional MCP server config
+  ${COLORS.dim}Shared (all clients):${COLORS.reset}
+    .github/skills/                   Domain knowledge modules
+    AGENTS.md                         Workflow documentation
+    Backlog.md                        Task tracking file
 
-${COLORS.bright}After installation:${COLORS.reset}
-  1. Open project in VS Code
-  2. Open Copilot Chat (Ctrl+Alt+I / Cmd+Alt+I)
-  3. Type @Beth to start working
+  ${COLORS.dim}VS Code + GitHub Copilot:${COLORS.reset}
+    .github/agents/                   7 specialized AI agents
+    .github/copilot-instructions.md   Copilot configuration
+    .vscode/settings.json             Recommended VS Code settings
+    .vscode/mcp.json                  MCP servers (beads, shadcn, playwright, deepwiki)
+
+  ${COLORS.dim}GitHub Copilot CLI:${COLORS.reset}
+    .github/copilot-instructions.md   Copilot configuration
+
+  ${COLORS.dim}Claude Code:${COLORS.reset}
+    CLAUDE.md                         Claude Code instructions
+
+${COLORS.bright}Supported clients:${COLORS.reset}
+  VS Code with GitHub Copilot         Full agent orchestration with MCP
+  GitHub Copilot CLI                  Terminal-based with bd CLI
+  Claude Code                         CLAUDE.md + bd setup claude hooks
 
 ${COLORS.bright}Documentation:${COLORS.reset}
   https://github.com/stephschofield/beth
@@ -864,8 +878,149 @@ function copyDirRecursive(src, dest, options = {}) {
   return copiedFiles;
 }
 
+/**
+ * Prompt the user to select their AI coding client(s).
+ * Returns an object with boolean flags for each client.
+ */
+async function promptForClient() {
+  console.log('');
+  log('Which AI coding tool are you using?', COLORS.bright);
+  console.log('');
+  console.log(`  ${COLORS.cyan}[1]${COLORS.reset} VS Code with GitHub Copilot`);
+  console.log(`  ${COLORS.cyan}[2]${COLORS.reset} GitHub Copilot CLI (terminal)`);
+  console.log(`  ${COLORS.cyan}[3]${COLORS.reset} Claude Code`);
+  console.log(`  ${COLORS.cyan}[a]${COLORS.reset} All of the above`);
+  console.log('');
+  
+  const answer = await promptForInput('Enter selection (1/2/3/a, or comma-separated e.g. 1,3):');
+  
+  if (!answer || answer.toLowerCase() === 'a') {
+    return { vscode: true, copilotCli: true, claudeCode: true };
+  }
+  
+  const selections = answer.split(',').map(s => s.trim());
+  return {
+    vscode: selections.includes('1'),
+    copilotCli: selections.includes('2'),
+    claudeCode: selections.includes('3'),
+  };
+}
+
+/**
+ * Parse --client flag value into client selection object.
+ */
+function parseClientFlag(clientArg) {
+  if (!clientArg || clientArg === 'all') {
+    return { vscode: true, copilotCli: true, claudeCode: true };
+  }
+  return {
+    vscode: clientArg === 'vscode',
+    copilotCli: clientArg === 'copilot-cli',
+    claudeCode: clientArg === 'claude-code',
+  };
+}
+
+/**
+ * Install beads-mcp (MCP server) for VS Code integration.
+ * 
+ * SECURITY NOTE - shell:true usage:
+ * - Required for cross-platform uv/pip execution
+ * - Arguments are HARDCODED - no user input is passed to the shell
+ * - Command injection risk: NONE (no dynamic/user-supplied values)
+ */
+async function installBeadsMcp() {
+  log('\nInstalling beads-mcp (MCP server for VS Code)...', COLORS.cyan);
+  
+  // Try uv first, then pip
+  const installers = [
+    { cmd: 'uv', args: ['tool', 'install', 'beads-mcp'], label: 'uv tool install beads-mcp' },
+    { cmd: 'pip', args: ['install', 'beads-mcp'], label: 'pip install beads-mcp' },
+  ];
+  
+  for (const installer of installers) {
+    try {
+      execSync(`${installer.cmd} --version`, { stdio: 'ignore' });
+    } catch {
+      logDebug(`${installer.cmd} not found, trying next installer...`);
+      continue;
+    }
+    
+    logInfo(installer.label);
+    
+    // SECURITY: All arguments are hardcoded constants.
+    return new Promise((resolve) => {
+      const child = spawn(installer.cmd, installer.args, {
+        stdio: 'inherit',
+        shell: true,
+      });
+      
+      child.on('close', (code) => {
+        if (code === 0) {
+          logSuccess('beads-mcp installed!');
+          resolve(true);
+        } else {
+          logWarning(`${installer.label} failed.`);
+          resolve(false);
+        }
+      });
+      
+      child.on('error', () => {
+        logWarning(`Failed to run ${installer.cmd}.`);
+        resolve(false);
+      });
+    });
+  }
+  
+  logWarning('Neither uv nor pip found. Install beads-mcp manually:');
+  logInfo('  uv tool install beads-mcp');
+  logInfo('  OR: pip install beads-mcp');
+  return false;
+}
+
+/**
+ * Run `bd setup claude` to configure Claude Code integration.
+ * 
+ * SECURITY NOTE - shell:true usage:
+ * - bdPath is validated via getBeadsPath()
+ * - Arguments are HARDCODED ('setup', 'claude')
+ * - Command injection risk: LOW (bdPath validated, no user input in args)
+ */
+async function runBdSetupClaude() {
+  log('\nConfiguring beads for Claude Code...', COLORS.cyan);
+  
+  const bdPath = getBeadsPath();
+  if (!bdPath) {
+    logWarning('Cannot run bd setup claude: bd not found.');
+    logInfo('Run manually after installing beads: bd setup claude');
+    return false;
+  }
+  
+  // SECURITY: bdPath is validated, only hardcoded args.
+  return new Promise((resolve) => {
+    const child = spawn(bdPath, ['setup', 'claude'], {
+      stdio: 'inherit',
+      shell: true,
+    });
+    
+    child.on('close', (code) => {
+      if (code === 0) {
+        logSuccess('Claude Code integration configured!');
+        resolve(true);
+      } else {
+        logWarning('bd setup claude failed. Run manually: bd setup claude');
+        resolve(false);
+      }
+    });
+    
+    child.on('error', () => {
+      logWarning('Failed to run bd setup claude. Run manually: bd setup claude');
+      resolve(false);
+    });
+  });
+}
+
 async function init(options = {}) {
-  const { force = false, skipBacklog = false, skipMcp = false, skipBeads = false } = options;
+  const { force = false, skipBacklog = false, skipMcp = false, skipBeads = false, client: clientArg } = options;
   const cwd = process.cwd();
   
   // Check for updates
@@ -888,6 +1043,27 @@ ${COLORS.yellow}╔════════════════════�
   
   log(`${COLORS.yellow}Tip: Run with --verbose for detailed diagnostics if you hit issues.${COLORS.reset}`);
 
+  // Determine which client(s) to configure
+  let clients;
+  if (clientArg) {
+    clients = parseClientFlag(clientArg);
+  } else {
+    clients = await promptForClient();
+  }
+  
+  // Validate at least one client selected
+  if (!clients.vscode && !clients.copilotCli && !clients.claudeCode) {
+    logWarning('No client selected. Defaulting to VS Code with GitHub Copilot.');
+    clients.vscode = true;
+  }
+  
+  const selectedNames = [];
+  if (clients.vscode) selectedNames.push('VS Code + Copilot');
+  if (clients.copilotCli) selectedNames.push('Copilot CLI');
+  if (clients.claudeCode) selectedNames.push('Claude Code');
+  log(`\nConfiguring for: ${COLORS.cyan}${selectedNames.join(', ')}${COLORS.reset}`);
+
+
   // Check if templates exist
   if (!existsSync(TEMPLATES_DIR)) {
     logError('Templates directory not found. Package may be corrupted.');
@@ -896,13 +1072,15 @@ ${COLORS.yellow}╔════════════════════�
 
   const copiedFiles = [];
 
-  // Copy .github directory (agents, skills, copilot-instructions.md)
-  const githubSrc = join(TEMPLATES_DIR, '.github');
-  const githubDest = join(cwd, '.github');
+  // === SHARED FILES (all clients) ===
   
-  if (existsSync(githubSrc)) {
-    log('\nInstalling agents and skills...');
-    copyDirRecursive(githubSrc, githubDest, { force, copiedFiles });
+  // Copy .github/skills/ (domain knowledge - useful for all clients)
+  const skillsSrc = join(TEMPLATES_DIR, '.github', 'skills');
+  const skillsDest = join(cwd, '.github', 'skills');
+  
+  if (existsSync(skillsSrc)) {
+    log('\nInstalling skills (domain knowledge)...');
+    copyDirRecursive(skillsSrc, skillsDest, { force, copiedFiles });
   }
 
   // Copy AGENTS.md
@@ -933,39 +1111,93 @@ ${COLORS.yellow}╔════════════════════�
     }
   }
 
-  // Copy mcp.json.example (unless skipped)
-  if (!skipMcp) {
-    const mcpSrc = join(TEMPLATES_DIR, 'mcp.json.example');
-    const mcpDest = join(cwd, 'mcp.json.example');
+  // === VS CODE + COPILOT FILES ===
+  if (clients.vscode) {
+    log('\nInstalling VS Code + Copilot configuration...');
     
-    if (existsSync(mcpSrc)) {
-      if (existsSync(mcpDest) && !force) {
-        logWarning('Skipped (exists): mcp.json.example');
+    // .github/agents/ (agent definitions with frontmatter)
+    const agentsSrc = join(TEMPLATES_DIR, '.github', 'agents');
+    const agentsDest = join(cwd, '.github', 'agents');
+    if (existsSync(agentsSrc)) {
+      copyDirRecursive(agentsSrc, agentsDest, { force, copiedFiles });
+    }
+    
+    // .github/copilot-instructions.md
+    const copilotInstructionsSrc = join(TEMPLATES_DIR, '.github', 'copilot-instructions.md');
+    const copilotInstructionsDest = join(cwd, '.github', 'copilot-instructions.md');
+    if (existsSync(copilotInstructionsSrc)) {
+      if (existsSync(copilotInstructionsDest) && !force) {
+        logWarning('Skipped (exists): .github/copilot-instructions.md');
       } else {
-        copyFileSync(mcpSrc, mcpDest);
-        copiedFiles.push('mcp.json.example');
+        mkdirSync(join(cwd, '.github'), { recursive: true });
+        copyFileSync(copilotInstructionsSrc, copilotInstructionsDest);
+        copiedFiles.push('.github/copilot-instructions.md');
       }
     }
-  }
-
-  // Copy .vscode/settings.json (recommended settings for agent mode)
-  const vscodeSrc = join(TEMPLATES_DIR, '.vscode');
-  const vscodeDest = join(cwd, '.vscode');
-  
-  if (existsSync(vscodeSrc)) {
+    
+    // .vscode/settings.json
+    const vscodeDest = join(cwd, '.vscode');
     if (!existsSync(vscodeDest)) {
       mkdirSync(vscodeDest, { recursive: true });
     }
     
-    const settingsSrc = join(vscodeSrc, 'settings.json');
+    const settingsSrc = join(TEMPLATES_DIR, '.vscode', 'settings.json');
     const settingsDest = join(vscodeDest, 'settings.json');
-    
     if (existsSync(settingsSrc)) {
       if (existsSync(settingsDest) && !force) {
         logWarning('Skipped (exists): .vscode/settings.json');
       } else {
         copyFileSync(settingsSrc, settingsDest);
         copiedFiles.push('.vscode/settings.json');
+      }
+    }
+    
+    // .vscode/mcp.json (beads + shadcn + playwright + deepwiki)
+    if (!skipMcp) {
+      const mcpJsonSrc = join(TEMPLATES_DIR, '.vscode', 'mcp.json');
+      const mcpJsonDest = join(vscodeDest, 'mcp.json');
+      if (existsSync(mcpJsonSrc)) {
+        if (existsSync(mcpJsonDest) && !force) {
+          logWarning('Skipped (exists): .vscode/mcp.json');
+        } else {
+          copyFileSync(mcpJsonSrc, mcpJsonDest);
+          copiedFiles.push('.vscode/mcp.json');
+        }
+      }
+    }
+  }
+
+  // === COPILOT CLI FILES ===
+  if (clients.copilotCli && !clients.vscode) {
+    // Only install copilot-instructions.md if VS Code didn't already do it
+    log('\nInstalling Copilot CLI configuration...');
+    
+    const copilotInstructionsSrc = join(TEMPLATES_DIR, '.github', 'copilot-instructions.md');
+    const copilotInstructionsDest = join(cwd, '.github', 'copilot-instructions.md');
+    if (existsSync(copilotInstructionsSrc)) {
+      if (existsSync(copilotInstructionsDest) && !force) {
+        logWarning('Skipped (exists): .github/copilot-instructions.md');
+      } else {
+        mkdirSync(join(cwd, '.github'), { recursive: true });
+        copyFileSync(copilotInstructionsSrc, copilotInstructionsDest);
+        copiedFiles.push('.github/copilot-instructions.md');
+      }
+    }
+  }
+
+  // === CLAUDE CODE FILES ===
+  if (clients.claudeCode) {
+    log('\nInstalling Claude Code configuration...');
+    
+    // CLAUDE.md
+    const claudeMdSrc = join(TEMPLATES_DIR, 'CLAUDE.md');
+    const claudeMdDest = join(cwd, 'CLAUDE.md');
+    if (existsSync(claudeMdSrc)) {
+      if (existsSync(claudeMdDest) && !force) {
+        logWarning('Skipped (exists): CLAUDE.md');
+      } else {
+        copyFileSync(claudeMdSrc, claudeMdDest);
+        copiedFiles.push('CLAUDE.md');
       }
     }
   }
@@ -1095,6 +1327,29 @@ ${COLORS.yellow}╔════════════════════�
     await runBeadsDoctor();
   }
 
+  // === CLIENT-SPECIFIC BEADS INTEGRATION ===
+  if (!skipBeads && getBeadsPath() && isBeadsInitialized(cwd)) {
+    // VS Code: install beads-mcp (MCP server)
+    if (clients.vscode) {
+      const shouldInstallMcp = await promptYesNo('Install beads-mcp for VS Code MCP integration?');
+      if (shouldInstallMcp) {
+        await installBeadsMcp();
+      } else {
+        logInfo('Skipped beads-mcp. Install later with: uv tool install beads-mcp');
+      }
+    }
+    
+    // Claude Code: run bd setup claude
+    if (clients.claudeCode) {
+      const shouldSetupClaude = await promptYesNo('Configure beads for Claude Code? (bd setup claude)');
+      if (shouldSetupClaude) {
+        await runBdSetupClaude();
+      } else {
+        logInfo('Skipped Claude Code setup. Run later: bd setup claude');
+      }
+    }
+  }
+
   // Final verification
   console.log('');
   log('Verifying installation...', COLORS.cyan);
@@ -1111,15 +1366,35 @@ ${COLORS.yellow}╔════════════════════�
     process.exit(1);
   }
 
-  // Next steps
-  console.log(`
-${COLORS.bright}Next steps:${COLORS.reset}
+  // Next steps (client-specific)
+  console.log('');
+  log('Next steps:', COLORS.bright);
+  
+  if (clients.vscode) {
+    console.log(`
+  ${COLORS.bright}VS Code + Copilot:${COLORS.reset}
   1. Open this project in VS Code
   2. Open Copilot Chat (${COLORS.cyan}Ctrl+Alt+I${COLORS.reset} / ${COLORS.cyan}Cmd+Alt+I${COLORS.reset})
-  3. Type ${COLORS.cyan}@Beth${COLORS.reset} to start - she's your orchestrator
+  3. Type ${COLORS.cyan}@Beth${COLORS.reset} to start — she's your orchestrator`);
+  }
+  
+  if (clients.copilotCli) {
+    console.log(`
+  ${COLORS.bright}Copilot CLI:${COLORS.reset}
+  1. Run ${COLORS.cyan}copilot${COLORS.reset} in your project directory
+  2. Beth's instructions are in ${COLORS.cyan}.github/copilot-instructions.md${COLORS.reset}
+  3. Use ${COLORS.cyan}bd ready${COLORS.reset} to find work, ${COLORS.cyan}bd create${COLORS.reset} to track tasks`);
+  }
+  
+  if (clients.claudeCode) {
+    console.log(`
+  ${COLORS.bright}Claude Code:${COLORS.reset}
+  1. Run ${COLORS.cyan}claude${COLORS.reset} in your project directory
+  2. Beth's instructions are in ${COLORS.cyan}CLAUDE.md${COLORS.reset}
+  3. Use ${COLORS.cyan}bd ready${COLORS.reset} to find work, ${COLORS.cyan}bd prime${COLORS.reset} for session context`);
+  }
 
-${COLORS.bright}Pro tip:${COLORS.reset} Start every session with ${COLORS.cyan}@Beth${COLORS.reset} and let her route work to the right specialists.
-
+  console.log(`
 ${COLORS.bright}Documentation:${COLORS.reset}
   https://github.com/stephschofield/beth
 
@@ -1129,7 +1404,8 @@ ${COLORS.cyan}"They broke my wings and forgot I had claws."${COLORS.reset}
 
 // Input validation constants
 const ALLOWED_COMMANDS = ['init', 'help', '--help', '-h', 'doctor', 'quickstart'];
-const ALLOWED_FLAGS = ['--force', '--skip-backlog', '--skip-mcp', '--skip-beads', '--verbose'];
+const ALLOWED_FLAGS = ['--force', '--skip-backlog', '--skip-mcp', '--skip-beads', '--verbose', '--client'];
+const ALLOWED_CLIENTS = ['vscode', 'copilot-cli', 'claude-code', 'all'];
 const MAX_ARG_LENGTH = 50;
 
 // Validate and sanitize input
@@ -1154,19 +1430,36 @@ validateArgs(args);
 
 const command = args[0]?.toLowerCase();
 
+// Parse --client flag value (e.g. --client vscode)
+let clientArg = null;
+const clientFlagIndex = args.indexOf('--client');
+if (clientFlagIndex !== -1 && clientFlagIndex + 1 < args.length) {
+  clientArg = args[clientFlagIndex + 1].toLowerCase();
+  if (!ALLOWED_CLIENTS.includes(clientArg)) {
+    logError(`Invalid client: ${clientArg.slice(0, MAX_ARG_LENGTH)}`);
+    console.log(`Valid clients: ${ALLOWED_CLIENTS.join(', ')}`);
+    process.exit(1);
+  }
+}
+
 const options = {
   force: args.includes('--force'),
   skipBacklog: args.includes('--skip-backlog'),
   skipMcp: args.includes('--skip-mcp'),
   skipBeads: args.includes('--skip-beads'),
   verbose: args.includes('--verbose'),
+  client: clientArg,
 };
 
 // Set global verbose flag for logDebug
 globalThis.VERBOSE = options.verbose;
 
 // Validate unknown flags (exclude --help which is handled as a command)
-const unknownFlags = args.filter(arg => arg.startsWith('--') && !ALLOWED_FLAGS.includes(arg) && arg !== '--help');
+// Also exclude the value after --client since it's not a flag
+const clientValueIndex = clientFlagIndex !== -1 ? clientFlagIndex + 1 : -1;
+const unknownFlags = args.filter((arg, i) => 
+  arg.startsWith('--') && !ALLOWED_FLAGS.includes(arg) && arg !== '--help' && i !== clientValueIndex
+);
 if (unknownFlags.length > 0) {
   logError(`Unknown flag: ${unknownFlags[0].slice(0, MAX_ARG_LENGTH)}`);
   console.log('Run "npx beth-copilot help" for usage information.');
