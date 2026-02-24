@@ -195,6 +195,27 @@ export async function deleteUser(userId: string) {
 @tester Write tests for [component]
 ```
 
+## Issue Tracking
+
+This project uses [beads](https://github.com/steveyegge/beads) (`bd`) for structured issue tracking with dependency graphs.
+
+**Required MCP:** The `beads-mcp` server must be running for agent integration. Install with:
+```bash
+uv tool install beads-mcp
+```
+
+The server is configured in `.vscode/mcp.json`. Restart VS Code after installing.
+
+### Quick Reference
+```bash
+bd ready          # See unblocked work
+bd create "Title" # Create a new issue
+bd close <id>     # Close completed work
+bd sync           # Sync beads database
+```
+
+See `AGENTS.md` at the repo root for the full dual tracking system (beads + Backlog.md).
+
 ## File Naming Conventions
 
 - Agents: `.github/agents/<name>.agent.md`

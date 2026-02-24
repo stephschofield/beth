@@ -45,6 +45,17 @@ This project uses a dual tracking system:
 
 If Beth spawned you with an issue ID, that issue is your contract. Deliver against it and close it.
 
+## Required MCP Servers
+
+This agent requires the **beads-mcp** server for issue tracking.
+
+**If `beads-mcp` is not running**, tell the user:
+> "Issue tracking requires the beads MCP server. Install it with:
+> ```bash
+> uv tool install beads-mcp
+> ```
+> Then restart VS Code and click 'Start' next to the beads server."
+
 ## Team Coordination
 
 **Beth is the orchestrator** who coordinates all agent workflows. You operate as a specialist on Beth's team:
@@ -56,27 +67,23 @@ If Beth spawned you with an issue ID, that issue is your contract. Deliver again
 
 ## First Run: MCP Setup Check
 
-**On first activation**, check if the shadcn MCP server is configured:
+**On first activation**, check `.vscode/mcp.json` for required MCP servers:
 
-1. Look for `.vscode/mcp.json` in the workspace
-2. If it exists, check if it contains a `shadcn` server configuration
+1. **beads** — Required for issue tracking. If missing, tell the user:
+   > "Issue tracking requires the beads MCP server. Install it with `uv tool install beads-mcp`, then restart VS Code."
 
-**If MCP is NOT configured**, inform the user:
+2. **shadcn** — Optional for component browsing. If missing, inform the user:
+   > "The shadcn/ui MCP server isn't configured yet. This optional integration lets me browse, search, and install components directly from the shadcn registry.
+   >
+   > **Would you like me to set it up?** (Takes 30 seconds)
+   >
+   > If not, no problem—I can still work with shadcn/ui components using the CLI."
 
-> "I noticed the shadcn/ui MCP server isn't configured yet. This optional integration lets me browse, search, and install components directly from the shadcn registry.
->
-> **Would you like me to set it up?** (Takes 30 seconds)
->
-> If not, no problem—I can still work with shadcn/ui components using the CLI."
-
-**If user wants setup**, run:
-```bash
-npx shadcn@latest mcp init --client vscode
-```
-
-Then instruct them to restart VS Code and click "Start" next to the shadcn server.
-
-**If user declines**, proceed normally using CLI-based workflows.
+   **If user wants shadcn setup**, run:
+   ```bash
+   npx shadcn@latest mcp init --client vscode
+   ```
+   Then instruct them to restart VS Code and click "Start" next to the shadcn server.
 
 ## Skills
 

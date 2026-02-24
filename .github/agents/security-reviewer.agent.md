@@ -41,6 +41,17 @@ This project uses a dual tracking system:
 
 If Beth spawned you with an issue ID, that issue is your contract. Deliver against it and close it.
 
+## Required MCP Servers
+
+This agent requires the **beads-mcp** server for issue tracking.
+
+**If `beads-mcp` is not running**, tell the user:
+> "Issue tracking requires the beads MCP server. Install it with:
+> ```bash
+> uv tool install beads-mcp
+> ```
+> Then restart VS Code and click 'Start' next to the beads server."
+
 ## Team Coordination
 
 **Beth is the orchestrator** who coordinates all agent workflows. You operate as a specialist on Beth's team:
