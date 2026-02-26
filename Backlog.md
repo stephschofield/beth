@@ -2,7 +2,7 @@
 
 > *"I don't have time to explain things twice. Read this."*
 
-Last updated: 2026-02-23
+Last updated: 2026-02-26
 
 ---
 
@@ -10,6 +10,7 @@ Last updated: 2026-02-23
 
 | Task | Notes |
 |------|-------|
+| **Client-aware getting started guidance (beth-rvq)** | `quickstart` now detects which client was configured during `init` and shows client-specific getting-started guidance. VS Code → Copilot Chat + @Beth, Copilot CLI → terminal + copilot-instructions.md + bd ready, Claude Code → CLAUDE.md + bd prime. Client selection persisted to `.github/.beth-client.json` during init with fallback marker-file detection. New files: `src/cli/commands/client-config.ts` (persist/detect utils, 17 tests), `src/cli/commands/init-quickstart.e2e.test.ts` (10 E2E tests). Updated: `bin/cli.js` (persist call), `quickstart.ts` (client-aware output), `quickstart.test.ts` (+5 tests). 409/409 tests pass. |
 | **Fix 19 pre-existing e2e test failures** | Updated `help.e2e.test.ts` (2 fixes: relaxed "Copilot Chat" → accepts "GitHub Copilot", relaxed "@Beth" → accepts "Beth"), `mcp.e2e.test.ts` (5 fixes: added `--client vscode` to init calls, relaxed server validation for command-only servers, updated to check `.vscode/mcp.json` instead of `mcp.json.example`), `pipeline.e2e.test.ts` (12 fixes: added `--client vscode` to all 14 init calls, updated mcp path checks). 52/52 e2e tests pass. |
 | **Client configuration E2E tests** | 55 new e2e tests in `src/cli/commands/client-config.e2e.test.ts` validating all three `--client` modes: `vscode` (20 tests — agents, skills, settings.json, mcp.json, frontmatter validation, doctor pipeline), `copilot-cli` (9 tests — copilot-instructions, skills, no VS Code files), `claude-code` (13 tests — CLAUDE.md content, skills, no VS Code/Copilot files), cross-config (13 tests — `--client all`, shared file consistency, mode exclusivity, sequential layering, invalid client rejection). 55/55 pass. |
 | **Multi-client installation support (beth-k1h)** | Added interactive client selection to `npx beth-copilot init` — users choose VS Code + Copilot, Copilot CLI, Claude Code, or all. Conditional file installation per client: VS Code gets `.github/agents/`, `.vscode/mcp.json`, `.vscode/settings.json`; Copilot CLI gets `.github/copilot-instructions.md`; Claude Code gets `CLAUDE.md`. All clients get `.github/skills/`, `AGENTS.md`, `Backlog.md`. New `.vscode/mcp.json` template with 4 MCP servers (beads, shadcn, playwright, deepwiki). Client-specific beads integration: VS Code prompts for `beads-mcp` install, Claude Code runs `bd setup claude`. Non-interactive `--client` flag (vscode/copilot-cli/claude-code/all). 33/33 tests pass. |

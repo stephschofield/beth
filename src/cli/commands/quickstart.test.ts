@@ -9,6 +9,7 @@ import { execSync, spawnSync } from 'child_process';
 import { existsSync, mkdirSync, writeFileSync, rmSync } from 'fs';
 import { join, resolve } from 'path';
 import { tmpdir } from 'os';
+import { persistClientConfig } from './client-config.js';
 
 // Path to CLI
 const CLI_PATH = resolve(join(import.meta.dirname, '../../../bin/cli.js'));
@@ -344,5 +345,88 @@ describe('quickstart output format', () => {
       result.stdout.includes('─') || result.stdout.includes('-'),
       'Should show separator lines'
     );
+  });
+});
+
+describe('quickstart client-aware output', () => {
+  let testDir: string;
+
+  beforeEach(() => {
+    testDir = join(tmpdir(), `beth-qs-client-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+    mkdirSync(testDir, { recursive: true });
+  });
+
+  afterEach(() => {
+    if (existsSync(testDir)) {
+      rmSync(testDir, { recursive: true, force: true });
+    }
+  });
+
+  /**
+   * Helper: set up a fully initialised Beth project so quickstart
+   * gets past the checks and prints the Quick Start Guide.
+   */
+  function setupProject(dir: string): void {
+    createBethProject(dir);
+    createSkillsDir(dir);
+    simulateBeadsInit(dir);
+    writeFileSync(join(dir, 'AGENTS.md'), '# Agent Instructions');
+    writeFileSync(join(dir, 'Backlog.md'), '# Backlog');
+  }
+
+  it('should show VS Code guidance when vscode-only config', { skip: SKIP_NO_BEADS }, () => {
+    setupProject(testDir);
+    persistClientConfig(testDir, { vscode: true, copilotCli: false, claudeCode: false });
+
+    const result = runQuickstart(testDir);
+
+    assert.ok(result.stdout.includes('Copilot Chat'), 'Should contain Copilot Chat instructions');
+    assert.ok(result.stdout.includes('@Beth'), 'Should mention @Beth');
+    assert.ok(!result.stdout.includes('Claude Code'), 'Should NOT contain Claude Code section');
+    assert.ok(!result.stdout.includes('CLAUDE.md'), 'Should NOT mention CLAUDE.md');
+  });
+
+  it('should show Claude Code guidance when claudeCode-only config', { skip: SKIP_NO_BEADS }, () => {
+    setupProject(testDir);
+    persistClientConfig(testDir, { vscode: false, copilotCli: false, claudeCode: true });
+
+    const result = runQuickstart(testDir);
+
+    assert.ok(result.stdout.includes('Claude Code'), 'Should contain Claude Code section');
+    assert.ok(result.stdout.includes('CLAUDE.md'), 'Should mention CLAUDE.md');
+    assert.ok(!result.stdout.includes('Copilot Chat'), 'Should NOT contain Copilot Chat section');
+  });
+
+  it('should show Copilot CLI guidance when copilotCli-only config', { skip: SKIP_NO_BEADS }, () => {
+    setupProject(testDir);
+    persistClientConfig(testDir, { vscode: false, copilotCli: true, claudeCode: false });
+
+    const result = runQuickstart(testDir);
+
+    assert.ok(result.stdout.includes('Copilot CLI'), 'Should contain Copilot CLI section');
+    assert.ok(result.stdout.includes('copilot-instructions.md'), 'Should mention copilot-instructions.md');
+    assert.ok(!result.stdout.includes('Copilot Chat'), 'Should NOT contain Copilot Chat section');
+    assert.ok(!result.stdout.includes('CLAUDE.md'), 'Should NOT mention CLAUDE.md');
+  });
+
+  it('should show all three sections when all clients selected', { skip: SKIP_NO_BEADS }, () => {
+    setupProject(testDir);
+    persistClientConfig(testDir, { vscode: true, copilotCli: true, claudeCode: true });
+
+    const result = runQuickstart(testDir);
+
+    assert.ok(result.stdout.includes('Copilot Chat'), 'Should contain VS Code / Copilot Chat section');
+    assert.ok(result.stdout.includes('Copilot CLI'), 'Should contain Copilot CLI section');
+    assert.ok(result.stdout.includes('Claude Code'), 'Should contain Claude Code section');
+  });
+
+  it('should default to VS Code guidance when no config file exists', { skip: SKIP_NO_BEADS }, () => {
+    setupProject(testDir);
+    // Do NOT write a .beth-client.json — fallback should detect .github/agents/ → vscode
+
+    const result = runQuickstart(testDir);
+
+    assert.ok(result.stdout.includes('Copilot Chat'), 'Fallback should show Copilot Chat instructions');
+    assert.ok(result.stdout.includes('@Beth'), 'Fallback should mention @Beth');
   });
 });

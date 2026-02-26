@@ -11,6 +11,7 @@
 import { execSync, spawnSync } from 'child_process';
 import { existsSync } from 'fs';
 import { join } from 'path';
+import { detectClientConfig } from './client-config.js';
 import { doctor } from './doctor.js';
 
 // Colors for terminal output
@@ -145,16 +146,36 @@ export async function quickstart(options: QuickstartOptions = {}): Promise<void>
   await doctor({ verbose }, false);
   
   // Step 5: Print next steps
+  const clients = detectClientConfig(cwd);
+
   console.log('');
   log('─'.repeat(40), COLORS.dim);
   log('\nQuick Start Guide:', COLORS.bright);
-  console.log('');
-  log('1. Open this project in VS Code', COLORS.cyan);
-  log('2. Open Copilot Chat (Ctrl+Alt+I / Cmd+Alt+I)', COLORS.cyan);
-  log('3. Type @Beth to start working', COLORS.cyan);
-  console.log('');
-  log('Pro tip:', COLORS.bright);
-  logInfo('Start every session with @Beth and let her route work to specialists.');
+
+  if (clients.vscode) {
+    console.log('');
+    log('VS Code + Copilot:', COLORS.bright);
+    log('  1. Open this project in VS Code', COLORS.cyan);
+    log('  2. Open Copilot Chat (Ctrl+Alt+I / Cmd+Alt+I)', COLORS.cyan);
+    log('  3. Type @Beth to start — she routes work to specialists', COLORS.cyan);
+  }
+
+  if (clients.copilotCli) {
+    console.log('');
+    log('Copilot CLI:', COLORS.bright);
+    log('  1. Run copilot in your project directory', COLORS.cyan);
+    log('  2. Instructions live in .github/copilot-instructions.md', COLORS.cyan);
+    log('  3. Use bd ready to find work, bd create to track tasks', COLORS.cyan);
+  }
+
+  if (clients.claudeCode) {
+    console.log('');
+    log('Claude Code:', COLORS.bright);
+    log('  1. Run claude in your project directory', COLORS.cyan);
+    log('  2. Instructions live in CLAUDE.md', COLORS.cyan);
+    log('  3. Use bd ready to find work, bd prime for session context', COLORS.cyan);
+  }
+
   console.log('');
   log('Documentation:', COLORS.bright);
   logInfo('https://github.com/stephschofield/beth');

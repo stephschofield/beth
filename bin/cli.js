@@ -830,6 +830,17 @@ ${COLORS.bright}Documentation:${COLORS.reset}
 `);
 }
 
+/**
+ * Persist client selection to .github/.beth-client.json
+ * So quickstart and other commands know which client was configured.
+ */
+function persistClientConfig(cwd, clients) {
+  const configDir = join(cwd, '.github');
+  const configPath = join(configDir, '.beth-client.json');
+  mkdirSync(configDir, { recursive: true });
+  writeFileSync(configPath, JSON.stringify(clients, null, 2) + '\n');
+}
+
 function copyDirRecursive(src, dest, options = {}) {
   const { force = false, copiedFiles = [] } = options;
   
@@ -1201,6 +1212,10 @@ ${COLORS.yellow}╔════════════════════�
       }
     }
   }
+
+  // Persist client selection for quickstart and other commands
+  persistClientConfig(cwd, clients);
+  copiedFiles.push('.github/.beth-client.json');
 
   // Summary
   console.log('');
