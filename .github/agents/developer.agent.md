@@ -45,6 +45,30 @@ This project uses a dual tracking system:
 
 If Beth spawned you with an issue ID, that issue is your contract. Deliver against it and close it.
 
+## Branch Discipline
+
+**Read and follow the Branch Discipline rules in `AGENTS.md` at the repo root.**
+
+When spawned by Beth with an epic ID and branch name:
+
+1. **Verify the branch FIRST** before making any changes:
+   ```bash
+   git branch --show-current
+   ```
+   If not on the correct branch: `git checkout epic/<epic-id>`
+
+2. **Commit with the epic prefix:** `<epic-id>: description`
+
+3. **Never switch branches** unless instructed by Beth. You work on the branch you were given.
+
+4. **Push to the epic branch** when your work is complete:
+   ```bash
+   git add -A
+   git commit -m "<epic-id>: description"
+   git pull origin "epic/<epic-id>" --rebase
+   git push origin "epic/<epic-id>"
+   ```
+
 ## Required MCP Servers
 
 This agent requires the **beads-mcp** server for issue tracking.

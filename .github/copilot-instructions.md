@@ -224,6 +224,17 @@ bd sync           # Sync beads database
 
 See `AGENTS.md` at the repo root for the full dual tracking system (beads + Backlog.md).
 
+## Branch Discipline
+
+All non-trivial work happens on **epic branches** (`epic/<epic-id>`). See `AGENTS.md` for the full Branch Discipline rules.
+
+Key points:
+- Beth correlates every request to an epic and ensures the correct branch is checked out before work begins
+- Epic branches are named `epic/<epic-id>` (e.g., `epic/beth-abc123`)
+- All commits use the prefix `<epic-id>: description`
+- Subagents inherit the epic branch and must verify before making changes
+- Multiple Beth instances work on different epic branches to avoid conflicts
+
 ## File Naming Conventions
 
 - Agents: `.github/agents/<name>.agent.md`

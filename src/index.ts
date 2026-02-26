@@ -42,3 +42,6 @@ export * from './cli/commands/index.js';
 
 // Tool abstraction layer
 export * from './tools/index.js';
+
+// Patch queue coordinator
+export * from './coordinator/index.js';

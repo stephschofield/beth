@@ -3,9 +3,9 @@
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
   "version": 1,
-  "serialNumber": "urn:uuid:01e03142-3ee1-48b4-ab32-9f9a3f9db85e",
+  "serialNumber": "urn:uuid:e9c839f4-d219-4248-929b-ccaf148a41e2",
   "metadata": {
-    "timestamp": "2026-02-20T02:23:32.210Z",
+    "timestamp": "2026-02-26T07:20:44.864Z",
     "tools": {
       "components": [
         {
@@ -82,8 +82,8 @@
     "component": {
       "type": "application",
       "name": "beth-copilot",
-      "version": "1.0.17",
-      "bom-ref": "beth-copilot@1.0.17",
+      "version": "1.0.18",
+      "bom-ref": "beth-copilot@1.0.18",
       "author": "Steph Schofield",
       "description": "Beth - A ruthless, hyper-competent AI orchestrator for GitHub Copilot multi-agent workflows",
       "licenses": [
@@ -94,7 +94,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/beth-copilot@1.0.17?vcs_url=git%2Bhttps%3A%2F%2Fgithub.com%2Fstephschofield%2Fbeth.git",
+      "purl": "pkg:npm/beth-copilot@1.0.18?vcs_url=git%2Bhttps%3A%2F%2Fgithub.com%2Fstephschofield%2Fbeth.git",
       "externalReferences": [
         {
           "url": "git+https://github.com/stephschofield/beth.git",
@@ -126,7 +126,7 @@
       "name": "identity",
       "group": "@azure",
       "version": "4.13.0",
-      "bom-ref": "beth-copilot@1.0.17|@azure/identity@4.13.0",
+      "bom-ref": "beth-copilot@1.0.18|@azure/identity@4.13.0",
       "author": "Microsoft Corporation",
       "description": "Provides credential implementations for Azure SDK libraries that can authenticate with Microsoft Entra ID",
       "scope": "optional",
@@ -179,7 +179,7 @@
       "name": "node",
       "group": "@types",
       "version": "20.19.33",
-      "bom-ref": "beth-copilot@1.0.17|@types/node@20.19.33",
+      "bom-ref": "beth-copilot@1.0.18|@types/node@20.19.33",
       "description": "TypeScript definitions for node",
       "licenses": [
         {
@@ -233,7 +233,7 @@
       "type": "library",
       "name": "gray-matter",
       "version": "4.0.3",
-      "bom-ref": "beth-copilot@1.0.17|gray-matter@4.0.3",
+      "bom-ref": "beth-copilot@1.0.18|gray-matter@4.0.3",
       "author": "Jon Schlinkert",
       "description": "Parse front-matter from a string or file. Fast, reliable and easy to use. Parses YAML front matter by default, but also has support for YAML, JSON, TOML or Coffee Front-Matter, with options to set custom delimiters. Used by metalsmith, assemble, verb and many other projects.",
       "licenses": [
@@ -284,7 +284,7 @@
       "type": "library",
       "name": "openai",
       "version": "6.22.0",
-      "bom-ref": "beth-copilot@1.0.17|openai@6.22.0",
+      "bom-ref": "beth-copilot@1.0.18|openai@6.22.0",
       "author": "OpenAI",
       "description": "The official TypeScript library for the OpenAI API",
       "scope": "optional",
@@ -336,7 +336,7 @@
       "type": "library",
       "name": "typescript",
       "version": "5.9.3",
-      "bom-ref": "beth-copilot@1.0.17|typescript@5.9.3",
+      "bom-ref": "beth-copilot@1.0.18|typescript@5.9.3",
       "author": "Microsoft Corp.",
       "description": "TypeScript is a language for application scale JavaScript development",
       "licenses": [
@@ -392,7 +392,7 @@
       "name": "abort-controller",
       "group": "@azure",
       "version": "2.1.2",
-      "bom-ref": "beth-copilot@1.0.17|@azure/abort-controller@2.1.2",
+      "bom-ref": "beth-copilot@1.0.18|@azure/abort-controller@2.1.2",
       "author": "Microsoft Corporation",
       "description": "Microsoft Azure SDK for JavaScript - Aborter",
       "scope": "optional",
@@ -445,7 +445,7 @@
       "name": "core-auth",
       "group": "@azure",
       "version": "1.10.1",
-      "bom-ref": "beth-copilot@1.0.17|@azure/core-auth@1.10.1",
+      "bom-ref": "beth-copilot@1.0.18|@azure/core-auth@1.10.1",
       "author": "Microsoft Corporation",
       "description": "Provides low-level interfaces and helper methods for authentication in Azure SDK",
       "scope": "optional",
@@ -498,7 +498,7 @@
       "name": "core-client",
       "group": "@azure",
       "version": "1.10.1",
-      "bom-ref": "beth-copilot@1.0.17|@azure/core-client@1.10.1",
+      "bom-ref": "beth-copilot@1.0.18|@azure/core-client@1.10.1",
       "author": "Microsoft Corporation",
       "description": "Core library for interfacing with AutoRest generated code",
       "scope": "optional",
@@ -551,7 +551,7 @@
       "name": "core-rest-pipeline",
       "group": "@azure",
       "version": "1.22.2",
-      "bom-ref": "beth-copilot@1.0.17|@azure/core-rest-pipeline@1.22.2",
+      "bom-ref": "beth-copilot@1.0.18|@azure/core-rest-pipeline@1.22.2",
       "author": "Microsoft Corporation",
       "description": "Isomorphic client library for making HTTP requests in node.js and browser.",
       "scope": "optional",
@@ -604,7 +604,7 @@
       "name": "core-tracing",
       "group": "@azure",
       "version": "1.3.1",
-      "bom-ref": "beth-copilot@1.0.17|@azure/core-tracing@1.3.1",
+      "bom-ref": "beth-copilot@1.0.18|@azure/core-tracing@1.3.1",
       "author": "Microsoft Corporation",
       "description": "Provides low-level interfaces and helper methods for tracing in Azure SDK",
       "scope": "optional",
@@ -657,7 +657,7 @@
       "name": "core-util",
       "group": "@azure",
       "version": "1.13.1",
-      "bom-ref": "beth-copilot@1.0.17|@azure/core-util@1.13.1",
+      "bom-ref": "beth-copilot@1.0.18|@azure/core-util@1.13.1",
       "author": "Microsoft Corporation",
       "description": "Core library for shared utility methods",
       "scope": "optional",
@@ -710,7 +710,7 @@
       "name": "logger",
       "group": "@azure",
       "version": "1.3.0",
-      "bom-ref": "beth-copilot@1.0.17|@azure/logger@1.3.0",
+      "bom-ref": "beth-copilot@1.0.18|@azure/logger@1.3.0",
       "author": "Microsoft Corporation",
       "description": "Microsoft Azure SDK for JavaScript - Logger",
       "scope": "optional",
@@ -763,7 +763,7 @@
       "name": "msal-browser",
       "group": "@azure",
       "version": "4.28.2",
-      "bom-ref": "beth-copilot@1.0.17|@azure/msal-browser@4.28.2",
+      "bom-ref": "beth-copilot@1.0.18|@azure/msal-browser@4.28.2",
       "author": "Microsoft",
       "description": "Microsoft Authentication Library for js",
       "scope": "optional",
@@ -816,7 +816,7 @@
       "name": "msal-node",
       "group": "@azure",
       "version": "3.8.7",
-      "bom-ref": "beth-copilot@1.0.17|@azure/msal-node@3.8.7",
+      "bom-ref": "beth-copilot@1.0.18|@azure/msal-node@3.8.7",
       "author": "Microsoft",
       "description": "Microsoft Authentication Library for Node",
       "scope": "optional",
@@ -868,7 +868,7 @@
       "type": "library",
       "name": "open",
       "version": "10.2.0",
-      "bom-ref": "beth-copilot@1.0.17|open@10.2.0",
+      "bom-ref": "beth-copilot@1.0.18|open@10.2.0",
       "author": "Sindre Sorhus",
       "description": "Open stuff like URLs, files, executables. Cross-platform.",
       "scope": "optional",
@@ -920,7 +920,7 @@
       "type": "library",
       "name": "tslib",
       "version": "2.8.1",
-      "bom-ref": "beth-copilot@1.0.17|tslib@2.8.1",
+      "bom-ref": "beth-copilot@1.0.18|tslib@2.8.1",
       "author": "Microsoft Corp.",
       "description": "Runtime library for TypeScript helper functions",
       "scope": "optional",
@@ -972,7 +972,7 @@
       "type": "library",
       "name": "undici-types",
       "version": "6.21.0",
-      "bom-ref": "beth-copilot@1.0.17|undici-types@6.21.0",
+      "bom-ref": "beth-copilot@1.0.18|undici-types@6.21.0",
       "description": "A stand-alone types package for Undici",
       "licenses": [
         {
@@ -1026,7 +1026,7 @@
       "type": "library",
       "name": "js-yaml",
       "version": "3.14.2",
-      "bom-ref": "beth-copilot@1.0.17|js-yaml@3.14.2",
+      "bom-ref": "beth-copilot@1.0.18|js-yaml@3.14.2",
       "author": "Vladimir Zapparov",
       "description": "YAML 1.2 parser and serializer",
       "licenses": [
@@ -1077,7 +1077,7 @@
       "type": "library",
       "name": "kind-of",
       "version": "6.0.3",
-      "bom-ref": "beth-copilot@1.0.17|kind-of@6.0.3",
+      "bom-ref": "beth-copilot@1.0.18|kind-of@6.0.3",
       "author": "Jon Schlinkert",
       "description": "Get the native type of a value.",
       "licenses": [
@@ -1128,7 +1128,7 @@
       "type": "library",
       "name": "section-matter",
       "version": "1.0.0",
-      "bom-ref": "beth-copilot@1.0.17|section-matter@1.0.0",
+      "bom-ref": "beth-copilot@1.0.18|section-matter@1.0.0",
       "author": "Jon Schlinkert",
       "description": "Like front-matter, but supports multiple sections in a document.",
       "licenses": [
@@ -1179,7 +1179,7 @@
       "type": "library",
       "name": "strip-bom-string",
       "version": "1.0.0",
-      "bom-ref": "beth-copilot@1.0.17|strip-bom-string@1.0.0",
+      "bom-ref": "beth-copilot@1.0.18|strip-bom-string@1.0.0",
       "author": "Jon Schlinkert",
       "description": "Strip a byte order mark (BOM) from a string.",
       "licenses": [
@@ -1231,7 +1231,7 @@
       "name": "ts-http-runtime",
       "group": "@typespec",
       "version": "0.3.3",
-      "bom-ref": "beth-copilot@1.0.17|@typespec/ts-http-runtime@0.3.3",
+      "bom-ref": "beth-copilot@1.0.18|@typespec/ts-http-runtime@0.3.3",
       "author": "Microsoft Corporation",
       "description": "Isomorphic client library for making HTTP requests in node.js and browser.",
       "scope": "optional",
@@ -1284,7 +1284,7 @@
       "name": "msal-common",
       "group": "@azure",
       "version": "15.14.2",
-      "bom-ref": "beth-copilot@1.0.17|@azure/msal-common@15.14.2",
+      "bom-ref": "beth-copilot@1.0.18|@azure/msal-common@15.14.2",
       "author": "Microsoft",
       "description": "Microsoft Authentication Library for js",
       "scope": "optional",
@@ -1336,7 +1336,7 @@
       "type": "library",
       "name": "jsonwebtoken",
       "version": "9.0.3",
-      "bom-ref": "beth-copilot@1.0.17|jsonwebtoken@9.0.3",
+      "bom-ref": "beth-copilot@1.0.18|jsonwebtoken@9.0.3",
       "author": "auth0",
       "description": "JSON Web Token implementation (symmetric and asymmetric)",
       "scope": "optional",
@@ -1388,7 +1388,7 @@
       "type": "library",
       "name": "uuid",
       "version": "8.3.2",
-      "bom-ref": "beth-copilot@1.0.17|uuid@8.3.2",
+      "bom-ref": "beth-copilot@1.0.18|uuid@8.3.2",
       "description": "RFC4122 (v1, v4, and v5) UUIDs",
       "scope": "optional",
       "licenses": [
@@ -1439,7 +1439,7 @@
       "type": "library",
       "name": "default-browser",
       "version": "5.5.0",
-      "bom-ref": "beth-copilot@1.0.17|default-browser@5.5.0",
+      "bom-ref": "beth-copilot@1.0.18|default-browser@5.5.0",
       "author": "Sindre Sorhus",
       "description": "Get the default browser",
       "scope": "optional",
@@ -1491,7 +1491,7 @@
       "type": "library",
       "name": "define-lazy-prop",
       "version": "3.0.0",
-      "bom-ref": "beth-copilot@1.0.17|define-lazy-prop@3.0.0",
+      "bom-ref": "beth-copilot@1.0.18|define-lazy-prop@3.0.0",
       "author": "Sindre Sorhus",
       "description": "Define a lazily evaluated property on an object",
       "scope": "optional",
@@ -1543,7 +1543,7 @@
       "type": "library",
       "name": "is-inside-container",
       "version": "1.0.0",
-      "bom-ref": "beth-copilot@1.0.17|is-inside-container@1.0.0",
+      "bom-ref": "beth-copilot@1.0.18|is-inside-container@1.0.0",
       "author": "Sindre Sorhus",
       "description": "Check if the process is running inside a container (Docker/Podman)",
       "scope": "optional",
@@ -1595,7 +1595,7 @@
       "type": "library",
       "name": "wsl-utils",
       "version": "0.1.0",
-      "bom-ref": "beth-copilot@1.0.17|wsl-utils@0.1.0",
+      "bom-ref": "beth-copilot@1.0.18|wsl-utils@0.1.0",
       "author": "Sindre Sorhus",
       "description": "Utilities for working with Windows Subsystem for Linux (WSL)",
       "scope": "optional",
@@ -1647,7 +1647,7 @@
       "type": "library",
       "name": "argparse",
       "version": "1.0.10",
-      "bom-ref": "beth-copilot@1.0.17|argparse@1.0.10",
+      "bom-ref": "beth-copilot@1.0.18|argparse@1.0.10",
       "description": "Very powerful CLI arguments parser. Native port of argparse - python's options parsing library",
       "licenses": [
         {
@@ -1697,7 +1697,7 @@
       "type": "library",
       "name": "esprima",
       "version": "4.0.1",
-      "bom-ref": "beth-copilot@1.0.17|esprima@4.0.1",
+      "bom-ref": "beth-copilot@1.0.18|esprima@4.0.1",
       "author": "Ariya Hidayat",
       "description": "ECMAScript parsing infrastructure for multipurpose analysis",
       "licenses": [
@@ -1748,7 +1748,7 @@
       "type": "library",
       "name": "extend-shallow",
       "version": "2.0.1",
-      "bom-ref": "beth-copilot@1.0.17|extend-shallow@2.0.1",
+      "bom-ref": "beth-copilot@1.0.18|extend-shallow@2.0.1",
       "author": "Jon Schlinkert",
       "description": "Extend an object with the properties of additional objects. node.js/javascript util.",
       "licenses": [
@@ -1799,7 +1799,7 @@
       "type": "library",
       "name": "http-proxy-agent",
       "version": "7.0.2",
-      "bom-ref": "beth-copilot@1.0.17|http-proxy-agent@7.0.2",
+      "bom-ref": "beth-copilot@1.0.18|http-proxy-agent@7.0.2",
       "author": "Nathan Rajlich",
       "description": "An HTTP(s) proxy `http.Agent` implementation for HTTP",
       "scope": "optional",
@@ -1851,7 +1851,7 @@
       "type": "library",
       "name": "https-proxy-agent",
       "version": "7.0.6",
-      "bom-ref": "beth-copilot@1.0.17|https-proxy-agent@7.0.6",
+      "bom-ref": "beth-copilot@1.0.18|https-proxy-agent@7.0.6",
       "author": "Nathan Rajlich",
       "description": "An HTTP(s) proxy `http.Agent` implementation for HTTPS",
       "scope": "optional",
@@ -1903,7 +1903,7 @@
       "type": "library",
       "name": "jws",
       "version": "4.0.1",
-      "bom-ref": "beth-copilot@1.0.17|jws@4.0.1",
+      "bom-ref": "beth-copilot@1.0.18|jws@4.0.1",
       "author": "Brian J Brennan",
       "description": "Implementation of JSON Web Signatures",
       "scope": "optional",
@@ -1955,7 +1955,7 @@
       "type": "library",
       "name": "lodash.includes",
       "version": "4.3.0",
-      "bom-ref": "beth-copilot@1.0.17|lodash.includes@4.3.0",
+      "bom-ref": "beth-copilot@1.0.18|lodash.includes@4.3.0",
       "author": "John-David Dalton",
       "description": "The lodash method `_.includes` exported as a module.",
       "scope": "optional",
@@ -2007,7 +2007,7 @@
       "type": "library",
       "name": "lodash.isboolean",
       "version": "3.0.3",
-      "bom-ref": "beth-copilot@1.0.17|lodash.isboolean@3.0.3",
+      "bom-ref": "beth-copilot@1.0.18|lodash.isboolean@3.0.3",
       "author": "John-David Dalton",
       "description": "The lodash method `_.isBoolean` exported as a module.",
       "scope": "optional",
@@ -2059,7 +2059,7 @@
       "type": "library",
       "name": "lodash.isinteger",
       "version": "4.0.4",
-      "bom-ref": "beth-copilot@1.0.17|lodash.isinteger@4.0.4",
+      "bom-ref": "beth-copilot@1.0.18|lodash.isinteger@4.0.4",
       "author": "John-David Dalton",
       "description": "The lodash method `_.isInteger` exported as a module.",
       "scope": "optional",
@@ -2111,7 +2111,7 @@
       "type": "library",
       "name": "lodash.isnumber",
       "version": "3.0.3",
-      "bom-ref": "beth-copilot@1.0.17|lodash.isnumber@3.0.3",
+      "bom-ref": "beth-copilot@1.0.18|lodash.isnumber@3.0.3",
       "author": "John-David Dalton",
       "description": "The lodash method `_.isNumber` exported as a module.",
       "scope": "optional",
@@ -2163,7 +2163,7 @@
       "type": "library",
       "name": "lodash.isplainobject",
       "version": "4.0.6",
-      "bom-ref": "beth-copilot@1.0.17|lodash.isplainobject@4.0.6",
+      "bom-ref": "beth-copilot@1.0.18|lodash.isplainobject@4.0.6",
       "author": "John-David Dalton",
       "description": "The lodash method `_.isPlainObject` exported as a module.",
       "scope": "optional",
@@ -2215,7 +2215,7 @@
       "type": "library",
       "name": "lodash.isstring",
       "version": "4.0.1",
-      "bom-ref": "beth-copilot@1.0.17|lodash.isstring@4.0.1",
+      "bom-ref": "beth-copilot@1.0.18|lodash.isstring@4.0.1",
       "author": "John-David Dalton",
       "description": "The lodash method `_.isString` exported as a module.",
       "scope": "optional",
@@ -2267,7 +2267,7 @@
       "type": "library",
       "name": "lodash.once",
       "version": "4.1.1",
-      "bom-ref": "beth-copilot@1.0.17|lodash.once@4.1.1",
+      "bom-ref": "beth-copilot@1.0.18|lodash.once@4.1.1",
       "author": "John-David Dalton",
       "description": "The lodash method `_.once` exported as a module.",
       "scope": "optional",
@@ -2319,7 +2319,7 @@
       "type": "library",
       "name": "ms",
       "version": "2.1.3",
-      "bom-ref": "beth-copilot@1.0.17|ms@2.1.3",
+      "bom-ref": "beth-copilot@1.0.18|ms@2.1.3",
       "description": "Tiny millisecond conversion utility",
       "scope": "optional",
       "licenses": [
@@ -2370,7 +2370,7 @@
       "type": "library",
       "name": "semver",
       "version": "7.7.4",
-      "bom-ref": "beth-copilot@1.0.17|semver@7.7.4",
+      "bom-ref": "beth-copilot@1.0.18|semver@7.7.4",
       "author": "GitHub Inc.",
       "description": "The semantic version parser used by npm.",
       "scope": "optional",
@@ -2422,7 +2422,7 @@
       "type": "library",
       "name": "bundle-name",
       "version": "4.1.0",
-      "bom-ref": "beth-copilot@1.0.17|bundle-name@4.1.0",
+      "bom-ref": "beth-copilot@1.0.18|bundle-name@4.1.0",
       "author": "Sindre Sorhus",
       "description": "Get bundle name from a bundle identifier (macOS): `com.apple.Safari` → `Safari`",
       "scope": "optional",
@@ -2474,7 +2474,7 @@
       "type": "library",
       "name": "default-browser-id",
       "version": "5.0.1",
-      "bom-ref": "beth-copilot@1.0.17|default-browser-id@5.0.1",
+      "bom-ref": "beth-copilot@1.0.18|default-browser-id@5.0.1",
       "author": "Sindre Sorhus",
       "description": "Get the bundle identifier of the default browser (macOS). Example: com.apple.Safari",
       "scope": "optional",
@@ -2526,7 +2526,7 @@
       "type": "library",
       "name": "is-docker",
       "version": "3.0.0",
-      "bom-ref": "beth-copilot@1.0.17|is-docker@3.0.0",
+      "bom-ref": "beth-copilot@1.0.18|is-docker@3.0.0",
       "author": "Sindre Sorhus",
       "description": "Check if the process is running inside a Docker container",
       "scope": "optional",
@@ -2578,7 +2578,7 @@
       "type": "library",
       "name": "is-wsl",
       "version": "3.1.1",
-      "bom-ref": "beth-copilot@1.0.17|is-wsl@3.1.1",
+      "bom-ref": "beth-copilot@1.0.18|is-wsl@3.1.1",
       "author": "Sindre Sorhus",
       "description": "Check if the process is running inside Windows Subsystem for Linux (Bash on Windows)",
       "scope": "optional",
@@ -2630,7 +2630,7 @@
       "type": "library",
       "name": "sprintf-js",
       "version": "1.0.3",
-      "bom-ref": "beth-copilot@1.0.17|sprintf-js@1.0.3",
+      "bom-ref": "beth-copilot@1.0.18|sprintf-js@1.0.3",
       "author": "Alexandru Marasteanu",
       "description": "JavaScript sprintf implementation",
       "licenses": [
@@ -2681,7 +2681,7 @@
       "type": "library",
       "name": "is-extendable",
       "version": "0.1.1",
-      "bom-ref": "beth-copilot@1.0.17|is-extendable@0.1.1",
+      "bom-ref": "beth-copilot@1.0.18|is-extendable@0.1.1",
       "author": "Jon Schlinkert",
       "description": "Returns true if a value is any of the object types: array, regexp, plain object, function or date. This is useful for determining if a value can be extended, e.g. \"can the value have keys?\"",
       "licenses": [
@@ -2732,7 +2732,7 @@
       "type": "library",
       "name": "agent-base",
       "version": "7.1.4",
-      "bom-ref": "beth-copilot@1.0.17|agent-base@7.1.4",
+      "bom-ref": "beth-copilot@1.0.18|agent-base@7.1.4",
       "author": "Nathan Rajlich",
       "description": "Turn a function into an `http.Agent` instance",
       "scope": "optional",
@@ -2784,7 +2784,7 @@
       "type": "library",
       "name": "debug",
       "version": "4.4.3",
-      "bom-ref": "beth-copilot@1.0.17|debug@4.4.3",
+      "bom-ref": "beth-copilot@1.0.18|debug@4.4.3",
       "author": "Josh Junon",
       "description": "Lightweight debugging utility for Node.js and the browser",
       "scope": "optional",
@@ -2836,7 +2836,7 @@
       "type": "library",
       "name": "jwa",
       "version": "2.0.1",
-      "bom-ref": "beth-copilot@1.0.17|jwa@2.0.1",
+      "bom-ref": "beth-copilot@1.0.18|jwa@2.0.1",
       "author": "Brian J. Brennan",
       "description": "JWA implementation (supports all JWS algorithms)",
       "scope": "optional",
@@ -2888,7 +2888,7 @@
       "type": "library",
       "name": "safe-buffer",
       "version": "5.2.1",
-      "bom-ref": "beth-copilot@1.0.17|safe-buffer@5.2.1",
+      "bom-ref": "beth-copilot@1.0.18|safe-buffer@5.2.1",
       "author": "Feross Aboukhadijeh",
       "description": "Safer Node.js Buffer API",
       "scope": "optional",
@@ -2940,7 +2940,7 @@
       "type": "library",
       "name": "run-applescript",
       "version": "7.1.0",
-      "bom-ref": "beth-copilot@1.0.17|run-applescript@7.1.0",
+      "bom-ref": "beth-copilot@1.0.18|run-applescript@7.1.0",
       "author": "Sindre Sorhus",
       "description": "Run AppleScript and get the result",
       "scope": "optional",
@@ -2992,7 +2992,7 @@
       "type": "library",
       "name": "buffer-equal-constant-time",
       "version": "1.0.1",
-      "bom-ref": "beth-copilot@1.0.17|buffer-equal-constant-time@1.0.1",
+      "bom-ref": "beth-copilot@1.0.18|buffer-equal-constant-time@1.0.1",
       "author": "GoInstant Inc., a salesforce.com company",
       "description": "Constant-time comparison of Buffers",
       "scope": "optional",
@@ -3044,7 +3044,7 @@
       "type": "library",
       "name": "ecdsa-sig-formatter",
       "version": "1.0.11",
-      "bom-ref": "beth-copilot@1.0.17|ecdsa-sig-formatter@1.0.11",
+      "bom-ref": "beth-copilot@1.0.18|ecdsa-sig-formatter@1.0.11",
       "author": "D2L Corporation",
       "description": "Translate ECDSA signatures between ASN.1/DER and JOSE-style concatenation",
       "scope": "optional",
@@ -3095,328 +3095,328 @@
   ],
   "dependencies": [
     {
-      "ref": "beth-copilot@1.0.17",
+      "ref": "beth-copilot@1.0.18",
       "dependsOn": [
-        "beth-copilot@1.0.17|@azure/identity@4.13.0",
-        "beth-copilot@1.0.17|@types/node@20.19.33",
-        "beth-copilot@1.0.17|gray-matter@4.0.3",
-        "beth-copilot@1.0.17|openai@6.22.0",
-        "beth-copilot@1.0.17|typescript@5.9.3"
+        "beth-copilot@1.0.18|@azure/identity@4.13.0",
+        "beth-copilot@1.0.18|@types/node@20.19.33",
+        "beth-copilot@1.0.18|gray-matter@4.0.3",
+        "beth-copilot@1.0.18|openai@6.22.0",
+        "beth-copilot@1.0.18|typescript@5.9.3"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|@azure/identity@4.13.0",
+      "ref": "beth-copilot@1.0.18|@azure/identity@4.13.0",
       "dependsOn": [
-        "beth-copilot@1.0.17|@azure/abort-controller@2.1.2",
-        "beth-copilot@1.0.17|@azure/core-auth@1.10.1",
-        "beth-copilot@1.0.17|@azure/core-client@1.10.1",
-        "beth-copilot@1.0.17|@azure/core-rest-pipeline@1.22.2",
-        "beth-copilot@1.0.17|@azure/core-tracing@1.3.1",
-        "beth-copilot@1.0.17|@azure/core-util@1.13.1",
-        "beth-copilot@1.0.17|@azure/logger@1.3.0",
-        "beth-copilot@1.0.17|@azure/msal-browser@4.28.2",
-        "beth-copilot@1.0.17|@azure/msal-node@3.8.7",
-        "beth-copilot@1.0.17|open@10.2.0",
-        "beth-copilot@1.0.17|tslib@2.8.1"
+        "beth-copilot@1.0.18|@azure/abort-controller@2.1.2",
+        "beth-copilot@1.0.18|@azure/core-auth@1.10.1",
+        "beth-copilot@1.0.18|@azure/core-client@1.10.1",
+        "beth-copilot@1.0.18|@azure/core-rest-pipeline@1.22.2",
+        "beth-copilot@1.0.18|@azure/core-tracing@1.3.1",
+        "beth-copilot@1.0.18|@azure/core-util@1.13.1",
+        "beth-copilot@1.0.18|@azure/logger@1.3.0",
+        "beth-copilot@1.0.18|@azure/msal-browser@4.28.2",
+        "beth-copilot@1.0.18|@azure/msal-node@3.8.7",
+        "beth-copilot@1.0.18|open@10.2.0",
+        "beth-copilot@1.0.18|tslib@2.8.1"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|@types/node@20.19.33",
+      "ref": "beth-copilot@1.0.18|@types/node@20.19.33",
       "dependsOn": [
-        "beth-copilot@1.0.17|undici-types@6.21.0"
+        "beth-copilot@1.0.18|undici-types@6.21.0"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|gray-matter@4.0.3",
+      "ref": "beth-copilot@1.0.18|gray-matter@4.0.3",
       "dependsOn": [
-        "beth-copilot@1.0.17|js-yaml@3.14.2",
-        "beth-copilot@1.0.17|kind-of@6.0.3",
-        "beth-copilot@1.0.17|section-matter@1.0.0",
-        "beth-copilot@1.0.17|strip-bom-string@1.0.0"
+        "beth-copilot@1.0.18|js-yaml@3.14.2",
+        "beth-copilot@1.0.18|kind-of@6.0.3",
+        "beth-copilot@1.0.18|section-matter@1.0.0",
+        "beth-copilot@1.0.18|strip-bom-string@1.0.0"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|openai@6.22.0"
+      "ref": "beth-copilot@1.0.18|openai@6.22.0"
     },
     {
-      "ref": "beth-copilot@1.0.17|typescript@5.9.3"
+      "ref": "beth-copilot@1.0.18|typescript@5.9.3"
     },
     {
-      "ref": "beth-copilot@1.0.17|@azure/abort-controller@2.1.2",
+      "ref": "beth-copilot@1.0.18|@azure/abort-controller@2.1.2",
       "dependsOn": [
-        "beth-copilot@1.0.17|tslib@2.8.1"
+        "beth-copilot@1.0.18|tslib@2.8.1"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|@azure/core-auth@1.10.1",
+      "ref": "beth-copilot@1.0.18|@azure/core-auth@1.10.1",
       "dependsOn": [
-        "beth-copilot@1.0.17|@azure/abort-controller@2.1.2",
-        "beth-copilot@1.0.17|@azure/core-util@1.13.1",
-        "beth-copilot@1.0.17|tslib@2.8.1"
+        "beth-copilot@1.0.18|@azure/abort-controller@2.1.2",
+        "beth-copilot@1.0.18|@azure/core-util@1.13.1",
+        "beth-copilot@1.0.18|tslib@2.8.1"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|@azure/core-client@1.10.1",
+      "ref": "beth-copilot@1.0.18|@azure/core-client@1.10.1",
       "dependsOn": [
-        "beth-copilot@1.0.17|@azure/abort-controller@2.1.2",
-        "beth-copilot@1.0.17|@azure/core-auth@1.10.1",
-        "beth-copilot@1.0.17|@azure/core-rest-pipeline@1.22.2",
-        "beth-copilot@1.0.17|@azure/core-tracing@1.3.1",
-        "beth-copilot@1.0.17|@azure/core-util@1.13.1",
-        "beth-copilot@1.0.17|@azure/logger@1.3.0",
-        "beth-copilot@1.0.17|tslib@2.8.1"
+        "beth-copilot@1.0.18|@azure/abort-controller@2.1.2",
+        "beth-copilot@1.0.18|@azure/core-auth@1.10.1",
+        "beth-copilot@1.0.18|@azure/core-rest-pipeline@1.22.2",
+        "beth-copilot@1.0.18|@azure/core-tracing@1.3.1",
+        "beth-copilot@1.0.18|@azure/core-util@1.13.1",
+        "beth-copilot@1.0.18|@azure/logger@1.3.0",
+        "beth-copilot@1.0.18|tslib@2.8.1"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|@azure/core-rest-pipeline@1.22.2",
+      "ref": "beth-copilot@1.0.18|@azure/core-rest-pipeline@1.22.2",
       "dependsOn": [
-        "beth-copilot@1.0.17|@azure/abort-controller@2.1.2",
-        "beth-copilot@1.0.17|@azure/core-auth@1.10.1",
-        "beth-copilot@1.0.17|@azure/core-tracing@1.3.1",
-        "beth-copilot@1.0.17|@azure/core-util@1.13.1",
-        "beth-copilot@1.0.17|@azure/logger@1.3.0",
-        "beth-copilot@1.0.17|@typespec/ts-http-runtime@0.3.3",
-        "beth-copilot@1.0.17|tslib@2.8.1"
+        "beth-copilot@1.0.18|@azure/abort-controller@2.1.2",
+        "beth-copilot@1.0.18|@azure/core-auth@1.10.1",
+        "beth-copilot@1.0.18|@azure/core-tracing@1.3.1",
+        "beth-copilot@1.0.18|@azure/core-util@1.13.1",
+        "beth-copilot@1.0.18|@azure/logger@1.3.0",
+        "beth-copilot@1.0.18|@typespec/ts-http-runtime@0.3.3",
+        "beth-copilot@1.0.18|tslib@2.8.1"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|@azure/core-tracing@1.3.1",
+      "ref": "beth-copilot@1.0.18|@azure/core-tracing@1.3.1",
       "dependsOn": [
-        "beth-copilot@1.0.17|tslib@2.8.1"
+        "beth-copilot@1.0.18|tslib@2.8.1"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|@azure/core-util@1.13.1",
+      "ref": "beth-copilot@1.0.18|@azure/core-util@1.13.1",
       "dependsOn": [
-        "beth-copilot@1.0.17|@azure/abort-controller@2.1.2",
-        "beth-copilot@1.0.17|@typespec/ts-http-runtime@0.3.3",
-        "beth-copilot@1.0.17|tslib@2.8.1"
+        "beth-copilot@1.0.18|@azure/abort-controller@2.1.2",
+        "beth-copilot@1.0.18|@typespec/ts-http-runtime@0.3.3",
+        "beth-copilot@1.0.18|tslib@2.8.1"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|@azure/logger@1.3.0",
+      "ref": "beth-copilot@1.0.18|@azure/logger@1.3.0",
       "dependsOn": [
-        "beth-copilot@1.0.17|@typespec/ts-http-runtime@0.3.3",
-        "beth-copilot@1.0.17|tslib@2.8.1"
+        "beth-copilot@1.0.18|@typespec/ts-http-runtime@0.3.3",
+        "beth-copilot@1.0.18|tslib@2.8.1"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|@azure/msal-browser@4.28.2",
+      "ref": "beth-copilot@1.0.18|@azure/msal-browser@4.28.2",
       "dependsOn": [
-        "beth-copilot@1.0.17|@azure/msal-common@15.14.2"
+        "beth-copilot@1.0.18|@azure/msal-common@15.14.2"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|@azure/msal-node@3.8.7",
+      "ref": "beth-copilot@1.0.18|@azure/msal-node@3.8.7",
       "dependsOn": [
-        "beth-copilot@1.0.17|@azure/msal-common@15.14.2",
-        "beth-copilot@1.0.17|jsonwebtoken@9.0.3",
-        "beth-copilot@1.0.17|uuid@8.3.2"
+        "beth-copilot@1.0.18|@azure/msal-common@15.14.2",
+        "beth-copilot@1.0.18|jsonwebtoken@9.0.3",
+        "beth-copilot@1.0.18|uuid@8.3.2"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|open@10.2.0",
+      "ref": "beth-copilot@1.0.18|open@10.2.0",
       "dependsOn": [
-        "beth-copilot@1.0.17|default-browser@5.5.0",
-        "beth-copilot@1.0.17|define-lazy-prop@3.0.0",
-        "beth-copilot@1.0.17|is-inside-container@1.0.0",
-        "beth-copilot@1.0.17|wsl-utils@0.1.0"
+        "beth-copilot@1.0.18|default-browser@5.5.0",
+        "beth-copilot@1.0.18|define-lazy-prop@3.0.0",
+        "beth-copilot@1.0.18|is-inside-container@1.0.0",
+        "beth-copilot@1.0.18|wsl-utils@0.1.0"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|tslib@2.8.1"
+      "ref": "beth-copilot@1.0.18|tslib@2.8.1"
     },
     {
-      "ref": "beth-copilot@1.0.17|undici-types@6.21.0"
+      "ref": "beth-copilot@1.0.18|undici-types@6.21.0"
     },
     {
-      "ref": "beth-copilot@1.0.17|js-yaml@3.14.2",
+      "ref": "beth-copilot@1.0.18|js-yaml@3.14.2",
       "dependsOn": [
-        "beth-copilot@1.0.17|argparse@1.0.10",
-        "beth-copilot@1.0.17|esprima@4.0.1"
+        "beth-copilot@1.0.18|argparse@1.0.10",
+        "beth-copilot@1.0.18|esprima@4.0.1"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|kind-of@6.0.3"
+      "ref": "beth-copilot@1.0.18|kind-of@6.0.3"
     },
     {
-      "ref": "beth-copilot@1.0.17|section-matter@1.0.0",
+      "ref": "beth-copilot@1.0.18|section-matter@1.0.0",
       "dependsOn": [
-        "beth-copilot@1.0.17|extend-shallow@2.0.1",
-        "beth-copilot@1.0.17|kind-of@6.0.3"
+        "beth-copilot@1.0.18|extend-shallow@2.0.1",
+        "beth-copilot@1.0.18|kind-of@6.0.3"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|strip-bom-string@1.0.0"
+      "ref": "beth-copilot@1.0.18|strip-bom-string@1.0.0"
     },
     {
-      "ref": "beth-copilot@1.0.17|@typespec/ts-http-runtime@0.3.3",
+      "ref": "beth-copilot@1.0.18|@typespec/ts-http-runtime@0.3.3",
       "dependsOn": [
-        "beth-copilot@1.0.17|http-proxy-agent@7.0.2",
-        "beth-copilot@1.0.17|https-proxy-agent@7.0.6",
-        "beth-copilot@1.0.17|tslib@2.8.1"
+        "beth-copilot@1.0.18|http-proxy-agent@7.0.2",
+        "beth-copilot@1.0.18|https-proxy-agent@7.0.6",
+        "beth-copilot@1.0.18|tslib@2.8.1"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|@azure/msal-common@15.14.2"
+      "ref": "beth-copilot@1.0.18|@azure/msal-common@15.14.2"
     },
     {
-      "ref": "beth-copilot@1.0.17|jsonwebtoken@9.0.3",
+      "ref": "beth-copilot@1.0.18|jsonwebtoken@9.0.3",
       "dependsOn": [
-        "beth-copilot@1.0.17|jws@4.0.1",
-        "beth-copilot@1.0.17|lodash.includes@4.3.0",
-        "beth-copilot@1.0.17|lodash.isboolean@3.0.3",
-        "beth-copilot@1.0.17|lodash.isinteger@4.0.4",
-        "beth-copilot@1.0.17|lodash.isnumber@3.0.3",
-        "beth-copilot@1.0.17|lodash.isplainobject@4.0.6",
-        "beth-copilot@1.0.17|lodash.isstring@4.0.1",
-        "beth-copilot@1.0.17|lodash.once@4.1.1",
-        "beth-copilot@1.0.17|ms@2.1.3",
-        "beth-copilot@1.0.17|semver@7.7.4"
+        "beth-copilot@1.0.18|jws@4.0.1",
+        "beth-copilot@1.0.18|lodash.includes@4.3.0",
+        "beth-copilot@1.0.18|lodash.isboolean@3.0.3",
+        "beth-copilot@1.0.18|lodash.isinteger@4.0.4",
+        "beth-copilot@1.0.18|lodash.isnumber@3.0.3",
+        "beth-copilot@1.0.18|lodash.isplainobject@4.0.6",
+        "beth-copilot@1.0.18|lodash.isstring@4.0.1",
+        "beth-copilot@1.0.18|lodash.once@4.1.1",
+        "beth-copilot@1.0.18|ms@2.1.3",
+        "beth-copilot@1.0.18|semver@7.7.4"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|uuid@8.3.2"
+      "ref": "beth-copilot@1.0.18|uuid@8.3.2"
     },
     {
-      "ref": "beth-copilot@1.0.17|default-browser@5.5.0",
+      "ref": "beth-copilot@1.0.18|default-browser@5.5.0",
       "dependsOn": [
-        "beth-copilot@1.0.17|bundle-name@4.1.0",
-        "beth-copilot@1.0.17|default-browser-id@5.0.1"
+        "beth-copilot@1.0.18|bundle-name@4.1.0",
+        "beth-copilot@1.0.18|default-browser-id@5.0.1"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|define-lazy-prop@3.0.0"
+      "ref": "beth-copilot@1.0.18|define-lazy-prop@3.0.0"
     },
     {
-      "ref": "beth-copilot@1.0.17|is-inside-container@1.0.0",
+      "ref": "beth-copilot@1.0.18|is-inside-container@1.0.0",
       "dependsOn": [
-        "beth-copilot@1.0.17|is-docker@3.0.0"
+        "beth-copilot@1.0.18|is-docker@3.0.0"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|wsl-utils@0.1.0",
+      "ref": "beth-copilot@1.0.18|wsl-utils@0.1.0",
       "dependsOn": [
-        "beth-copilot@1.0.17|is-wsl@3.1.1"
+        "beth-copilot@1.0.18|is-wsl@3.1.1"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|argparse@1.0.10",
+      "ref": "beth-copilot@1.0.18|argparse@1.0.10",
       "dependsOn": [
-        "beth-copilot@1.0.17|sprintf-js@1.0.3"
+        "beth-copilot@1.0.18|sprintf-js@1.0.3"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|esprima@4.0.1"
+      "ref": "beth-copilot@1.0.18|esprima@4.0.1"
     },
     {
-      "ref": "beth-copilot@1.0.17|extend-shallow@2.0.1",
+      "ref": "beth-copilot@1.0.18|extend-shallow@2.0.1",
       "dependsOn": [
-        "beth-copilot@1.0.17|is-extendable@0.1.1"
+        "beth-copilot@1.0.18|is-extendable@0.1.1"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|http-proxy-agent@7.0.2",
+      "ref": "beth-copilot@1.0.18|http-proxy-agent@7.0.2",
       "dependsOn": [
-        "beth-copilot@1.0.17|agent-base@7.1.4",
-        "beth-copilot@1.0.17|debug@4.4.3"
+        "beth-copilot@1.0.18|agent-base@7.1.4",
+        "beth-copilot@1.0.18|debug@4.4.3"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|https-proxy-agent@7.0.6",
+      "ref": "beth-copilot@1.0.18|https-proxy-agent@7.0.6",
       "dependsOn": [
-        "beth-copilot@1.0.17|agent-base@7.1.4",
-        "beth-copilot@1.0.17|debug@4.4.3"
+        "beth-copilot@1.0.18|agent-base@7.1.4",
+        "beth-copilot@1.0.18|debug@4.4.3"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|jws@4.0.1",
+      "ref": "beth-copilot@1.0.18|jws@4.0.1",
       "dependsOn": [
-        "beth-copilot@1.0.17|jwa@2.0.1",
-        "beth-copilot@1.0.17|safe-buffer@5.2.1"
+        "beth-copilot@1.0.18|jwa@2.0.1",
+        "beth-copilot@1.0.18|safe-buffer@5.2.1"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|lodash.includes@4.3.0"
+      "ref": "beth-copilot@1.0.18|lodash.includes@4.3.0"
     },
     {
-      "ref": "beth-copilot@1.0.17|lodash.isboolean@3.0.3"
+      "ref": "beth-copilot@1.0.18|lodash.isboolean@3.0.3"
     },
     {
-      "ref": "beth-copilot@1.0.17|lodash.isinteger@4.0.4"
+      "ref": "beth-copilot@1.0.18|lodash.isinteger@4.0.4"
     },
     {
-      "ref": "beth-copilot@1.0.17|lodash.isnumber@3.0.3"
+      "ref": "beth-copilot@1.0.18|lodash.isnumber@3.0.3"
     },
     {
-      "ref": "beth-copilot@1.0.17|lodash.isplainobject@4.0.6"
+      "ref": "beth-copilot@1.0.18|lodash.isplainobject@4.0.6"
     },
     {
-      "ref": "beth-copilot@1.0.17|lodash.isstring@4.0.1"
+      "ref": "beth-copilot@1.0.18|lodash.isstring@4.0.1"
     },
     {
-      "ref": "beth-copilot@1.0.17|lodash.once@4.1.1"
+      "ref": "beth-copilot@1.0.18|lodash.once@4.1.1"
     },
     {
-      "ref": "beth-copilot@1.0.17|ms@2.1.3"
+      "ref": "beth-copilot@1.0.18|ms@2.1.3"
     },
     {
-      "ref": "beth-copilot@1.0.17|semver@7.7.4"
+      "ref": "beth-copilot@1.0.18|semver@7.7.4"
     },
     {
-      "ref": "beth-copilot@1.0.17|bundle-name@4.1.0",
+      "ref": "beth-copilot@1.0.18|bundle-name@4.1.0",
       "dependsOn": [
-        "beth-copilot@1.0.17|run-applescript@7.1.0"
+        "beth-copilot@1.0.18|run-applescript@7.1.0"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|default-browser-id@5.0.1"
+      "ref": "beth-copilot@1.0.18|default-browser-id@5.0.1"
     },
     {
-      "ref": "beth-copilot@1.0.17|is-docker@3.0.0"
+      "ref": "beth-copilot@1.0.18|is-docker@3.0.0"
     },
     {
-      "ref": "beth-copilot@1.0.17|is-wsl@3.1.1",
+      "ref": "beth-copilot@1.0.18|is-wsl@3.1.1",
       "dependsOn": [
-        "beth-copilot@1.0.17|is-inside-container@1.0.0"
+        "beth-copilot@1.0.18|is-inside-container@1.0.0"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|sprintf-js@1.0.3"
+      "ref": "beth-copilot@1.0.18|sprintf-js@1.0.3"
     },
     {
-      "ref": "beth-copilot@1.0.17|is-extendable@0.1.1"
+      "ref": "beth-copilot@1.0.18|is-extendable@0.1.1"
     },
     {
-      "ref": "beth-copilot@1.0.17|agent-base@7.1.4"
+      "ref": "beth-copilot@1.0.18|agent-base@7.1.4"
     },
     {
-      "ref": "beth-copilot@1.0.17|debug@4.4.3",
+      "ref": "beth-copilot@1.0.18|debug@4.4.3",
       "dependsOn": [
-        "beth-copilot@1.0.17|ms@2.1.3"
+        "beth-copilot@1.0.18|ms@2.1.3"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|jwa@2.0.1",
+      "ref": "beth-copilot@1.0.18|jwa@2.0.1",
       "dependsOn": [
-        "beth-copilot@1.0.17|buffer-equal-constant-time@1.0.1",
-        "beth-copilot@1.0.17|ecdsa-sig-formatter@1.0.11",
-        "beth-copilot@1.0.17|safe-buffer@5.2.1"
+        "beth-copilot@1.0.18|buffer-equal-constant-time@1.0.1",
+        "beth-copilot@1.0.18|ecdsa-sig-formatter@1.0.11",
+        "beth-copilot@1.0.18|safe-buffer@5.2.1"
       ]
     },
     {
-      "ref": "beth-copilot@1.0.17|safe-buffer@5.2.1"
+      "ref": "beth-copilot@1.0.18|safe-buffer@5.2.1"
     },
     {
-      "ref": "beth-copilot@1.0.17|run-applescript@7.1.0"
+      "ref": "beth-copilot@1.0.18|run-applescript@7.1.0"
     },
     {
-      "ref": "beth-copilot@1.0.17|buffer-equal-constant-time@1.0.1"
+      "ref": "beth-copilot@1.0.18|buffer-equal-constant-time@1.0.1"
     },
     {
-      "ref": "beth-copilot@1.0.17|ecdsa-sig-formatter@1.0.11",
+      "ref": "beth-copilot@1.0.18|ecdsa-sig-formatter@1.0.11",
       "dependsOn": [
-        "beth-copilot@1.0.17|safe-buffer@5.2.1"
+        "beth-copilot@1.0.18|safe-buffer@5.2.1"
       ]
     }
   ]
