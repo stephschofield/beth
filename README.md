@@ -660,13 +660,34 @@ Is it magic? No. It's just competence with very good hair.
 - **Node.js** ≥ 18
 - **VS Code** with GitHub Copilot extension
 - **GitHub Copilot Chat** in Agent mode
-- [**beads**](https://github.com/steveyegge/beads) for task tracking (`bd` CLI)
+- [**beads**](https://github.com/steveyegge/beads) for task tracking (`bd` CLI + `beads-mcp` server)
 
 ### Installing Beads
 
+**CLI** (for shell operations):
+
 ```bash
+# npm (cross-platform, recommended)
+npm install -g @beads/bd
+
+# Or: Homebrew (macOS/Linux)
+brew install beads
+
+# Or: Quick install script
 curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash
 ```
+
+**MCP Server** (for VS Code agent integration):
+
+```bash
+# Recommended (requires uv: https://docs.astral.sh/uv/)
+uv tool install beads-mcp
+
+# Alternative
+pip install beads-mcp
+```
+
+The MCP server is configured in `.vscode/mcp.json` (created by `npx beth-copilot init`).
 
 **CGO Troubleshooting (Linux/WSL):** Beads uses Dolt (a Git-for-data database) which requires CGO. If `bd init` or `bd doctor` fails with CGO-related errors:
 

@@ -20,16 +20,65 @@ Then add servers as needed.
 
 ## Available MCP Servers
 
-| Server | Purpose | Used By |
-|--------|---------|---------|
-| **shadcn/ui** | Component browsing, installation | Frontend Engineer |
-| **Playwright** | Browser automation, E2E testing | Tester, Frontend Engineer |
-| **Azure** | Cloud resource management | Developer, Security Reviewer |
-| **Web Search** | Internet research | Researcher |
+| Server | Purpose | Used By | Required? |
+|--------|---------|---------|----------|
+| **[beads](https://github.com/steveyegge/beads)** | Issue tracking, task coordination | All agents (via Beth) | **Yes** |
+| **shadcn/ui** | Component browsing, installation | Frontend Engineer | No |
+| **Playwright** | Browser automation, E2E testing | Tester, Frontend Engineer | No |
+| **Azure** | Cloud resource management | Developer, Security Reviewer | No |
+| **Web Search** | Internet research | Researcher | No |
 
 ---
 
 ## Server Configurations
+
+### Beads (Required)
+
+[Beads](https://github.com/steveyegge/beads) is the issue tracking MCP server that Beth and all agents use to coordinate work, manage dependencies, and track tasks. Without it, the multi-agent workflow doesn't function.
+
+**Install the MCP server:**
+
+```bash
+# Recommended
+uv tool install beads-mcp
+
+# Alternative
+pip install beads-mcp
+```
+
+> **Note:** You also need the `bd` CLI for shell-based operations. See [Issue Tracking Setup](INSTALLATION.md#issue-tracking-setup) for CLI installation.
+
+**Configure in `.vscode/mcp.json`:**
+
+```json
+{
+  "servers": {
+    "beads": {
+      "command": "beads-mcp"
+    }
+  }
+}
+```
+
+**Verify it's running:**
+
+1. Open VS Code
+2. Check the Output panel → "MCP Servers"
+3. You should see `beads` listed and running
+4. Or run `bd doctor` in a terminal
+
+**Capabilities:**
+
+- Create, close, list, and inspect issues
+- Dependency-aware task management
+- Epic/subtask hierarchies
+- Ready-queue for unblocked work
+
+**Without MCP:** Agents fall back to the `bd` CLI via the terminal, but MCP integration is faster and provides lower-latency tool access.
+
+Learn more: [steveyegge/beads on GitHub](https://github.com/steveyegge/beads)
+
+---
 
 ### shadcn/ui (Recommended)
 
@@ -168,6 +217,9 @@ Internet search for competitive analysis and research.
 {
   "$schema": "https://code.visualstudio.com/docs/copilot/chat/mcp-servers",
   "servers": {
+    "beads": {
+      "command": "beads-mcp"
+    },
     "shadcn": {
       "command": "npx",
       "args": ["shadcn@latest", "mcp"]
@@ -202,6 +254,7 @@ Every agent works without MCPs. Here's how they adapt:
 
 | Agent | With MCP | Without MCP |
 |-------|----------|-------------|
+| **Beth (all agents)** | Tracks issues via beads MCP tools | Falls back to `bd` CLI via terminal |
 | **Frontend Engineer** | Browses shadcn registry | Uses CLI commands |
 | **Tester** | Automates browser directly | Writes test files for you to run |
 | **Developer** | Manages Azure resources | Provides CLI commands |

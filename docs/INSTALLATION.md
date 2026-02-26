@@ -235,13 +235,49 @@ If you installed manually, create this file yourself.
 
 ## Issue Tracking Setup
 
-Beth uses [beads](https://github.com/steveyegge/beads) (`bd`) for issue tracking. It provides dependency-aware issue management designed for AI agents.
+Beth uses [beads](https://github.com/steveyegge/beads) for issue tracking. It provides dependency-aware issue management designed for AI agents. There are two components:
 
-### Install Beads
+| Component | What it is | Install method |
+|-----------|-----------|----------------|
+| **`bd` CLI** | Command-line tool for shell-based operations | `npm install -g @beads/bd` or `brew install beads` |
+| **`beads-mcp` server** | MCP server for VS Code agent integration | `uv tool install beads-mcp` or `pip install beads-mcp` |
+
+Both are **required** for the full Beth experience. The CLI handles shell commands; the MCP server gives agents direct tool access.
+
+### Install the Beads CLI
+
+Pick one method:
 
 ```bash
+# npm (cross-platform)
+npm install -g @beads/bd
+
+# Homebrew (macOS/Linux)
+brew install beads
+
+# Quick install script (macOS/Linux)
 curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash
+
+# Go
+go install github.com/steveyegge/beads/cmd/bd@latest
+
+# Windows PowerShell
+irm https://raw.githubusercontent.com/steveyegge/beads/main/install.ps1 | iex
 ```
+
+### Install the Beads MCP Server
+
+The MCP server is how Beth's agents interact with beads inside VS Code:
+
+```bash
+# Recommended (requires uv: https://docs.astral.sh/uv/)
+uv tool install beads-mcp
+
+# Alternative
+pip install beads-mcp
+```
+
+The `npx beth-copilot init` command will prompt you to install this automatically.
 
 ### Initialize in Your Project
 
@@ -292,23 +328,26 @@ See [steveyegge/beads](https://github.com/steveyegge/beads) for full documentati
 
 ## Optional: MCP Servers
 
-MCP (Model Context Protocol) servers extend agent capabilities. All are **optional**—agents work fine without them.
+MCP (Model Context Protocol) servers extend agent capabilities. The **beads** server is required (configured above); the rest are optional.
 
 ### Quick Setup
 
 ```bash
-# Copy the example config
+# Copy the example config (includes beads + optional servers)
 cp mcp.json.example .vscode/mcp.json
 ```
 
+> **Note:** The `beads` server entry is already included. Make sure you've installed `beads-mcp` per the [Issue Tracking Setup](#issue-tracking-setup) section above.
+
 ### Available Servers
 
-| Server | Purpose | Agent | Setup |
-|--------|---------|-------|-------|
-| **shadcn/ui** | Component browsing | Frontend Engineer | `npx shadcn@latest mcp init --client vscode` |
-| **Playwright** | Browser automation | Tester | Add to mcp.json |
-| **Azure** | Cloud management | Developer | `az login` first |
-| **Web Search** | Internet research | Researcher | Needs API key |
+| Server | Purpose | Agent | Required? |
+|--------|---------|-------|-----------|
+| **beads** | Issue tracking | All agents | **Yes** (see above) |
+| **shadcn/ui** | Component browsing | Frontend Engineer | No |
+| **Playwright** | Browser automation | Tester | No |
+| **Azure** | Cloud management | Developer | No |
+| **Web Search** | Internet research | Researcher | No |
 
 ### shadcn/ui (Recommended)
 
