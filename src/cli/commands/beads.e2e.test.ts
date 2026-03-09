@@ -81,25 +81,22 @@ describe('beads CLI E2E tests', () => {
     // Clean up all test issues (reverse order to handle children first)
     for (const id of [...createdIssueIds].reverse()) {
       try {
-        // Force close first (in case it's open), then delete
-        // Use shell to swallow all errors — some issues may already be closed/deleted
-        execSync(`bd close ${id} --force --reason "test cleanup" --sandbox 2>/dev/null || true`, {
+        // Force close first (in case it's open) — errors caught below
+        execSync(`bd close ${id} --force --reason "test cleanup" --sandbox`, {
           cwd: PROJECT_ROOT,
           encoding: 'utf-8',
           stdio: ['pipe', 'pipe', 'pipe'],
           timeout: 10000,
-          shell: '/bin/bash',
         });
       } catch {
         // Already closed or doesn't exist — fine
       }
       try {
-        execSync(`bd delete ${id} --force --sandbox 2>/dev/null || true`, {
+        execSync(`bd delete ${id} --force --sandbox`, {
           cwd: PROJECT_ROOT,
           encoding: 'utf-8',
           stdio: ['pipe', 'pipe', 'pipe'],
           timeout: 10000,
-          shell: '/bin/bash',
         });
       } catch {
         // Already deleted — fine
