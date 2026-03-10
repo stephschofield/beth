@@ -48,5 +48,8 @@ coverage/
 # bs-buster local state
 .bs-buster/
 
+# Internal troubleshooting docs (machine-specific, not portable)
+docs/BD-BACKUP-PARSER-FAILURE.md
+
 # Beads backup state (runtime, not source)
 .beads/backup/
