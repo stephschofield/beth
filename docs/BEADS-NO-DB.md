@@ -223,7 +223,7 @@ bd backup
 ### Via beth-copilot Doctor
 
 ```bash
-node bin/cli.js doctor
+npx beth-copilot doctor
 ```
 
 Expected output includes:
@@ -234,7 +234,7 @@ Expected output includes:
 ✓ JSONL data: 142 issue(s) in JSONL
 ```
 
-> **Note:** `npx beth-copilot doctor` may fail with "beth: not found" depending on PATH. Use `node bin/cli.js doctor` from the repo root instead.
+> **Note:** If `npx beth-copilot doctor` fails with "beth: not found" due to PATH issues, use `node bin/cli.js doctor` from the repo root as a workaround.
 
 ## .gitignore for .beads/
 
