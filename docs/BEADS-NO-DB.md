@@ -319,7 +319,7 @@ cat .beads/backup/issues.jsonl | python3 -c "
 import json, sys
 for line in sys.stdin:
     line = line.strip()
-    if line:
+    if line:any tooling that shells out to `bd list --json` and tries to parse the output as JSON, failing
         issue = json.loads(line)
         if issue.get('status') != 'closed':
             print(f\"{issue['id']}  {issue['status']:12s}  {issue['title']}\")
