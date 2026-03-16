@@ -1,10 +1,10 @@
 ---
 id: BETH-44
 title: Restructure init CLI output - commands at bottom
-status: In Progress
+status: Done
 assignee: []
 created_date: '2026-03-16 14:58'
-updated_date: '2026-03-16 14:58'
+updated_date: '2026-03-16 15:03'
 labels: []
 dependencies: []
 ---
