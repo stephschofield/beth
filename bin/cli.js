@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import { basename, dirname, join, relative } from 'path';
 import { existsSync, mkdirSync, readdirSync, statSync, copyFileSync, readFileSync, writeFileSync, unlinkSync, chmodSync, rmSync } from 'fs';
 import { createRequire } from 'module';
-import { execSync, spawn } from 'child_process';
+import { execSync, execFileSync, spawn } from 'child_process';
 
 const require = createRequire(import.meta.url);
 const __filename = fileURLToPath(import.meta.url);
@@ -863,8 +863,9 @@ ${COLORS.yellow}╔════════════════════�
       const taskPrefix = deriveTaskPrefix(cwd);
       const dirName = basename(cwd);
       try {
-        execSync(
-          `backlog init ${JSON.stringify(dirName)} --defaults --task-prefix ${taskPrefix.toUpperCase()} --integration-mode mcp --auto-open-browser false --bypass-git-hooks true`,
+        execFileSync(
+          'backlog',
+          ['init', dirName, '--defaults', '--task-prefix', taskPrefix.toUpperCase(), '--integration-mode', 'mcp', '--auto-open-browser', 'false', '--bypass-git-hooks', 'true'],
           { cwd, stdio: 'pipe', encoding: 'utf-8' }
         );
         logSuccess(`Initialized Backlog.md with task prefix: ${taskPrefix.toUpperCase()}`);
