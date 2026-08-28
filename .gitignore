@@ -90,3 +90,6 @@ ado-sync/.ado-sync-mappings.json
 # >>> Beth — managed by beth-copilot init >>>
 .beth/
 # <<< Beth <<<
+
+# Agent tooling scratch state
+.omc/
