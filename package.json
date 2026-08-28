@@ -71,7 +71,6 @@
     "vitest": "^4.0.18"
   },
   "dependencies": {
-    "@azure/msal-node": "^5.1.1",
     "gray-matter": "^4.0.3"
   },
   "overrides": {
