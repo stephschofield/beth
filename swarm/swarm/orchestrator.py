@@ -21,6 +21,7 @@ import subprocess
 import time
 from dataclasses import dataclass, field
 from enum import Enum
+from graphlib import CycleError, TopologicalSorter
 from pathlib import Path
 from typing import Any
 
@@ -169,30 +170,16 @@ def get_mergeable_tasks(epic: EpicState) -> list[TaskNode]:
 def topological_order(epic: EpicState) -> list[str]:
     """Return task IDs in topological (dependency) order.
 
-    Uses Kahn's algorithm. Raises ValueError on cycles.
+    Raises ValueError on cycles.
     """
-    in_degree: dict[str, int] = {tid: 0 for tid in epic.tasks}
-    for task in epic.tasks.values():
-        for dep in task.dependencies:
-            if dep in in_degree:
-                in_degree[task.id] += 1
-
-    queue = [tid for tid, deg in in_degree.items() if deg == 0]
-    order: list[str] = []
-
-    while queue:
-        tid = queue.pop(0)
-        order.append(tid)
-        for task in epic.tasks.values():
-            if tid in task.dependencies:
-                in_degree[task.id] -= 1
-                if in_degree[task.id] == 0:
-                    queue.append(task.id)
-
-    if len(order) != len(epic.tasks):
-        raise ValueError("Dependency cycle detected in epic tasks")
-
-    return order
+    graph = {
+        tid: {d for d in task.dependencies if d in epic.tasks}
+        for tid, task in epic.tasks.items()
+    }
+    try:
+        return list(TopologicalSorter(graph).static_order())
+    except CycleError as exc:
+        raise ValueError("Dependency cycle detected in epic tasks") from exc
 
 
 # ---------------------------------------------------------------------------

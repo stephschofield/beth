@@ -14,8 +14,8 @@ from __future__ import annotations
 
 import json
 import logging
+import posixpath
 from dataclasses import dataclass, field
-from pathlib import PurePosixPath
 
 from .board import MessageBoard
 
@@ -171,18 +171,10 @@ def _normalize_path(path: str) -> str:
     """Normalize a path for consistent comparison.
 
     Strips leading ``./`` and trailing ``/``, resolves ``..`` components.
+    A leading ``..`` is preserved (posixpath.normpath semantics) so an
+    escaping path never silently normalizes into a benign-looking one.
     """
-    p = PurePosixPath(path)
-    # Resolve relative bits but keep it relative
-    parts = []
-    for part in p.parts:
-        if part == ".":
-            continue
-        if part == ".." and parts:
-            parts.pop()
-        elif part != "..":
-            parts.append(part)
-    return "/".join(parts) if parts else "."
+    return posixpath.normpath(path)
 
 
 def _paths_overlap(a: str, b: str) -> bool:

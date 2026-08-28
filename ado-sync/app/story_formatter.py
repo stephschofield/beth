@@ -7,6 +7,7 @@ acceptance criteria.
 
 import json
 import logging
+from html import escape as _escape_html
 from openai import AzureOpenAI
 
 from .config import Settings
@@ -254,13 +255,3 @@ def _estimate_effort_offline(task: BacklogTask) -> FibonacciEffort:
         return FibonacciEffort.XL
     else:
         return FibonacciEffort.XXL
-
-
-def _escape_html(text: str) -> str:
-    """Basic HTML escaping."""
-    return (
-        text.replace("&", "&amp;")
-        .replace("<", "&lt;")
-        .replace(">", "&gt;")
-        .replace('"', "&quot;")
-    )

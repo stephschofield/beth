@@ -9,7 +9,7 @@ import { execSync } from 'child_process';
 import { existsSync, mkdirSync, writeFileSync, rmSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { tmpdir } from 'os';
-import { getMinNodeVersion, checkMcpServers, isValidServerEntry, fixMcpServers, satisfiesEnginesNode } from './doctor.js';
+import { checkMcpServers, isValidServerEntry, fixMcpServers, satisfiesEnginesNode } from './doctor.js';
 
 // Test utilities - we can't import the private functions from doctor.ts
 // but we can test the overall behavior
@@ -37,54 +37,8 @@ describe('doctor command integration', () => {
       assert.ok(major >= 18, `Node.js ${version} should be >= 18`);
     });
   });
-
-  describe('getMinNodeVersion', () => {
-    it('should read minimum version from package.json engines.node', () => {
-      mkdirSync(testDir, { recursive: true });
-      writeFileSync(join(testDir, 'package.json'), JSON.stringify({ engines: { node: '>=20' } }));
-      assert.strictEqual(getMinNodeVersion(testDir), 20);
-    });
-
-    it('should handle caret syntax like ^18', () => {
-      mkdirSync(testDir, { recursive: true });
-      writeFileSync(join(testDir, 'package.json'), JSON.stringify({ engines: { node: '^18' } }));
-      assert.strictEqual(getMinNodeVersion(testDir), 18);
-    });
-
-    it('should handle full semver like >=18.0.0', () => {
-      mkdirSync(testDir, { recursive: true });
-      writeFileSync(join(testDir, 'package.json'), JSON.stringify({ engines: { node: '>=18.0.0' } }));
-      assert.strictEqual(getMinNodeVersion(testDir), 18);
-    });
-
-    it('should return fallback when package.json is missing', () => {
-      assert.strictEqual(getMinNodeVersion(testDir), 20);
-    });
-
-    it('should return fallback when engines field is missing', () => {
-      mkdirSync(testDir, { recursive: true });
-      writeFileSync(join(testDir, 'package.json'), JSON.stringify({ name: 'test' }));
-      assert.strictEqual(getMinNodeVersion(testDir), 20);
-    });
-
-    it('should return fallback when engines.node is not a string', () => {
-      mkdirSync(testDir, { recursive: true });
-      writeFileSync(join(testDir, 'package.json'), JSON.stringify({ engines: { node: 18 } }));
-      assert.strictEqual(getMinNodeVersion(testDir), 20);
-    });
-
-    it('returns the lowest minimum from a compound range', () => {
-      mkdirSync(testDir, { recursive: true });
-      writeFileSync(
-        join(testDir, 'package.json'),
-        JSON.stringify({ engines: { node: '>=20.19.0 <21 || >=22.12.0' } }),
-      );
-      // The display uses major; the full range is enforced via satisfiesEnginesNode.
-      assert.strictEqual(getMinNodeVersion(testDir), 20);
-    });
-  });
-
   describe('satisfiesEnginesNode', () => {
+
     const range = '>=20.19.0 <21 || >=22.12.0';
 
     it('accepts versions inside the 20.19.x..<21 window', () => {

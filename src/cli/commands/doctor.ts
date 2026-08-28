@@ -87,18 +87,6 @@ function logResult(result: CheckResult, verbose: boolean): void {
 }
 
 /**
- * Parse the minimum major Node.js version from package.json engines.node.
- * Supports formats like ">=18", "^18", ">=18.0.0", etc.
- * Returns the parsed major version, or a fallback if parsing fails.
- *
- * @deprecated Prefer getEnginesNodeRange / satisfiesEnginesNode for full
- *   range support (compound ranges like ">=20.19.0 <21 || >=22.12.0").
- */
-export function getMinNodeVersion(cwd: string): number {
-  return getMinNodeSemver(cwd).major;
-}
-
-/**
  * Parse the lowest minimum semver from engines.node — for a compound range
  * like ">=20.19.0 <21 || >=22.12.0" this returns 20.19.0. Used by the
  * doctor's display string. Range-validity decisions go through

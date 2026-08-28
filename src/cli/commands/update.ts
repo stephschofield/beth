@@ -20,7 +20,7 @@
  *   --verbose       Show per-file detail
  */
 
-import { existsSync, readFileSync, mkdirSync, readdirSync, statSync, copyFileSync } from 'fs';
+import { existsSync, readFileSync, mkdirSync, readdirSync, copyFileSync } from 'fs';
 import { join, dirname, relative } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -76,21 +76,11 @@ function getTemplatesDir(): string {
 /**
  * Recursively collect all files in a directory, returning relative paths.
  */
-function collectFiles(dir: string, base: string = dir): string[] {
-  const results: string[] = [];
-  if (!existsSync(dir)) return results;
-
-  const entries = readdirSync(dir);
-  for (const entry of entries) {
-    const full = join(dir, entry);
-    const stats = statSync(full);
-    if (stats.isDirectory()) {
-      results.push(...collectFiles(full, base));
-    } else {
-      results.push(relative(base, full));
-    }
-  }
-  return results;
+function collectFiles(dir: string): string[] {
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir, { recursive: true, withFileTypes: true })
+    .filter(e => e.isFile())
+    .map(e => relative(dir, join(e.parentPath, e.name)));
 }
 
 /**
