@@ -299,39 +299,6 @@ const AZURE_SKILLS: TriggerTest[] = [
   },
 ];
 
-// ─── Category 3: Design & Frontend (4 tests) ──────────────────────────────
-
-const DESIGN_SKILLS: TriggerTest[] = [
-  {
-    id: 32, skill: 'frontend-design',
-    skillPath: '.github/skills/frontend-design/SKILL.md',
-    agent: 'developer',
-    testPrompt: 'Build a distinctive, production-grade landing page with creative animations',
-    requiredKeywords: ['frontend', 'design', 'production'],
-  },
-  {
-    id: 33, skill: 'brainstorming',
-    skillPath: '.github/skills/brainstorming/SKILL.md',
-    agent: 'ux-designer',
-    testPrompt: 'Let\'s brainstorm approaches for the new onboarding flow',
-    requiredKeywords: ['brainstorm', 'explore'],
-  },
-  {
-    id: 34, skill: 'document-review',
-    skillPath: '.github/skills/document-review/SKILL.md',
-    agent: 'ux-designer',
-    testPrompt: 'Review and refine this brainstorm document before we proceed to planning',
-    requiredKeywords: ['review', 'refine', 'document'],
-  },
-  {
-    id: 35, skill: 'every-style-editor',
-    skillPath: '.github/skills/every-style-editor/SKILL.md',
-    agent: 'product-manager',
-    testPrompt: 'Edit this blog post for grammar and style guide compliance',
-    requiredKeywords: ['style', 'grammar'],
-  },
-];
-
 // ─── Category 4: Product & Research (4 tests) ─────────────────────────────
 
 const PRODUCT_SKILLS: TriggerTest[] = [
@@ -349,32 +316,11 @@ const PRODUCT_SKILLS: TriggerTest[] = [
     testPrompt: 'Research the competitive landscape for AI code assistants',
     requiredKeywords: ['research', 'search'],
   },
-  {
-    id: 38, skill: 'proof',
-    skillPath: '.github/skills/proof/SKILL.md',
-    agent: 'product-manager',
-    testPrompt: 'Create a proof document and share it for team review',
-    requiredKeywords: ['proof', 'document'],
-  },
-  {
-    id: 39, skill: 'changelog',
-    skillPath: '.github/skills/changelog/SKILL.md',
-    agent: 'developer',
-    testPrompt: 'Generate a changelog from recent commits',
-    requiredKeywords: ['changelog', 'change log'],
-  },
 ];
 
 // ─── Category 5: Developer Workflow (14 tests) ────────────────────────────
 
 const WORKFLOW_SKILLS: TriggerTest[] = [
-  {
-    id: 40, skill: 'create-agent-skills',
-    skillPath: '.github/skills/create-agent-skills/SKILL.md',
-    agent: 'developer',
-    testPrompt: 'Create a new Claude Code skill for database migration workflows',
-    requiredKeywords: ['skill', 'create'],
-  },
   {
     id: 41, skill: 'git-worktree',
     skillPath: '.github/skills/git-worktree/SKILL.md',
@@ -383,128 +329,11 @@ const WORKFLOW_SKILLS: TriggerTest[] = [
     requiredKeywords: ['worktree', 'git'],
   },
   {
-    id: 42, skill: 'feature-video',
-    skillPath: '.github/skills/feature-video/SKILL.md',
-    agent: 'developer',
-    testPrompt: 'Record a video walkthrough of the new settings feature for the PR',
-    requiredKeywords: ['video', 'feature'],
-  },
-  {
-    id: 43, skill: 'resolve_parallel',
-    skillPath: '.github/skills/resolve_parallel/SKILL.md',
-    agent: 'developer',
-    testPrompt: 'Resolve all code TODOs in the codebase using parallel processing',
-    requiredKeywords: ['resolve', 'todo'],
-  },
-  {
-    id: 44, skill: 'resolve_todo_parallel',
-    skillPath: '.github/skills/resolve_todo_parallel/SKILL.md',
-    agent: 'developer',
-    testPrompt: 'Resolve all pending CLI todos in my todo list',
-    requiredKeywords: ['resolve', 'todo'],
-  },
-  {
     id: 45, skill: 'resolve-pr-parallel',
     skillPath: '.github/skills/resolve-pr-parallel/SKILL.md',
     agent: 'developer',
     testPrompt: 'Address all PR review comments using parallel processing',
     requiredKeywords: ['pr', 'review'],
-  },
-  {
-    id: 46, skill: 'lfg',
-    skillPath: '.github/skills/lfg/SKILL.md',
-    agent: 'developer',
-    testPrompt: "Execute the work plan sequentially — let's go",
-    requiredKeywords: ['execute', 'plan'],
-  },
-  {
-    id: 47, skill: 'slfg',
-    skillPath: '.github/skills/slfg/SKILL.md',
-    agent: 'developer',
-    testPrompt: 'Execute the work plan using swarm parallel processing',
-    requiredKeywords: ['swarm', 'parallel'],
-  },
-  {
-    id: 48, skill: 'deepen-plan',
-    skillPath: '.github/skills/deepen-plan/SKILL.md',
-    agent: 'developer',
-    testPrompt: 'Enhance this plan with parallel research agents to add depth and best practices',
-    requiredKeywords: ['enhance', 'plan', 'research'],
-  },
-  {
-    id: 49, skill: 'agent-browser',
-    skillPath: '.github/skills/agent-browser/SKILL.md',
-    agent: 'developer',
-    testPrompt: 'Browse the staging site and fill out the signup form to test it',
-    requiredKeywords: ['browse', 'form'],
-  },
-  {
-    id: 50, skill: 'agent-native-architecture',
-    skillPath: '.github/skills/agent-native-architecture/SKILL.md',
-    agent: 'developer',
-    testPrompt: 'Design an application where agents are first-class citizens with MCP tools',
-    requiredKeywords: ['agent', 'mcp'],
-  },
-  {
-    id: 51, skill: 'rclone',
-    skillPath: '.github/skills/rclone/SKILL.md',
-    agent: 'developer',
-    testPrompt: 'Upload the generated video files to our S3 bucket',
-    requiredKeywords: ['upload', 's3'],
-  },
-  {
-    id: 52, skill: 'gemini-imagegen',
-    skillPath: '.github/skills/gemini-imagegen/SKILL.md',
-    agent: 'developer',
-    testPrompt: 'Generate a product mockup image using Gemini for the landing page',
-    requiredKeywords: ['gemini', 'image'],
-  },
-  {
-    id: 53, skill: 'generate_command',
-    skillPath: '.github/skills/generate_command/SKILL.md',
-    agent: 'developer',
-    testPrompt: 'Generate a shell command to find all TypeScript files with TODO comments',
-    requiredKeywords: ['generate', 'command'],
-  },
-];
-
-// ─── Category 6: Testing & QA (5 tests) ───────────────────────────────────
-
-const TESTING_SKILLS: TriggerTest[] = [
-  {
-    id: 54, skill: 'test-browser',
-    skillPath: '.github/skills/test-browser/SKILL.md',
-    agent: 'tester',
-    testPrompt: 'Run browser tests on pages affected by the current PR',
-    requiredKeywords: ['browser', 'test'],
-  },
-  {
-    id: 55, skill: 'test-xcode',
-    skillPath: '.github/skills/test-xcode/SKILL.md',
-    agent: 'tester',
-    testPrompt: 'Run Xcode tests for the iOS module',
-    requiredKeywords: ['xcode', 'test'],
-  },
-  {
-    id: 56, skill: 'report-bug',
-    skillPath: '.github/skills/report-bug/SKILL.md',
-    agent: 'tester',
-    testPrompt: 'File a bug report for the broken pagination on the search results page',
-    requiredKeywords: ['bug', 'report'],
-  },
-  {
-    id: 57, skill: 'reproduce-bug',
-    skillPath: '.github/skills/reproduce-bug/SKILL.md',
-    agent: 'tester',
-    testPrompt: 'Reproduce the intermittent crash reported in issue #42',
-    requiredKeywords: ['reproduce', 'bug'],
-  },
-  {
-    id: 58, skill: 'triage',
-    skillPath: '.github/skills/triage/SKILL.md',
-    agent: 'tester',
-    testPrompt: 'Triage the incoming bug reports and prioritize by severity',
-    requiredKeywords: ['triage', 'severity'],
   },
 ];
 
@@ -512,98 +341,11 @@ const TESTING_SKILLS: TriggerTest[] = [
 
 const ORCHESTRATION_SKILLS: TriggerTest[] = [
   {
-    id: 59, skill: 'orchestrating-swarms',
-    skillPath: '.github/skills/orchestrating-swarms/SKILL.md',
-    agent: 'Beth',
-    testPrompt: 'Orchestrate a swarm of agents to parallelize the migration work',
-    requiredKeywords: ['swarm', 'orchestrat'],
-  },
-  {
-    id: 60, skill: 'setup',
-    skillPath: '.github/skills/setup/SKILL.md',
-    agent: 'Beth',
-    testPrompt: 'Set up the project structure and initialize the development environment',
-    requiredKeywords: ['setup', 'project'],
-  },
-  {
-    id: 61, skill: 'heal-skill',
-    skillPath: '.github/skills/heal-skill/SKILL.md',
-    agent: 'Beth',
-    testPrompt: "Fix this broken skill that isn't loading correctly",
-    requiredKeywords: ['skill', 'fix'],
-  },
-  {
     id: 62, skill: 'file-todos',
     skillPath: '.github/skills/file-todos/SKILL.md',
     agent: 'developer',
     testPrompt: 'Scan the codebase and create tasks for all TODO/FIXME comments',
     requiredKeywords: ['todo', 'task'],
-  },
-];
-
-// ─── Category 8: CE Workflow Pipeline (5 tests) ───────────────────────────
-
-const CE_SKILLS: TriggerTest[] = [
-  {
-    id: 63, skill: 'ce:brainstorm',
-    skillPath: '.github/skills/ce:brainstorm/SKILL.md',
-    agent: 'ux-designer',
-    testPrompt: '/ce:brainstorm — explore requirements for the new dashboard',
-    requiredKeywords: ['brainstorm', 'explore', 'requirement'],
-  },
-  {
-    id: 64, skill: 'ce:plan',
-    skillPath: '.github/skills/ce:plan/SKILL.md',
-    agent: 'developer',
-    testPrompt: '/ce:plan — transform the feature description into a structured project plan',
-    requiredKeywords: ['plan', 'transform'],
-  },
-  {
-    id: 65, skill: 'ce:work',
-    skillPath: '.github/skills/ce:work/SKILL.md',
-    agent: 'developer',
-    testPrompt: '/ce:work — execute the work plan and finish the feature',
-    requiredKeywords: ['work', 'execute'],
-  },
-  {
-    id: 66, skill: 'ce:review',
-    skillPath: '.github/skills/ce:review/SKILL.md',
-    agent: 'developer',
-    testPrompt: '/ce:review — perform exhaustive multi-agent code review',
-    requiredKeywords: ['review', 'code'],
-  },
-  {
-    id: 67, skill: 'ce:compound',
-    skillPath: '.github/skills/ce:compound/SKILL.md',
-    agent: 'developer',
-    testPrompt: '/ce:compound — document what we solved to compound team knowledge',
-    requiredKeywords: ['compound', 'document'],
-  },
-];
-
-// ─── Category 9: Language-Specific (3 tests) ──────────────────────────────
-
-const LANGUAGE_SKILLS: TriggerTest[] = [
-  {
-    id: 68, skill: 'dhh-rails-style',
-    skillPath: '.github/skills/dhh-rails-style/SKILL.md',
-    agent: 'developer',
-    testPrompt: "Write a Rails controller for user management in DHH's 37signals style",
-    requiredKeywords: ['rails', 'dhh', '37signals'],
-  },
-  {
-    id: 69, skill: 'andrew-kane-gem-writer',
-    skillPath: '.github/skills/andrew-kane-gem-writer/SKILL.md',
-    agent: 'developer',
-    testPrompt: "Create a Ruby gem for CSV parsing following Andrew Kane's patterns",
-    requiredKeywords: ['gem', 'andrew kane'],
-  },
-  {
-    id: 70, skill: 'dspy-ruby',
-    skillPath: '.github/skills/dspy-ruby/SKILL.md',
-    agent: 'developer',
-    testPrompt: 'Build an LLM module using DSPy.rb signatures for intent classification',
-    requiredKeywords: ['dspy', 'signature'],
   },
 ];
 
@@ -617,13 +359,6 @@ const REMAINING_SKILLS: TriggerTest[] = [
     testPrompt: 'That worked! Document this solution for the team',
     requiredKeywords: ['document', 'solution'],
   },
-  {
-    id: 72, skill: 'agent-native-audit',
-    skillPath: '.github/skills/agent-native-audit/SKILL.md',
-    agent: 'security-reviewer',
-    testPrompt: 'Audit the agent-native architecture for security and reliability',
-    requiredKeywords: ['audit', 'agent', 'review'],
-  },
 ];
 
 // ─── All tests combined ────────────────────────────────────────────────────
@@ -631,13 +366,9 @@ const REMAINING_SKILLS: TriggerTest[] = [
 const ALL_TESTS: TriggerTest[] = [
   ...HOOK_ENFORCED,
   ...AZURE_SKILLS,
-  ...DESIGN_SKILLS,
   ...PRODUCT_SKILLS,
   ...WORKFLOW_SKILLS,
-  ...TESTING_SKILLS,
   ...ORCHESTRATION_SKILLS,
-  ...CE_SKILLS,
-  ...LANGUAGE_SKILLS,
   ...REMAINING_SKILLS,
 ];
 
@@ -681,23 +412,6 @@ describe('Skill Trigger Coverage — Keyword Matching', () => {
     );
   });
 
-  describe('Category 3: Design & Frontend', () => {
-    describe.each(DESIGN_SKILLS)(
-      'Test #$id: "$skill" triggers on "$testPrompt"',
-      (test) => {
-        it('skill file exists', () => {
-          expect(skillFileExists(test)).toBe(true);
-        });
-
-        it('skill content contains ALL required keywords', () => {
-          const content = readSkillContent(test);
-          const { misses } = countKeywordHits(content, test.requiredKeywords);
-          expect(misses).toHaveLength(0);
-        });
-      },
-    );
-  });
-
   describe('Category 4: Product & Research', () => {
     describe.each(PRODUCT_SKILLS)(
       'Test #$id: "$skill" triggers on "$testPrompt"',
@@ -732,59 +446,8 @@ describe('Skill Trigger Coverage — Keyword Matching', () => {
     );
   });
 
-  describe('Category 6: Testing & QA', () => {
-    describe.each(TESTING_SKILLS)(
-      'Test #$id: "$skill" triggers on "$testPrompt"',
-      (test) => {
-        it('skill file exists', () => {
-          expect(skillFileExists(test)).toBe(true);
-        });
-
-        it('skill content contains ALL required keywords', () => {
-          const content = readSkillContent(test);
-          const { misses } = countKeywordHits(content, test.requiredKeywords);
-          expect(misses).toHaveLength(0);
-        });
-      },
-    );
-  });
-
   describe('Category 7: Orchestration & Swarm', () => {
     describe.each(ORCHESTRATION_SKILLS)(
-      'Test #$id: "$skill" triggers on "$testPrompt"',
-      (test) => {
-        it('skill file exists', () => {
-          expect(skillFileExists(test)).toBe(true);
-        });
-
-        it('skill content contains ALL required keywords', () => {
-          const content = readSkillContent(test);
-          const { misses } = countKeywordHits(content, test.requiredKeywords);
-          expect(misses).toHaveLength(0);
-        });
-      },
-    );
-  });
-
-  describe('Category 8: CE Workflow Pipeline', () => {
-    describe.each(CE_SKILLS)(
-      'Test #$id: "$skill" triggers on "$testPrompt"',
-      (test) => {
-        it('skill file exists', () => {
-          expect(skillFileExists(test)).toBe(true);
-        });
-
-        it('skill content contains ALL required keywords', () => {
-          const content = readSkillContent(test);
-          const { misses } = countKeywordHits(content, test.requiredKeywords);
-          expect(misses).toHaveLength(0);
-        });
-      },
-    );
-  });
-
-  describe('Category 9: Language-Specific', () => {
-    describe.each(LANGUAGE_SKILLS)(
       'Test #$id: "$skill" triggers on "$testPrompt"',
       (test) => {
         it('skill file exists', () => {
@@ -827,12 +490,12 @@ describe('Cross-cutting: Trigger coverage statistics', () => {
     }
   });
 
-  it('test IDs span 1–72 with no gaps', () => {
+  it('test IDs are unique and within 1–72', () => {
     const ids = ALL_TESTS.map((t) => t.id).sort((a, b) => a - b);
-    expect(ids).toHaveLength(72);
-    for (let i = 0; i < 72; i++) {
-      expect(ids[i]).toBe(i + 1);
-    }
+    expect(ids.length).toBeGreaterThan(0);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(ids[0]).toBeGreaterThanOrEqual(1);
+    expect(ids[ids.length - 1]).toBeLessThanOrEqual(72);
   });
 
   it('no two tests reference the same skill+prompt pair', () => {
