@@ -389,8 +389,7 @@ beth/
     ├── SYSTEM-FLOW.md
     ├── HOOKS-AND-HANDOFF-ENFORCEMENT.md
     ├── E2E-SKILL-TESTS.md
-    ├── PR-REVIEW-PROCESS.md
-    └── SWARM-ARCHITECTURE.md
+    └── PR-REVIEW-PROCESS.md
 ```
 
 ### Test Coverage
@@ -506,7 +505,6 @@ See [MCP Integrations](#mcp-integrations) above or [docs/MCP-SETUP.md](docs/MCP-
 | [Hooks & Handoffs](docs/HOOKS-AND-HANDOFF-ENFORCEMENT.md) | Skill injection hooks, hub-and-spoke enforcement |
 | [E2E Skill Tests](docs/E2E-SKILL-TESTS.md) | Behavioral skill routing test plan |
 | [PR Review Process](docs/PR-REVIEW-PROCESS.md) | Code review checklist and workflow |
-| [Swarm Architecture](docs/SWARM-ARCHITECTURE.md) | Multi-agent swarm design (planned) |
 | [Contributing Guide](CONTRIBUTING.md) | How to contribute (PR process, review checklist) |
 | [Changelog](CHANGELOG.md) | Version history |
 | [Security Policy](SECURITY.md) | Vulnerability reporting |
