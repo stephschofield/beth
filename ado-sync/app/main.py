@@ -13,11 +13,10 @@ import json
 import logging
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Request, HTTPException, BackgroundTasks
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
 
 from .config import get_settings, Settings
-from .backlog_parser import parse_task_file
 from .backlog_watcher import watch_backlog_tasks
 from .story_formatter import format_story, format_story_offline
 from .ado_client import ADOClient
@@ -291,15 +290,6 @@ def _verify_signature(body: bytes, signature: str, secret: str) -> bool:
         secret.encode("utf-8"), body, hashlib.sha256
     ).hexdigest()
     return hmac.compare_digest(f"sha256={expected}", signature)
-
-
-def _canonicalize_task_id(task_id: str) -> str:
-    """Normalize a task ID to canonical uppercase form (e.g., BETH-42)."""
-    import re
-    match = re.match(r"([a-zA-Z]+)-(\d+(?:\.\d+)?)", task_id)
-    if match:
-        return f"{match.group(1).upper()}-{match.group(2)}"
-    return task_id.upper()
 
 
 def _extract_task_id(branch: str, pr_body: str, pr_title: str) -> str | None:

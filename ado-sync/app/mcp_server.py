@@ -17,7 +17,6 @@ Or add to your MCP config:
     }
 """
 
-import asyncio
 import logging
 from pathlib import Path
 
