@@ -448,9 +448,6 @@ ${COLORS.bright}Commands:${COLORS.reset}
   ${COLORS.cyan}npx beth-copilot land${COLORS.reset} [options]     Automated session completion (test, commit, push)
   ${COLORS.cyan}npx beth-copilot quickstart${COLORS.reset}         Run init + doctor
   ${COLORS.cyan}npx beth-copilot pre-push-guard${COLORS.reset}     Run branch discipline checks (used by git hook)
-  ${COLORS.cyan}npx beth-copilot ado-sync start${COLORS.reset}     Start ADO Sync watcher (background)
-  ${COLORS.cyan}npx beth-copilot ado-sync stop${COLORS.reset}      Stop ADO Sync watcher
-  ${COLORS.cyan}npx beth-copilot ado-sync status${COLORS.reset}    Show ADO Sync watcher state
   ${COLORS.cyan}npx beth-copilot uninstall${COLORS.reset}          Remove all Beth files from current project
   ${COLORS.cyan}npx beth-copilot help${COLORS.reset}               Show this help message
 
@@ -656,7 +653,7 @@ function ensureBethGitignore(projectDir, options = {}) {
 }
 
 async function init(options = {}) {
-  const { force = false, skipBacklog = false, skipMcp = false, skipAdo = false } = options;
+  const { force = false, skipBacklog = false, skipMcp = false } = options;
   const cwd = process.cwd();
   
   // Check for updates
@@ -801,21 +798,6 @@ ${COLORS.yellow}╔════════════════════�
     logSuccess('Updated .gitignore with beth runtime entries');
   } else {
     logSuccess('Already in .gitignore: .beth/');
-  }
-
-  // Offer ADO Sync setup (unless skipped)
-  if (!skipAdo) {
-    const wantsAdo = await promptYesNo('Do you use Azure DevOps for this project?');
-    if (wantsAdo) {
-      try {
-        const { setAdoOrg } = await loadTsCommand('set-ado-org');
-        await setAdoOrg();
-      } catch (err) {
-        logWarning('ADO Sync setup encountered an issue — you can run it later:');
-        logInfo('npx beth-copilot set-ado-org');
-        logDebug(err.message || String(err));
-      }
-    }
   }
 
   // Initialize Backlog.md project with derived task prefix (unless skipped)
@@ -1074,15 +1056,15 @@ async function uninstall() {
 }
 
 // Input validation constants
-const ALLOWED_COMMANDS = ['init', 'help', '--help', '-h', 'doctor', 'quickstart', 'pre-push-guard', 'update', 'land', 'uninstall', 'set-ado-org', 'ado-sync'];
-const ALLOWED_FLAGS = ['--force', '--skip-backlog', '--skip-mcp', '--skip-ado', '--verbose', '--reason', '-r', '-f', '--skip-tests', '--message', '-m', '--dry-run', '--check-only', '--fix'];
+const ALLOWED_COMMANDS = ['init', 'help', '--help', '-h', 'doctor', 'quickstart', 'pre-push-guard', 'update', 'land', 'uninstall'];
+const ALLOWED_FLAGS = ['--force', '--skip-backlog', '--skip-mcp', '--verbose', '--reason', '-r', '-f', '--skip-tests', '--message', '-m', '--dry-run', '--check-only', '--fix'];
 const MAX_ARG_LENGTH = 50;
 
 // Validate and sanitize input
 function validateArgs(args) {
   // These commands handle their own arg validation (subcommands, custom flags)
   const command = args[0]?.toLowerCase();
-  if (command === 'land' || command === 'update' || command === 'uninstall' || command === 'ado-sync') return;
+  if (command === 'land' || command === 'update' || command === 'uninstall') return;
 
   for (const arg of args) {
     // Prevent excessively long arguments (log injection, DoS)
@@ -1108,7 +1090,6 @@ const options = {
   force: args.includes('--force'),
   skipBacklog: args.includes('--skip-backlog'),
   skipMcp: args.includes('--skip-mcp'),
-  skipAdo: args.includes('--skip-ado'),
   verbose: args.includes('--verbose'),
   fix: args.includes('--fix'),
 };
@@ -1181,23 +1162,6 @@ switch (command) {
         process.exit(1);
       }
       throw error;
-    }
-    break;
-  case 'set-ado-org':
-    {
-      const { setAdoOrg } = await loadTsCommand('set-ado-org');
-      await setAdoOrg();
-    }
-    break;
-  case 'ado-sync':
-    {
-      const subCmd = args[1]?.toLowerCase();
-      if (!subCmd || !['start', 'stop', 'status'].includes(subCmd)) {
-        logError('Usage: npx beth-copilot ado-sync <start|stop|status>');
-        process.exit(1);
-      }
-      const { adoSync } = await loadTsCommand('ado-sync');
-      await adoSync(subCmd);
     }
     break;
   case 'help':
