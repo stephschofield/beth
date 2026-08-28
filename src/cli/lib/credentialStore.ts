@@ -21,11 +21,9 @@ import {
   acquireTokenDeviceCode,
   clearTokenCache,
   getCachedAccount,
-  getMsalCachePath,
   type AuthOptions,
 } from './entraAuth.js';
 import { loadConfig } from './adoSyncConfig.js';
-import { existsSync } from 'fs';
 import { retrievePat } from './patAuth.js';
 
 /** Credential types supported */
@@ -150,11 +148,4 @@ export async function hasCredentials(projectRoot: string): Promise<boolean> {
 
   const account = await getCachedAccount(projectRoot, authOptions);
   return account !== null;
-}
-
-/**
- * Check if the MSAL cache file exists for the project.
- */
-export function hasCacheFile(projectRoot: string): boolean {
-  return existsSync(getMsalCachePath(projectRoot));
 }

@@ -178,21 +178,3 @@ def _extract_title_from_filename(filename: str) -> str:
     if match:
         return match.group(1).strip().replace("-", " ")
     return filename.replace(".md", "")
-
-
-def detect_status_change(old_content: str, new_content: str) -> Optional[tuple[str, str]]:
-    """Detect if a task's status changed between two versions of its content.
-
-    Returns:
-        Tuple of (old_status, new_status) if status changed, None otherwise
-    """
-    old_task = parse_task_content(old_content)
-    new_task = parse_task_content(new_content)
-
-    if not old_task or not new_task:
-        return None
-
-    if old_task.status != new_task.status:
-        return (old_task.status, new_task.status)
-
-    return None
