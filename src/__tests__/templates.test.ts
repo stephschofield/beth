@@ -88,7 +88,7 @@ function parseSkills(dir: string): Skill[] {
       );
       return {
         id: e,
-        frontmatter: parsed.frontmatter ?? (parsed.data as Skill['frontmatter']),
+        frontmatter: parsed.data as Skill['frontmatter'],
         body: parsed.content.trim(),
       };
     });
