@@ -25,8 +25,8 @@ vi.mock('child_process', () => ({
 }));
 
 // Import after mocking
+import { parseLandArgs, executeLanding } from './land.js';
 import {
-  parseLandArgs,
   getCurrentBranch,
   extractEpicId,
   isProtectedBranch,
@@ -41,8 +41,7 @@ import {
   gitPullRebase,
   gitPush,
   isUpToDateWithOrigin,
-  executeLanding,
-} from './land.js';
+} from '../lib/gitHelpers.js';
 
 const mockedExecFileSync = vi.mocked(child_process.execFileSync);
 

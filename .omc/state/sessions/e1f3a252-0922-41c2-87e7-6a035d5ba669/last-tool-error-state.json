@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd /home/sschofield/repos/beth/.claude/worktrees/ponytail-cuts; cat > src/cli/lib/term.ts <<'EOF'\\n/**\\n * Terminal colors shared by the CLI commands.\\n *\\n * Every command file previously...",
+  "error": "This session is isolated in the worktree /home/sschofield/repos/beth/.claude/worktrees/ponytail-cuts, but this command is too complex to verify that it stays inside the worktree; break it into plain, separate commands. Refusing to run it — a worktree-isolated session's git operations must target its own worktree. Run the equivalent from /home/sschofield/repos/beth/.claude/worktrees/ponytail-cuts without the redirect.",
+  "timestamp": "2026-08-28T14:24:48.320Z",
+  "retry_count": 2
+}

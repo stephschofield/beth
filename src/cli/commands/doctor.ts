@@ -20,18 +20,11 @@ import { isConfigured as adoIsConfigured, loadConfig as adoLoadConfig, type AdoS
 import { hasCredentials as adoHasCredentials } from '../lib/credentialStore.js';
 import { checkCredentials as adoCheckCredentials, type AuthResult } from '../lib/entraAuth.js';
 import { discoverPython as adoDiscoverPython, type PythonDiscoveryResult } from '../lib/pythonRuntime.js';
+import { ensureAdoSyncMcpEntry } from '../lib/mcpConfig.js';
 import { getWatcherStatus as adoGetWatcherStatus, type WatcherStatus } from '../lib/adoSyncProcess.js';
+import { COLORS } from '../lib/term.js';
 
 // Colors for terminal output
-const COLORS = {
-  reset: '\x1b[0m',
-  bright: '\x1b[1m',
-  dim: '\x1b[2m',
-  red: '\x1b[31m',
-  green: '\x1b[32m',
-  yellow: '\x1b[33m',
-  cyan: '\x1b[36m',
-};
 
 export interface DoctorOptions {
   verbose?: boolean;
@@ -602,14 +595,6 @@ export interface AdoDeps {
   getWatcherStatus: (cwd: string) => Promise<WatcherStatus>;
 }
 
-/** Fix action providers for --fix mode */
-export interface AdoFixDeps {
-  addMcpEntry: (cwd: string) => string[];
-  refreshCredentials: (cwd: string) => Promise<string[]>;
-  createVenv: (cwd: string) => Promise<string[]>;
-  startWatcher?: never; // Explicitly absent — we do NOT auto-start
-}
-
 /**
  * Check if ado-sync MCP server entry exists in .vscode/mcp.json.
  */
@@ -868,7 +853,11 @@ export async function fixAdoSync(
     if (fixDeps) {
       actions.push(...fixDeps.addMcpEntry(cwd));
     } else {
-      actions.push(...addAdoMcpEntry(cwd));
+      const py = await deps.discoverPython(cwd);
+      const result = ensureAdoSyncMcpEntry(cwd, py.pythonPath);
+      if (result.action !== 'unchanged') {
+        actions.push('Added ado-sync MCP server entry to .vscode/mcp.json');
+      }
     }
   }
 
@@ -907,44 +896,6 @@ export async function fixAdoSync(
     }
   } catch {
     // No Python — can't create venv
-  }
-
-  return actions;
-}
-
-/**
- * Add ado-sync MCP server entry to .vscode/mcp.json.
- */
-function addAdoMcpEntry(cwd: string): string[] {
-  const vsDir = join(cwd, '.vscode');
-  const mcpPath = join(vsDir, 'mcp.json');
-  const actions: string[] = [];
-
-  if (!existsSync(vsDir)) {
-    mkdirSync(vsDir, { recursive: true });
-  }
-
-  let config: Record<string, unknown> = {};
-  if (existsSync(mcpPath)) {
-    try {
-      config = JSON.parse(readFileSync(mcpPath, 'utf-8'));
-    } catch {
-      config = {};
-    }
-  }
-
-  if (!config.servers || typeof config.servers !== 'object') {
-    config.servers = {};
-  }
-  const servers = config.servers as Record<string, unknown>;
-
-  if (!servers['ado-sync']) {
-    servers['ado-sync'] = {
-      command: 'python',
-      args: ['-m', 'app.mcp_server'],
-    };
-    writeFileSync(mcpPath, JSON.stringify(config, null, 2) + '\n');
-    actions.push('Added ado-sync MCP server entry to .vscode/mcp.json');
   }
 
   return actions;

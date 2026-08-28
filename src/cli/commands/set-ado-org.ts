@@ -35,17 +35,8 @@ import {
 import { ensureAdoSyncMcpEntry } from '../lib/mcpConfig.js';
 import { discoverPython, VENV_DIR, venvBinDir, pythonExeName } from '../lib/pythonRuntime.js';
 import { validatePat, promptForPat, storePat } from '../lib/patAuth.js';
+import { COLORS } from '../lib/term.js';
 
-const COLORS = {
-  reset: '\x1b[0m',
-  bright: '\x1b[1m',
-  dim: '\x1b[2m',
-  red: '\x1b[31m',
-  green: '\x1b[32m',
-  yellow: '\x1b[33m',
-  cyan: '\x1b[36m',
-  magenta: '\x1b[35m',
-};
 
 function log(message: string, color = ''): void {
   console.log(`${color}${message}${COLORS.reset}`);
