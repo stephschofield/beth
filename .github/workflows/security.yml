@@ -31,35 +31,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Full tree (incl. devDependencies) — advisory only. Dev tooling is not
-      # published, so a finding here is not a user-facing risk.
-      - name: Run npm audit (full tree, advisory)
-        run: npm audit --audit-level=moderate
+      - name: Run npm audit
+        run: npm audit --audit-level=high
         continue-on-error: true
 
-      # Shipped code only. This one gates: files[] publishes bin/ + dist/cli/,
-      # so production deps are what actually reach a user.
-      #
-      # Known exception: gray-matter@4.0.3 pins js-yaml@^3, and the quadratic-
-      # complexity advisories (GHSA-h67p-54hq-rp68, GHSA-52cp-r559-cp3m,
-      # GHSA-5p4m-2wfm-xmqj) are unfixed in the 3.x line. Overriding to js-yaml@4
-      # breaks gray-matter, which calls yaml.safeLoad() — removed in v4. The
-      # exposure is CPU consumption when parsing hostile YAML; Beth parses only
-      # local .agent.md/SKILL.md frontmatter the user already controls.
-      # Remove this exception when gray-matter ships a js-yaml@4 release.
-      - name: Run npm audit (production, gating)
-        run: |
-          npm audit --omit=dev --json > audit.json || true
-          node -e '
-            const v = JSON.parse(require("fs").readFileSync("audit.json","utf8")).vulnerabilities || {};
-            const ALLOWED = new Set(["js-yaml"]);
-            const unexpected = Object.keys(v).filter((n) => !ALLOWED.has(n));
-            if (unexpected.length) {
-              console.error("Unreviewed production advisories: " + unexpected.join(", "));
-              process.exit(1);
-            }
-            console.log("Production deps clean (allowed exceptions: " + [...ALLOWED].join(", ") + ")");
-          '
+      - name: Run npm audit (strict)
+        run: npm audit --audit-level=moderate
 
   secrets-scan:
     name: Secret scanning
