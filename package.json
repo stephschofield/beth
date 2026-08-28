@@ -64,7 +64,6 @@
   },
   "dependencies": {
     "@azure/msal-node": "^5.1.1",
-    "@azure/msal-node-extensions": "^5.1.1",
     "gray-matter": "^4.0.3"
   },
   "overrides": {
