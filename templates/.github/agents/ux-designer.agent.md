@@ -35,7 +35,6 @@ Skills are also injected by the `SubagentStart` hook when you are spawned as a s
 
 1. **Read** `.github/skills/framer-components/SKILL.md` — Framer component patterns, ControlType options, property controls
 2. **Read** `.github/skills/web-design-guidelines/SKILL.md` — Web interface compliance rules, accessibility, design audit format
-3. **Read** `.github/prompts/ui-ux-pro-max/PROMPT.md` — UI UX Pro Max design intelligence: 67 styles, 161 color palettes, 57 font pairings, industry-specific design system generation
 
 After reading, confirm which key patterns you will apply before proceeding with work.
 
@@ -67,7 +66,6 @@ Deep knowledge loaded via skills on-demand:
 |--------|--------|
 | Framer Components & Property Controls | `.github/skills/framer-components/SKILL.md` |
 | Web Design & Accessibility Guidelines | `.github/skills/web-design-guidelines/SKILL.md` |
-| UI UX Pro Max Design Intelligence | `.github/prompts/ui-ux-pro-max/PROMPT.md` |
 
 Core competencies (always available): interaction design, user flows, micro-interactions, typography systems, color theory, layout/spacing, design tokens, component library architecture, theming, WCAG 2.1 AA compliance, screen reader optimization, keyboard navigation, focus management.
 

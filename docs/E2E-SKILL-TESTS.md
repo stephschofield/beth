@@ -47,7 +47,15 @@ These skills are **deterministically injected** by `inject-skills.mjs`. No promp
 | 8 | `security-analysis` | security-reviewer | readFile | "Run an OWASP security review on the auth module" |
 | 9 | `web-design-guidelines` | tester | inject | "Audit the checkout flow for WCAG 2.1 AA compliance" |
 
-> **Note:** `web-search` is injected for `researcher` via hook. It is a capability wrapper (Brave Search MCP) rather than domain knowledge, but is tested as prompt #37 in Category 4.
+> **Scope:** this matrix covers the skills present in **this repo's own** `.github/`
+> dev install (~31). The **published package** ships only the 6 skills under
+> `templates/.github/skills/`. The automated tests in `src/__tests__/skills/`
+> deliberately run against `templates/`, so a template that references a
+> non-shipped skill fails there — do not repoint them at `process.cwd()`.
+>
+> **Note:** `web-search` is a dev-install skill (Brave Search MCP capability
+> wrapper). It is not shipped, and the `researcher` agent has no hook mapping in
+> the shipped template.
 
 ---
 

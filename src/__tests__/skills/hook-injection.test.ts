@@ -14,7 +14,8 @@ import { join } from 'node:path';
 import { existsSync } from 'node:fs';
 import type { InjectHookOutput } from '../hook-test-types.js';
 
-const SCRIPT_PATH = join(process.cwd(), '.github/hooks/scripts/inject-skills.mjs');
+// Shipped template, not this repo's own dev install — see pipeline-integration.test.ts.
+const SCRIPT_PATH = join(process.cwd(), 'templates/.github/hooks/scripts/inject-skills.mjs');
 const PROJECT_ROOT = process.cwd();
 
 /** Helper: pipe JSON input to inject-skills.mjs and parse the JSON output */
@@ -61,14 +62,6 @@ const HOOK_TEST_MATRIX: HookTest[] = [
     agent: 'ux-designer',
     enforcement: 'readFile',
     testPrompt: 'Create a Framer component with property controls for a card',
-  },
-  {
-    id: 3,
-    skill: 'ui-ux-pro-max',
-    skillPath: '.github/prompts/ui-ux-pro-max/PROMPT.md',
-    agent: 'ux-designer',
-    enforcement: 'readFile',
-    testPrompt: 'Design a color palette and style guide for the dashboard',
   },
   {
     id: 4,
@@ -165,27 +158,12 @@ describe('Category 1: Hook-Enforced Mandatory Skills', () => {
     },
   );
 
-  // ─── Researcher (special case — capability, not domain knowledge) ──────
-
-  describe('Researcher: web-search injection', () => {
-    it('injects web-search skill into researcher context', () => {
-      const ctx = getContext('researcher');
-      expect(ctx).toContain('.github/skills/web-search/SKILL.md');
-    });
-
-    it('researcher has no readFile mandates', () => {
-      const ctx = getContext('researcher');
-      expect(ctx).not.toContain('Skills to load via readFile');
-    });
-  });
-
   // ─── Cross-agent verification ──────────────────────────────────────────
 
   describe('Cross-agent isolation', () => {
     it('developer does NOT get ux-designer skills', () => {
       const ctx = getContext('developer');
       expect(ctx).not.toContain('framer-components');
-      expect(ctx).not.toContain('ui-ux-pro-max');
     });
 
     it('ux-designer does NOT get developer skills', () => {

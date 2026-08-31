@@ -8,6 +8,27 @@ All notable changes to Beth are documented here. Format based on [Keep a Changel
 
 ## [Unreleased]
 
+### Fixed
+- **Shipped agent templates referenced 19 skills that do not ship.** `inject-skills.mjs`
+  mapped `researcher` to `.github/skills/web-search/SKILL.md` and `ux-designer` to
+  `.github/prompts/ui-ux-pro-max/PROMPT.md`; neither exists in the package, so skill
+  injection failed to a warning on every install. Those references, and the Azure/Entra
+  skill references in five agent definitions, are removed.
+- **Template `verify-skills.mjs` was an older revision** than the repo's own hook —
+  it challenged on skill compliance but not task tracking. Synced.
+- **Skill tests ran against this repo's dev install** (`.github/`, ~31 skills) instead of
+  the shipped `templates/` (6 skills), which is why the broken references passed CI.
+  Retargeted, and injection assertions now fail on a "could not load" warning rather
+  than passing on its length.
+
+### Changed
+- **README corrected to match what ships.** Removed the "Orchestration Engine" and
+  "LLM Provider" layers, the "full agentic loop"/Azure OpenAI claims, and the `openai`,
+  `@azure/identity`, and Zod tech-stack rows — none of that code or dependency exists.
+  Dropped unshipped skills (UI UX Pro Max, Azure Operations, Web Search) and MCP servers
+  (Azure, Brave), documented the required `backlog` server and the `pre-push-guard`
+  command, pinned the MCP snippet to real versions, and fixed a stale "Node ≥18".
+
 ## [3.0.0] - 2026-08-31
 
 ### Breaking Changes
