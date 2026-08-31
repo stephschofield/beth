@@ -80,3 +80,4 @@ sbom.json
 
 # Agent tooling scratch state
 .omc/
+swarm/
