@@ -11,7 +11,7 @@ handoffs:
     send: true
   - label: User Research
     agent: researcher
-    prompt: "Conduct research. Load `.github/skills/web-search/SKILL.md`. Deliver: findings with evidence, actionable recommendations, confidence levels. Follow workflow in AGENTS.md."
+    prompt: "Conduct research. Deliver: findings with evidence, actionable recommendations, confidence levels. Follow workflow in AGENTS.md."
     send: true
   - label: UX Design
     agent: ux-designer
@@ -315,37 +315,23 @@ The authoritative mapping lives in `.github/hooks/scripts/inject-skills.mjs`:
 
 | Agent | Injected into Context | Required via readFile |
 |-------|----------------------|---------------------|
-| **ux-designer** | web-design-guidelines | framer-components, ui-ux-pro-max (`.github/prompts/ui-ux-pro-max/PROMPT.md`) |
+| **ux-designer** | web-design-guidelines | framer-components |
 | **developer** | vercel-react-best-practices (SKILL.md) | shadcn-ui, vercel-react-best-practices (AGENTS.md) |
 | **product-manager** | — | prd |
 | **security-reviewer** | — | security-analysis |
 | **tester** | web-design-guidelines | — |
-| **researcher** | web-search | — |
 
 ### What This Means for Subagent Prompts
 
-You NO LONGER need to manually include "Load and follow: `<skill-path>`" in every subagent prompt. The hook does it automatically. However, you SHOULD still include task-specific skill references when the task requires a conditional skill (e.g., Framer components for the developer, Azure operations).
+You NO LONGER need to manually include "Load and follow: `<skill-path>`" in every subagent prompt. The hook does it automatically. However, you SHOULD still include task-specific skill references when the task requires a conditional skill (e.g., Framer components for the developer).
 
 ### Skill Routing (Conditional/Additional Skills)
 
 These skills are loaded on-demand based on task context — they're NOT auto-injected by the hook.
-All Azure skills live at `.github/skills/<name>/SKILL.md`.
 
 | Domain | Skills | Primary Agent | Load When |
 |--------|--------|---------------|----------|
 | Framer Components | `framer-components` | developer, ux-designer | Framer property controls, overrides |
-| Azure App Lifecycle | `azure-prepare`, `azure-validate`, `azure-deploy` | developer | Create, validate, deploy Azure apps |
-| Azure Compute & Storage | `azure-compute`, `azure-storage` | developer | VM sizing, blob/queue/table/file storage |
-| Azure AI & Data | `azure-ai`, `azure-aigateway`, `azure-kusto` | developer | AI Search, OpenAI, Data Explorer |
-| Azure Messaging | `azure-messaging` | developer | Event Hubs, Service Bus SDK issues |
-| Azure Copilot SDK | `azure-hosted-copilot-sdk` | developer | Building Copilot SDK apps on Azure |
-| App Insights | `appinsights-instrumentation` | developer, tester | Telemetry, APM instrumentation |
-| Microsoft Foundry | `microsoft-foundry` | developer | Agent deployment & evaluation |
-| Azure Security | `azure-rbac`, `azure-compliance`, `entra-app-registration` | security-reviewer | RBAC, compliance auditing, OAuth |
-| Azure Economics | `azure-cost-optimization`, `azure-cloud-migrate` | product-manager | Cost analysis, migration planning |
-| Azure Diagnostics | `azure-diagnostics` | tester | Production debugging, log analysis |
-| Azure Resources | `azure-resource-lookup`, `azure-resource-visualizer` | Beth | Resource inventory, architecture diagrams |
-| Azure Postgres | `azure-postgres` | developer | Passwordless Postgres, Entra ID auth |
 
 ## How You Operate
 
@@ -496,12 +482,10 @@ runSubagent({
   description: "Testing"
 })
 
-// Research — always loads web-search skill
+// Research
 runSubagent({
   agentName: "researcher",
   prompt: `Work on task <task-id>: Research <topic>.
-
-    Load and follow: \`.github/skills/web-search/SKILL.md\`
 
     Deliver: findings, evidence, actionable recommendations.
     When complete: backlog task edit <task-id> -s "Done" --plain

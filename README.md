@@ -12,19 +12,17 @@ They broke her wings once. They forgot she had claws.
 
 ## What Is This?
 
-Beth is a **multi-agent AI orchestrator** with a TypeScript runtime, CLI toolchain, MCP integrations, and subagent delegation—all driven by a ruthless coordinator who runs your development team the way Beth Dutton runs Schwartz & Meyer.
+Beth is a **multi-agent AI orchestration kit** for GitHub Copilot: seven agent definitions, the skills they load, a TypeScript CLI that installs them, and optional MCP integrations—all driven by a ruthless coordinator who runs your development team the way Beth Dutton runs Schwartz & Meyer.
 
-She commands seven specialized agents, each with their own expertise, tools, and handoff chains. On top of the GitHub Copilot agent layer, Beth ships a **TypeScript core engine** with a full agentic loop: agent routing, conversation context management, tool calling, subagent spawning, and agent handoffs—all backed by an Azure OpenAI LLM provider with streaming and retry.
+She commands seven specialized agents, each with their own expertise, tools, and handoff chains. Orchestration runs on GitHub Copilot's agent layer — Beth ships the agent definitions, the skills they load, and the CLI that installs them.
 
-**The system has four execution layers:**
+**The system has three execution layers:**
 
 | Layer | What It Does | Status |
 |-------|-------------|--------|
 | **Copilot Agents** | `.agent.md` definitions running in VS Code Agent Mode | Live |
 | **CLI Toolchain** | `beth init`, `beth doctor`, `beth land`, `beth update` — TypeScript commands | Live |
-| **Orchestration Engine** | Fan-out routing, tool calling loop, subagent spawning, handoffs | Live |
 | **Agent Tools** | Copilot built-ins (codebase, readFile, editFiles, runSubagent) + optional MCP servers | Live |
-| **LLM Provider** | Azure OpenAI with Entra ID auth, streaming, retry, tool calling | Live |
 
 ---
 
@@ -43,15 +41,16 @@ flowchart LR
 
 ## Tech Stack
 
+Beth itself is a CLI plus Markdown agent definitions. The framework rows below
+describe the stack Beth's agents are tuned to **build with**, not what the CLI runs on.
+
 | Category | Technology | Notes |
 |----------|-----------|-------|
 | **Runtime** | Node.js 20.19.x or ≥ 22.12 (Node 21.x not supported) | ES modules, built-in test runner |
-| **Language** | TypeScript (strict mode) | No `any`. Zod for runtime validation |
+| **Language** | TypeScript (strict mode) | No `any` |
 | **Target Framework** | React 19 + Next.js App Router | Server Components, Server Actions, Suspense, streaming |
 | **Styling** | Tailwind CSS + `class-variance-authority` (cva) | Utility-first with typed variants |
 | **Components** | shadcn/ui | Radix primitives, copy-paste ownership |
-| **LLM Provider** | Azure OpenAI via `openai` SDK | Entra ID auth (no API keys), streaming + tool calling |
-| **Auth** | `@azure/identity` DefaultAzureCredential | az login, managed identity, VS Code creds |
 | **Frontmatter** | `gray-matter` | Parses `.agent.md` and `SKILL.md` YAML |
 | **Testing** | vitest | Unit, integration, E2E |
 | **Task Tracking** | Backlog.md (`backlog` CLI) | Markdown-based task tracking for agents and humans |
@@ -97,9 +96,10 @@ For detailed setup (prerequisites, task tracking, MCP servers): [docs/INSTALLATI
 | `beth land` | Automate session completion: tests, commit, push, verify sync |
 | `beth update` | Update project files to latest templates without full re-init |
 | `beth uninstall` | Remove all Beth files from current project (agents, skills, hooks, config) |
+| `beth pre-push-guard` | Branch discipline check, run from the pre-push hook |
 | `beth help` | Show all commands and options |
 
-**Flags:** `--force`, `--skip-backlog`, `--skip-mcp`, `--verbose`, `--skip-tests`, `--message/-m`, `--dry-run`, `--check-only`
+**Flags:** `--force`, `--skip-backlog`, `--skip-mcp`, `--verbose`, `--fix`, `--skip-tests`, `--message/-m`, `--dry-run`, `--check-only`, `--reason/-r`
 
 ---
 
@@ -194,9 +194,8 @@ Model Context Protocol servers extend agent capabilities. All **optional** — a
 |--------|-------|-----------|
 | **shadcn/ui** | Developer | Component browsing & installation |
 | **Playwright** | Tester | Browser automation, E2E testing |
-| **Azure** | Developer, Security | Cloud resource management |
-| **Brave Search** | Researcher | Internet research |
 | **DeepWiki** | All | Repository documentation lookup |
+| **Backlog** | All | Task tracking (required by `beth doctor`) |
 
 ### Quick Setup
 
@@ -208,11 +207,10 @@ cp mcp.json.example .vscode/mcp.json
 ```json
 {
   "servers": {
-    "shadcn":     { "command": "npx", "args": ["shadcn@latest", "mcp"] },
-    "playwright": { "command": "npx", "args": ["@playwright/mcp@latest"] },
-    "azure":      { "command": "npx", "args": ["@azure/mcp-server"] },
-    "web-search": { "command": "npx", "args": ["@brave/brave-search-mcp-server"] },
-    "deepwiki":   { "url": "https://mcp.deepwiki.com/mcp" }
+    "shadcn":     { "command": "npx", "args": ["shadcn@3.7.0", "mcp"] },
+    "playwright": { "command": "npx", "args": ["@playwright/mcp@0.0.68"] },
+    "backlog":    { "command": "backlog", "args": ["mcp", "start"] },
+    "deepwiki":   { "type": "http", "url": "https://mcp.deepwiki.com/mcp" }
   }
 }
 ```
@@ -223,31 +221,27 @@ Full details: [docs/MCP-SETUP.md](docs/MCP-SETUP.md)
 
 ## Skills (On-Demand Knowledge)
 
-Skills are domain-knowledge modules that agents load automatically when trigger phrases match. Each skill lives in `.github/skills/<name>/SKILL.md` or `.github/prompts/<name>/PROMPT.md`.
+Skills are domain-knowledge modules that agents load automatically when trigger phrases match. Each skill lives in `.github/skills/<name>/SKILL.md`.
 
 | Skill | Triggers On | Used By |
 |-------|------------|---------|
 | **PRD Generation** | "create a prd", "product requirements" | Product Manager |
-| **UI UX Pro Max** | "design system", "color palette", "style guide" | UX Designer, Developer |
 | **Web Design Guidelines** | "review my UI", "check accessibility" | UX Designer, Tester |
 | **Framer Components** | "framer component", "property controls" | UX Designer, Developer |
 | **React/Next.js Best Practices** | React performance, Next.js patterns | Developer |
 | **shadcn/ui** | "shadcn", "ui component" | Developer |
 | **Security Analysis** | "security review", "OWASP", "threat model" | Security Reviewer |
-| **Azure Operations** | Azure resource management (27+ Azure skills) | Developer |
-| **Web Search** | Internet research via Brave | Researcher |
 
 ### Design & UI Skills
 
-Three complementary skills cover the full design-to-code pipeline. They don't overlap — each solves a different problem.
+Two complementary skills cover the design-to-code pipeline. They don't overlap — each solves a different problem.
 
 | Skill | What It Does | When You Need It |
 |-------|-------------|------------------|
-| **[UI UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)** | Design system generator — picks styles, colors, typography, and layout patterns from a searchable database of 67 styles, 161 color palettes, 57 font pairings, and 161 industry-specific reasoning rules. | Starting a new project or page. "What should this look like?" |
 | **Web Design Guidelines** | Code auditor — fetches live [Vercel Web Interface Guidelines](https://github.com/vercel-labs/web-interface-guidelines) and checks your actual files for accessibility, focus, form, and performance violations with `file:line` output. | Reviewing implemented code. "Is this built correctly?" |
 | **Framer Components** | Framer platform SDK reference — `addPropertyControls`, `ControlType`, code overrides, `RenderTarget`, auto-sizing, and Framer Motion integration. | Building custom components inside Framer. "How do I make this work in Framer?" |
 
-**Typical flow:** UI UX Pro Max generates the design system → Developer builds it → Web Design Guidelines audits the result. Framer Components is loaded only when targeting the Framer platform.
+**Typical flow:** Developer builds the UI → Web Design Guidelines audits the result. Framer Components is loaded only when targeting the Framer platform.
 
 ---
 
@@ -299,7 +293,7 @@ Beth's agents leverage VS Code Copilot's built-in tools alongside task tracking 
 | **runInTerminal** | Shell command execution |
 | **runSubagent** | Spawn specialist agents autonomously |
 | **backlog CLI** | `backlog task create`, `backlog board`, `backlog task edit` for tracking |
-| **MCP servers** | Optional external tools (shadcn, Playwright, Azure, Brave Search) |
+| **MCP servers** | Optional external tools (shadcn, Playwright, DeepWiki) |
 
 ---
 
@@ -315,8 +309,9 @@ flowchart LR
     CLI --> Land["land"]
     CLI --> Update["update"]
     CLI --> Uninstall["uninstall"]
+    CLI --> Guard["pre-push-guard"]
     Init --> Templates[".agent.md · SKILL.md · MCP · settings"]
-    Doctor --> Checks["Node ≥18 · agents · skills · MCP"]
+    Doctor --> Checks["Node ≥20.19 · agents · skills · MCP"]
     QS --> Init & Doctor
     Update --> Diff["Template diffing"]
 ```
@@ -328,6 +323,7 @@ flowchart LR
 - `beth land` — Automated session completion: tests, commit, push, verify sync
 - `beth update` — Update project files to latest templates (supports `--check-only`)
 - `beth uninstall` — Remove all Beth files from current project (agents, skills, hooks, config, backlog)
+- `beth pre-push-guard` — Branch discipline check, invoked by the installed pre-push hook
 
 ---
 
@@ -341,7 +337,7 @@ and dispatched from `bin/cli.js`.
 ```
 beth/
 ├── bin/
-│   └── cli.js                      # CLI entry point (init, doctor, quickstart, land, update, uninstall, help)
+│   └── cli.js                      # CLI entry point (init, doctor, quickstart, land, update, uninstall, pre-push-guard, help)
 ├── src/
 │   ├── cli/commands/
 │   │   ├── doctor.ts               # System health validation (incl. MCP server checks)
@@ -349,12 +345,16 @@ beth/
 │   │   ├── pre-push-guard.ts       # Branch discipline enforcement
 │   │   ├── quickstart.ts           # Guided setup flow
 │   │   └── update.ts               # Template update diffing
-│   └── cli/lib/
-│       ├── gitHelpers.ts           # Shared git operations
-│       └── term.ts                 # Terminal colors
+│   ├── cli/lib/
+│   │   ├── gitHelpers.ts           # Shared git operations
+│   │   └── term.ts                 # Terminal colors
+│   └── __tests__/                  # Template + skill-routing tests
+├── scripts/
+│   └── quality-gate.mjs            # Coverage gate
 ├── templates/
 │   └── .github/
 │       ├── agents/                 # 7 agent definitions (.agent.md)
+│       ├── hooks/                  # Skill injection + verification hooks
 │       └── skills/                 # 6 core skill modules (SKILL.md)
 └── docs/
     ├── INSTALLATION.md

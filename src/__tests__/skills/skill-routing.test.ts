@@ -229,13 +229,6 @@ const PRODUCT_SKILLS: SkillTest[] = [
     agent: 'product-manager',
     testPrompt: 'Write a product requirements document for the billing dashboard feature',
   },
-  {
-    id: 37,
-    skill: 'web-search',
-    skillPath: '.github/skills/web-search/SKILL.md',
-    agent: 'researcher',
-    testPrompt: 'Research the competitive landscape for AI code assistants',
-  },
 ];
 
 // ─── Category 5: Developer Workflow (tests 40–53) ─────────────────────────
@@ -433,7 +426,6 @@ describe('Cross-cutting: Test matrix integrity', () => {
   it('no duplicate skill names in the matrix', () => {
     const skills = ALL_SKILLS.map((t) => t.skill);
     // prd appears in both Category 1 (hook) and Category 4 (routing) — allow it
-    // web-search also appears twice — same reason
     // Only check within THIS matrix (Categories 2-10)
     const duplicates = skills.filter((s, i) => skills.indexOf(s) !== i);
     expect(duplicates).toHaveLength(0);

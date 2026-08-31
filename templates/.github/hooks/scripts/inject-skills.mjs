@@ -22,10 +22,7 @@ import { join } from 'node:path';
 const AGENT_SKILLS = {
   'ux-designer': {
     inject: ['.github/skills/web-design-guidelines/SKILL.md'],
-    readFile: [
-      '.github/skills/framer-components/SKILL.md',
-      '.github/prompts/ui-ux-pro-max/PROMPT.md',
-    ],
+    readFile: ['.github/skills/framer-components/SKILL.md'],
   },
   'developer': {
     inject: ['.github/skills/vercel-react-best-practices/SKILL.md'],
@@ -44,10 +41,6 @@ const AGENT_SKILLS = {
   },
   'tester': {
     inject: ['.github/skills/web-design-guidelines/SKILL.md'],
-    readFile: [],
-  },
-  'researcher': {
-    inject: ['.github/skills/web-search/SKILL.md'],
     readFile: [],
   },
 };

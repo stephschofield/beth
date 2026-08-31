@@ -104,7 +104,8 @@ function getAgentSkillsMap(): Record<string, { inject: string[]; readFile: strin
 
 // ─── Known agents from the hook ────────────────────────────────────────────
 
-const HOOKED_AGENTS = ['developer', 'ux-designer', 'product-manager', 'security-reviewer', 'tester', 'researcher'];
+// `researcher` has no shipped skill, so the hook has no mapping for it.
+const HOOKED_AGENTS = ['developer', 'ux-designer', 'product-manager', 'security-reviewer', 'tester'];
 
 // ─── Skills covered in the E2E test plan (docs/E2E-SKILL-TESTS.md) ────────
 // Every skill in the 72-test matrix. Used to detect orphan skills.

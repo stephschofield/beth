@@ -20,9 +20,13 @@ import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
 import type { InjectHookOutput, VerifyHookOutput } from '../hook-test-types.js';
 
-const INJECT_SCRIPT = join(process.cwd(), '.github/hooks/scripts/inject-skills.mjs');
-const VERIFY_SCRIPT = join(process.cwd(), '.github/hooks/scripts/verify-skills.mjs');
-const PROJECT_ROOT = process.cwd();
+// Test the SHIPPED templates, not this repo's own dev install under .github/.
+// The dev install carries ~31 skills; users receive the 6 in templates/. Pointing
+// these at process.cwd() let template refs to non-shipped skills pass unnoticed.
+const TEMPLATE_ROOT = join(process.cwd(), 'templates');
+const INJECT_SCRIPT = join(TEMPLATE_ROOT, '.github/hooks/scripts/inject-skills.mjs');
+const VERIFY_SCRIPT = join(TEMPLATE_ROOT, '.github/hooks/scripts/verify-skills.mjs');
+const PROJECT_ROOT = TEMPLATE_ROOT;
 
 /** Run inject-skills.mjs with JSON input */
 function runInject(input: Record<string, unknown>): InjectHookOutput {
@@ -70,13 +74,14 @@ function runPipeline(agentType: string) {
 
 // ─── Known agents ──────────────────────────────────────────────────────────
 
+// Agents the inject hook has a skill mapping for. `researcher` is deliberately
+// absent: it has no shipped skill, so inject passes it through with no context.
 const KNOWN_AGENTS = [
   'developer',
   'ux-designer',
   'product-manager',
   'security-reviewer',
   'tester',
-  'researcher',
 ];
 
 // ─── Full pipeline tests ───────────────────────────────────────────────────
@@ -206,6 +211,7 @@ describe('Injected skill content is real, not placeholders', () => {
     // The inject layer loads the actual SKILL.md file content
     // Verify it contains real content, not just the path
     expect(ctx).toContain('React');
+    expect(ctx).not.toContain('WARNING: Could not load');
     expect(ctx.length).toBeGreaterThan(500); // Real content, not a stub
   });
 
@@ -215,6 +221,9 @@ describe('Injected skill content is real, not placeholders', () => {
       cwd: PROJECT_ROOT,
     });
     const ctx = output.hookSpecificOutput!.additionalContext;
+    // A missing skill file still emits a long WARNING banner, so length alone
+    // is not enough — assert the injection actually resolved.
+    expect(ctx).not.toContain('WARNING: Could not load');
     expect(ctx.length).toBeGreaterThan(500);
   });
 
@@ -224,16 +233,18 @@ describe('Injected skill content is real, not placeholders', () => {
       cwd: PROJECT_ROOT,
     });
     const ctx = output.hookSpecificOutput!.additionalContext;
+    // A missing skill file still emits a long WARNING banner, so length alone
+    // is not enough — assert the injection actually resolved.
+    expect(ctx).not.toContain('WARNING: Could not load');
     expect(ctx.length).toBeGreaterThan(500);
   });
 
-  it('researcher context contains actual web-search content', () => {
+  it('researcher has no skill mapping and gets no injected context', () => {
     const output = runInject({
       agent_type: 'researcher',
       cwd: PROJECT_ROOT,
     });
-    const ctx = output.hookSpecificOutput!.additionalContext;
-    expect(ctx.length).toBeGreaterThan(200);
+    expect(output.hookSpecificOutput).toBeUndefined();
   });
 });
 
@@ -259,7 +270,7 @@ describe('Cross-hook consistency', () => {
     expect(reason).toContain('MANDATORY skills');
   });
 
-  it('all 6 agents produce different inject contexts', () => {
+  it('all mapped agents produce different inject contexts', () => {
     const contexts = KNOWN_AGENTS.map((agent) => {
       const output = runInject({
         agent_type: agent,

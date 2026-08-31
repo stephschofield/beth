@@ -88,13 +88,6 @@ const HOOK_ENFORCED: TriggerTest[] = [
     requiredKeywords: ['framer', 'component', 'property controls'],
   },
   {
-    id: 3, skill: 'ui-ux-pro-max',
-    skillPath: '.github/prompts/ui-ux-pro-max/PROMPT.md',
-    agent: 'ux-designer',
-    testPrompt: 'Design a color palette and style guide for the dashboard',
-    requiredKeywords: ['color', 'style'],
-  },
-  {
     id: 4, skill: 'vercel-react-best-practices',
     skillPath: '.github/skills/vercel-react-best-practices/SKILL.md',
     agent: 'developer',
@@ -308,13 +301,6 @@ const PRODUCT_SKILLS: TriggerTest[] = [
     agent: 'product-manager',
     testPrompt: 'Write a product requirements document for the billing dashboard feature',
     requiredKeywords: ['product requirements', 'prd'],
-  },
-  {
-    id: 37, skill: 'web-search',
-    skillPath: '.github/skills/web-search/SKILL.md',
-    agent: 'researcher',
-    testPrompt: 'Research the competitive landscape for AI code assistants',
-    requiredKeywords: ['research', 'search'],
   },
 ];
 
