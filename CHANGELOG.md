@@ -8,6 +8,22 @@ All notable changes to Beth are documented here. Format based on [Keep a Changel
 
 ## [Unreleased]
 
+## [3.0.0] - 2026-08-31
+
+### Breaking Changes
+- **ADO Sync removed** — the `ado-sync` integration and its Azure auth dependencies (`@azure/msal-node`, `@azure/msal-node-extensions`) are gone. Use the Backlog.md CLI directly.
+- **Public API surface removed** — Beth ships as a CLI only. The programmatic `main`/`exports` entry points are no longer published; import paths into the package will no longer resolve.
+
+### Removed
+- 35 unreferenced vendored skill bundles.
+- Unshipped `swarm/` prototype and its stale compiled artifacts.
+- Dead code with zero callers, duplicated color/logging helpers, and an unused DI interface.
+- Unused dependency `aiohttp`.
+
+### Changed
+- Hand-rolled utilities replaced with stdlib equivalents.
+- Template validation no longer depends on the removed loader module.
+
 ## [2.1.0] - 2026-03-16
 
 ### Added
