@@ -33,7 +33,6 @@ import {
   extractEpicId,
   isProtectedBranch,
   hasUncommittedChanges,
-  hasStagedChanges,
   hasUnpushedCommits,
   runTests,
   gitAddAll,
@@ -44,34 +43,9 @@ import {
   gitPush,
   isUpToDateWithOrigin,
 } from '../lib/gitHelpers.js';
+import { COLORS } from '../lib/term.js';
 
-// Re-export shared helpers so existing consumers (tests) don't break
-export {
-  getCurrentBranch,
-  extractEpicId,
-  isProtectedBranch,
-  hasUncommittedChanges,
-  hasStagedChanges,
-  hasUnpushedCommits,
-  runTests,
-  gitAddAll,
-  gitCommit,
-  remoteBranchExists,
-  gitRebaseAbort,
-  gitPullRebase,
-  gitPush,
-  isUpToDateWithOrigin,
-};
 
-const COLORS = {
-  reset: '\x1b[0m',
-  bright: '\x1b[1m',
-  red: '\x1b[31m',
-  green: '\x1b[32m',
-  yellow: '\x1b[33m',
-  cyan: '\x1b[36m',
-  dim: '\x1b[2m',
-};
 
 export interface LandOptions {
   skipTests?: boolean;

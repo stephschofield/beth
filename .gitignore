@@ -64,10 +64,6 @@ sbom.json
 # bs-buster (removed — legacy dependency)
 .bs-buster/
 
-# Swarm user config (users copy from swarm.yaml.example)
-swarm/swarm.yaml
-swarm/.venv/
-
 # Private keys and certificates
 *.pem
 *.key
@@ -78,15 +74,9 @@ swarm/.venv/
 # Windows NTFS alternate data stream artifacts
 *:Zone.Identifier
 
-# ADO Sync Python artifacts
-ado-sync/.venv/
-ado-sync/.pytest_cache/
-ado-sync/__pycache__/
-ado-sync/**/__pycache__/
-ado-sync/.env\nado-sync/.ado-sync-mappings.json
-ado-sync/ado-sync.service
-ado-sync/.ado-sync-mappings.json
-
 # >>> Beth — managed by beth-copilot init >>>
 .beth/
 # <<< Beth <<<
+
+# Agent tooling scratch state
+.omc/

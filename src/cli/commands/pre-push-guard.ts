@@ -11,28 +11,11 @@ import {
   getCurrentBranch,
   extractBranchName,
   isProtectedBranch,
-  isEpicBranch,
-  isReleaseBranch,
   isRecognizedBranch,
 } from '../lib/gitHelpers.js';
+import { COLORS } from '../lib/term.js';
 
-// Re-export shared helpers so existing consumers don't break
-export {
-  getCurrentBranch,
-  extractBranchName,
-  isProtectedBranch,
-  isEpicBranch,
-  isReleaseBranch,
-  isRecognizedBranch,
-};
 
-const COLORS = {
-  reset: '\x1b[0m',
-  bright: '\x1b[1m',
-  red: '\x1b[31m',
-  yellow: '\x1b[33m',
-  cyan: '\x1b[36m',
-};
 
 export interface PushRef {
   localRef: string;

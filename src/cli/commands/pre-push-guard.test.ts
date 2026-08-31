@@ -15,16 +15,18 @@ import { describe, it, expect, beforeEach } from 'vitest';
 
 import {
   parsePushRefs,
-  extractBranchName,
-  isProtectedBranch,
-  isEpicBranch,
-  isReleaseBranch,
-  isRecognizedBranch,
   runGuard,
   generateHookScript,
   BETH_GUARD_BEGIN,
   BETH_GUARD_END,
 } from './pre-push-guard.js';
+import {
+  extractBranchName,
+  isProtectedBranch,
+  isEpicBranch,
+  isReleaseBranch,
+  isRecognizedBranch,
+} from '../lib/gitHelpers.js';
 
 beforeEach(() => {
 });

@@ -301,25 +301,6 @@ Beth's agents leverage VS Code Copilot's built-in tools alongside task tracking 
 | **backlog CLI** | `backlog task create`, `backlog board`, `backlog task edit` for tracking |
 | **MCP servers** | Optional external tools (shadcn, Playwright, Azure, Brave Search) |
 
-### Public API
-
-```typescript
-import { loadAgents, loadSkills, getInferableAgents, buildTriggerMap } from 'beth-copilot';
-
-// Inspect loaded agent definitions
-const { agents, errors: agentErrors } = loadAgents('.github/agents');
-// → each AgentDefinition has: id, frontmatter (name, tools, handoffs), body
-
-// Find agents available for subagent spawning
-const subagents = getInferableAgents({ agents, errors: agentErrors });
-// → agents with infer: true in frontmatter
-
-// Inspect loaded skill modules and their trigger phrases
-const { skills, errors: skillErrors } = loadSkills('.github/skills');
-const triggerMap = buildTriggerMap({ skills, errors: skillErrors });
-// → Map of trigger phrase → SkillDefinition for runtime injection
-```
-
 ---
 
 ## CLI Toolchain
@@ -352,7 +333,8 @@ flowchart LR
 
 ## TypeScript Core
 
-The engine that powers Beth. Parses agent and skill definitions, provides typed APIs for the agentic loop, and drives the CLI toolchain.
+The CLI implementation. Commands are written in TypeScript, compiled to `dist/`,
+and dispatched from `bin/cli.js`.
 
 ### Project Structure
 
@@ -361,23 +343,15 @@ beth/
 ├── bin/
 │   └── cli.js                      # CLI entry point (init, doctor, quickstart, land, update, uninstall, help)
 ├── src/
-│   ├── index.ts                    # Barrel exports (all public API)
 │   ├── cli/commands/
 │   │   ├── doctor.ts               # System health validation (incl. MCP server checks)
 │   │   ├── land.ts                 # Automated session completion
 │   │   ├── pre-push-guard.ts       # Branch discipline enforcement
 │   │   ├── quickstart.ts           # Guided setup flow
-│   │   ├── uninstall.ts            # Clean removal of all Beth files
 │   │   └── update.ts               # Template update diffing
-│   ├── core/
-│   │   ├── agents/
-│   │   │   ├── types.ts            # AgentDefinition, AgentFrontmatter, AgentHandoff
-│   │   │   └── loader.ts           # Parse .agent.md → typed definitions
-│   │   └── skills/
-│   │       ├── types.ts            # SkillDefinition, TriggerMap
-│   │       └── loader.ts           # Parse SKILL.md, extract triggers, match queries
-│   └── lib/
-│       └── pathValidation.ts       # Traversal/injection guards
+│   └── cli/lib/
+│       ├── gitHelpers.ts           # Shared git operations
+│       └── term.ts                 # Terminal colors
 ├── templates/
 │   └── .github/
 │       ├── agents/                 # 7 agent definitions (.agent.md)
@@ -389,8 +363,7 @@ beth/
     ├── SYSTEM-FLOW.md
     ├── HOOKS-AND-HANDOFF-ENFORCEMENT.md
     ├── E2E-SKILL-TESTS.md
-    ├── PR-REVIEW-PROCESS.md
-    └── SWARM-ARCHITECTURE.md
+    └── PR-REVIEW-PROCESS.md
 ```
 
 ### Test Coverage
@@ -398,8 +371,7 @@ beth/
 | Area | What It Covers |
 |------|---------------|
 | **Skill Routing** | Hook injection, agent→skill mapping, trigger phrase matching, disambiguation, pipeline integration |
-| **Core** | Agent/skill loader parsing, frontmatter validation, handoff chains, tool declarations, type safety |
-| **Security** | Path traversal detection, shell injection prevention, input validation allowlists |
+| **Templates** | Shipped agent/skill assets parse; handoffs resolve; required tools present |
 | **CLI** | Init scaffolding, doctor health checks, land pipeline, pre-push guard, quickstart, uninstall |
 | **CLI E2E** | End-to-end init/doctor/pipeline with real filesystem, MCP validation, edge cases |
 
@@ -499,14 +471,12 @@ See [MCP Integrations](#mcp-integrations) above or [docs/MCP-SETUP.md](docs/MCP-
 | Doc | Purpose |
 |-----|---------|
 | [Installation Guide](docs/INSTALLATION.md) | Full setup: prerequisites, VS Code config, Backlog.md |
-| [ADO Sync Setup](docs/ADO-SYNC-SETUP.md) | Azure DevOps sync: auth, walkthrough, troubleshooting |
 | [MCP Setup](docs/MCP-SETUP.md) | Optional server integrations |
 | [CLI Architecture](docs/CLI-ARCHITECTURE.md) | Dual-interface design, implementation phases |
 | [System Flow](docs/SYSTEM-FLOW.md) | Agent orchestration diagrams |
 | [Hooks & Handoffs](docs/HOOKS-AND-HANDOFF-ENFORCEMENT.md) | Skill injection hooks, hub-and-spoke enforcement |
 | [E2E Skill Tests](docs/E2E-SKILL-TESTS.md) | Behavioral skill routing test plan |
 | [PR Review Process](docs/PR-REVIEW-PROCESS.md) | Code review checklist and workflow |
-| [Swarm Architecture](docs/SWARM-ARCHITECTURE.md) | Multi-agent swarm design (planned) |
 | [Contributing Guide](CONTRIBUTING.md) | How to contribute (PR process, review checklist) |
 | [Changelog](CHANGELOG.md) | Version history |
 | [Security Policy](SECURITY.md) | Vulnerability reporting |

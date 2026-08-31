@@ -1,8 +1,11 @@
 # E2E Skill Routing Tests
 
 > Test matrix for verifying every skill is routable via prompt inference.
-> Generated from `.github/skills/` inventory (66 skills) and `inject-skills.mjs` hook mapping.
-> Last updated: 2026-03-15
+> Generated from `.github/skills/` inventory (31 skills) and `inject-skills.mjs` hook mapping.
+> Last updated: 2026-08-27
+>
+> Note: 35 unreferenced vendored skill bundles were removed; the matrices below
+> cover the skills that remain, so test IDs are sparse rather than contiguous.
 
 ## Test Design
 
@@ -203,8 +206,8 @@ These skill pairs share semantic space. Tests MUST verify the correct one fires:
    - `inject-skills.test.ts` (20 tests): Unit tests for inject-skills.mjs in isolation
    - `hook-injection.test.ts` (51 tests): Parameterized tests for all Category 1 matrix entries
 
-2. **Skill trigger coverage tests** ✅ — Verify each of the 72 test prompts' keywords appear in the expected skill's SKILL.md content. Catches missing triggers, wrong descriptions, keyword drift.
-   - `trigger-coverage.test.ts` (147 tests): All 72 test prompts with required keywords validated against actual skill content
+2. **Skill trigger coverage tests** ✅ — Verify each remaining test prompt's keywords appear in the expected skill's SKILL.md content. Catches missing triggers, wrong descriptions, keyword drift.
+   - `trigger-coverage.test.ts`: Each retained test prompt's required keywords validated against actual skill content
 
 3. **Pipeline integration tests** ✅ — Test inject-skills.mjs → verify-skills.mjs as a complete enforcement system. Verifies round-trip behavior, malformed input resilience, cross-hook consistency, and agent-specific context differentiation.
    - `pipeline-integration.test.ts` (41 tests): Full hook round-trip for all 6 agent types

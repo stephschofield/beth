@@ -53,38 +53,6 @@ const BETH_ASCII = [
   '╚═════╝ ╚══════╝   ╚═╝   ╚═╝  ╚═╝',
 ];
 
-// Fire characters for animation (from light to intense)
-const FIRE_CHARS = [' ', '.', ':', '*', 's', 'S', '#', '$', '&', '@'];
-const FIRE_CHARS_SIMPLE = [' ', '.', '*', '^', ')', '(', '%', '#'];
-
-// Generate a fire line with flickering effect
-function generateFireLine(width, intensity, frame) {
-  let line = '';
-  for (let i = 0; i < width; i++) {
-    // Create wave pattern for fire
-    const wave = Math.sin((i + frame) * 0.3) * 0.5 + 0.5;
-    const noise = Math.random();
-    const heat = (intensity * wave * 0.7 + noise * 0.3);
-    
-    if (heat > 0.85) {
-      line += FIRE_CHARS_SIMPLE[7]; // #
-    } else if (heat > 0.7) {
-      line += FIRE_CHARS_SIMPLE[6]; // %
-    } else if (heat > 0.55) {
-      line += FIRE_CHARS_SIMPLE[Math.random() > 0.5 ? 4 : 5]; // ) or (
-    } else if (heat > 0.4) {
-      line += FIRE_CHARS_SIMPLE[3]; // ^
-    } else if (heat > 0.25) {
-      line += FIRE_CHARS_SIMPLE[2]; // *
-    } else if (heat > 0.1) {
-      line += FIRE_CHARS_SIMPLE[1]; // .
-    } else {
-      line += ' ';
-    }
-  }
-  return line;
-}
-
 const BETH_TAGLINES = [
   "I don't speak dipshit. I speak in consequences.",
   "They broke my wings and forgot I had claws.",
@@ -293,85 +261,6 @@ const BETH_PORTRAIT = [
 ];
 
 // Portrait animation for init command
-async function animatePortrait() {
-  const AMBER = '\x1b[38;2;218;165;32m';
-  const GOLD = '\x1b[38;2;255;215;0m';
-  const SKIN = '\x1b[38;2;235;210;160m';
-  const DARK = '\x1b[38;2;139;90;43m';
-  const EYE = '\x1b[38;2;70;130;180m';
-  const LIP = '\x1b[38;2;180;80;80m';
-  const WHITE = '\x1b[38;2;255;255;255m';
-  const RESET = '\x1b[0m';
-  const BOLD = '\x1b[1m';
-  const DIM = '\x1b[2m';
-  
-  // Hide cursor
-  process.stdout.write('\x1b[?25l');
-  
-  try {
-    // Clear screen
-    process.stdout.write('\x1b[2J\x1b[H');
-    await sleep(200);
-    
-    // Quick glitch effect
-    const glitchChars = '░▒▓█';
-    for (let frame = 0; frame < 3; frame++) {
-      process.stdout.write('\x1b[H');
-      for (let j = 0; j < 5; j++) {
-        const col = Math.floor(Math.random() * 20) + 5;
-        const row = Math.floor(Math.random() * 10) + 2;
-        const r = Math.floor(Math.random() * 150 + 100);
-        const g = Math.floor(Math.random() * 100 + 50);
-        const b = Math.floor(Math.random() * 50);
-        const char = glitchChars[Math.floor(Math.random() * glitchChars.length)];
-        process.stdout.write(`\x1b[${row};${col}H\x1b[38;2;${r};${g};${b}m${char.repeat(3)}`);
-      }
-      await sleep(50);
-    }
-    
-    // Display portrait with colors
-    process.stdout.write('\x1b[2J\x1b[H');
-    console.log();
-    
-    for (let i = 0; i < BETH_PORTRAIT.length; i++) {
-      let line = BETH_PORTRAIT[i];
-      // Colorize: frame in amber, face content in skin tones
-      line = line
-        .replace(/[╭╮╯╰│╱╲━.─]/g, `${AMBER}$&${RESET}`)
-        .replace(/[▓█▒░▀▄▐▌]/g, `${SKIN}$&${RESET}`)
-        .replace(/◉/g, `${EYE}◉${RESET}`)
-        .replace(/══/g, `${LIP}══${RESET}`);
-      console.log('  ' + line);
-      await sleep(40);
-    }
-    
-    await sleep(300);
-    
-    // Banner below portrait
-    console.log();
-    console.log(`  ${GOLD}${BOLD}━━━━━━━━━━━━━━━━━━━━━━━${RESET}`);
-    console.log(`  ${AMBER}${BOLD}        B E T H${RESET}`);
-    console.log(`  ${DIM}${WHITE}   AI Agent Orchestrator${RESET}`);
-    console.log(`  ${GOLD}${BOLD}━━━━━━━━━━━━━━━━━━━━━━━${RESET}`);
-    
-    await sleep(300);
-    
-    // Typewriter quote
-    const quote = BETH_TAGLINES[Math.floor(Math.random() * BETH_TAGLINES.length)];
-    console.log();
-    process.stdout.write(`  ${AMBER}"`);
-    for (const ch of quote) {
-      process.stdout.write(ch);
-      await sleep(20);
-    }
-    console.log(`"${RESET}`);
-    console.log();
-    
-  } finally {
-    // Show cursor
-    process.stdout.write('\x1b[?25h');
-  }
-}
 
 // Detect if we can do animations (TTY and not piped)
 function canAnimate() {
@@ -452,25 +341,6 @@ function logDebug(message) {
   }
 }
 
-function showPathDiagnostics() {
-  const homeDir = process.env.HOME || process.env.USERPROFILE || '';
-  const isWindows = process.platform === 'win32';
-  
-  console.log('');
-  log('PATH Diagnostics:', COLORS.bright);
-  logInfo(`Platform: ${process.platform}`);
-  logInfo(`HOME: ${homeDir}`);
-  logInfo(`PATH: ${process.env.PATH}`);
-  
-  if (isWindows) {
-    logInfo(`APPDATA: ${process.env.APPDATA || '(not set)'}`);
-    logInfo(`npm prefix: Run "npm config get prefix" to check`);
-  } else {
-    logInfo(`npm prefix: Run "npm config get prefix" to check`);
-    logInfo(`Common locations: ~/.local/bin, /usr/local/bin, ~/.npm-global/bin`);
-  }
-  console.log('');
-}
 
 async function checkForUpdates() {
   try {
@@ -524,20 +394,6 @@ async function promptYesNo(question) {
   });
 }
 
-async function promptForInput(question) {
-  const readline = await import('readline');
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-  
-  return new Promise((resolve) => {
-    rl.question(`${question} `, (answer) => {
-      rl.close();
-      resolve(answer.trim());
-    });
-  });
-}
 
 const BETH_GUARD_BEGIN = '# --- BEGIN BETH GUARD ---';
 const BETH_GUARD_END = '# --- END BETH GUARD ---';
@@ -592,9 +448,6 @@ ${COLORS.bright}Commands:${COLORS.reset}
   ${COLORS.cyan}npx beth-copilot land${COLORS.reset} [options]     Automated session completion (test, commit, push)
   ${COLORS.cyan}npx beth-copilot quickstart${COLORS.reset}         Run init + doctor
   ${COLORS.cyan}npx beth-copilot pre-push-guard${COLORS.reset}     Run branch discipline checks (used by git hook)
-  ${COLORS.cyan}npx beth-copilot ado-sync start${COLORS.reset}     Start ADO Sync watcher (background)
-  ${COLORS.cyan}npx beth-copilot ado-sync stop${COLORS.reset}      Stop ADO Sync watcher
-  ${COLORS.cyan}npx beth-copilot ado-sync status${COLORS.reset}    Show ADO Sync watcher state
   ${COLORS.cyan}npx beth-copilot uninstall${COLORS.reset}          Remove all Beth files from current project
   ${COLORS.cyan}npx beth-copilot help${COLORS.reset}               Show this help message
 
@@ -800,7 +653,7 @@ function ensureBethGitignore(projectDir, options = {}) {
 }
 
 async function init(options = {}) {
-  const { force = false, skipBacklog = false, skipMcp = false, skipAdo = false } = options;
+  const { force = false, skipBacklog = false, skipMcp = false } = options;
   const cwd = process.cwd();
   
   // Check for updates
@@ -945,21 +798,6 @@ ${COLORS.yellow}╔════════════════════�
     logSuccess('Updated .gitignore with beth runtime entries');
   } else {
     logSuccess('Already in .gitignore: .beth/');
-  }
-
-  // Offer ADO Sync setup (unless skipped)
-  if (!skipAdo) {
-    const wantsAdo = await promptYesNo('Do you use Azure DevOps for this project?');
-    if (wantsAdo) {
-      try {
-        const { setAdoOrg } = await loadTsCommand('set-ado-org');
-        await setAdoOrg();
-      } catch (err) {
-        logWarning('ADO Sync setup encountered an issue — you can run it later:');
-        logInfo('npx beth-copilot set-ado-org');
-        logDebug(err.message || String(err));
-      }
-    }
   }
 
   // Initialize Backlog.md project with derived task prefix (unless skipped)
@@ -1218,15 +1056,15 @@ async function uninstall() {
 }
 
 // Input validation constants
-const ALLOWED_COMMANDS = ['init', 'help', '--help', '-h', 'doctor', 'quickstart', 'pre-push-guard', 'update', 'land', 'uninstall', 'set-ado-org', 'ado-sync'];
-const ALLOWED_FLAGS = ['--force', '--skip-backlog', '--skip-mcp', '--skip-ado', '--verbose', '--reason', '-r', '-f', '--skip-tests', '--message', '-m', '--dry-run', '--check-only', '--fix'];
+const ALLOWED_COMMANDS = ['init', 'help', '--help', '-h', 'doctor', 'quickstart', 'pre-push-guard', 'update', 'land', 'uninstall'];
+const ALLOWED_FLAGS = ['--force', '--skip-backlog', '--skip-mcp', '--verbose', '--reason', '-r', '-f', '--skip-tests', '--message', '-m', '--dry-run', '--check-only', '--fix'];
 const MAX_ARG_LENGTH = 50;
 
 // Validate and sanitize input
 function validateArgs(args) {
   // These commands handle their own arg validation (subcommands, custom flags)
   const command = args[0]?.toLowerCase();
-  if (command === 'land' || command === 'update' || command === 'uninstall' || command === 'ado-sync') return;
+  if (command === 'land' || command === 'update' || command === 'uninstall') return;
 
   for (const arg of args) {
     // Prevent excessively long arguments (log injection, DoS)
@@ -1252,7 +1090,6 @@ const options = {
   force: args.includes('--force'),
   skipBacklog: args.includes('--skip-backlog'),
   skipMcp: args.includes('--skip-mcp'),
-  skipAdo: args.includes('--skip-ado'),
   verbose: args.includes('--verbose'),
   fix: args.includes('--fix'),
 };
@@ -1325,23 +1162,6 @@ switch (command) {
         process.exit(1);
       }
       throw error;
-    }
-    break;
-  case 'set-ado-org':
-    {
-      const { setAdoOrg } = await loadTsCommand('set-ado-org');
-      await setAdoOrg();
-    }
-    break;
-  case 'ado-sync':
-    {
-      const subCmd = args[1]?.toLowerCase();
-      if (!subCmd || !['start', 'stop', 'status'].includes(subCmd)) {
-        logError('Usage: npx beth-copilot ado-sync <start|stop|status>');
-        process.exit(1);
-      }
-      const { adoSync } = await loadTsCommand('ado-sync');
-      await adoSync(subCmd);
     }
     break;
   case 'help':
